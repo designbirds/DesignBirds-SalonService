@@ -92,17 +92,24 @@ class Admin extends CI_Controller {
 
 	public function _image_add()
 	{
+		// load Imageupload_model
 		$this->load->model('Imageupload_model');
-		// View data
+		
+		// defining data array
 		$data = array();
-
+		// create form atrribute and assing a key vale pare
 		$data['form'] = array(
 			'mode' => 'insert',
-			'redirect' => 'admin/imageUpload/submit'
+			'redirect' => 'admin/imageUpload/submit'    // to redirect to submit action
 			);
-
+			
+			// cerate imageupload attribute inside data array and assinging table collumns
 			$data['imageupload'] = $this->Imageupload_model->make_imageuploader();
+			
+			// cerate body attribute inside data array and assinging from php bypassing data array($data)
+			
 			$data['body'] = $this->load->view('admin/image_upload/form', $data, true);
+			// calling wraper view with data array include from body
 			$this->load->view('templates/wrapper', $data);
 	}
 
