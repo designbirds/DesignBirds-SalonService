@@ -10,33 +10,33 @@
 	<fieldset class="form-fields">
 		
 		<?php if ($form['mode'] == 'update') : ?>
-			<?php echo form_hidden('id', set_value('id', $tipster['id'])); ?>
-			<?php echo form_hidden('lastupdated', set_value('lastupdated', $tipster['lastupdated'])); ?>
-			<?php echo form_hidden('photo_icon', set_value('photo_icon', $tipster['photo_icon'])); ?>
-			<?php echo form_hidden('photo_profile', set_value('photo_profile', $tipster['photo_profile'])); ?>
+			<?php echo form_hidden('id', set_value('id', $imageupload['id'])); ?>
+			<?php echo form_hidden('name', set_value('name', $imageupload['name'])); ?>
+			<?php echo form_hidden('category_id', set_value('category_id', $imageupload['category_id'])); ?>
+			<?php echo form_hidden('description', set_value('description', $imageupload['description'])); ?>
 		<?php endif; ?>
 	
 		<div id="field-name" class="control-group">
 			<div class="controls">
-				<?php form_label('Name', 'tipster-name'); ?>
-				<input type="text" id="tipster-name" name="name" placeholder="Name" value="<?php echo set_value('name', $tipster['name']); ?>" />
+				<?php form_label('Name', 'Image Name'); ?>
+				<input type="text" id="image-name" name="name" placeholder="Name" value="<?php echo set_value('name', $imageupload['name']); ?>" />
 				<?php echo form_error('name'); ?>
 			</div>
 		</div>
 		
-		<div id="field-biline" class="control-group">
+		<div id="field-category" class="control-group">
 			<div class="controls">
-				<?php form_label('Name', 'tipster-biline'); ?>
-				<input type="text" id="tipster-biline" name="biline" placeholder="Biline" value="<?php echo set_value('biline', $tipster['biline']); ?>" />
-				<?php echo form_error('biline'); ?>
+				<?php form_label('Name', 'category_id'); ?>
+				<input type="text" id="image-category-id" name="category" placeholder="category" value="<?php echo set_value('category_id', $imageupload['category_id']); ?>" />
+				<?php echo form_error('category_id'); ?>
 			</div>
 		</div>
 		
 
-		<div id="field-biography" class="control-group">
+		<!--  <div id="field-biography" class="control-group">
 			<div class="controls">
 				<?php form_label('Biography', 'tipster-biography'); ?>
-				<textarea id="tipster-biography" name="biography" placeholder="Enter Tipster bio here."><?php echo set_value('biography', $tipster['biography']); ?></textarea>
+				<textarea id="tipster-biography" name="biography" placeholder="Enter Tipster bio here."><?php echo set_value('biography', $imageupload['biography']); ?></textarea>
 				<?php echo form_error('biography'); ?>
 			</div>
 		</div>
@@ -81,8 +81,8 @@
 				<?php form_label('Photo', 'tipster-profile-xhdpi'); ?>
 				<input type="file" id="tipster-profile-xhdpi" name="profile-xhdpi" placeholder="photo" />
 				<?php echo form_error('userfile'); ?>
-			</div>
-		</div>
+			</div> -->
+		</div>  
 	</fieldset>
 
 	<fieldset class="form-actions">

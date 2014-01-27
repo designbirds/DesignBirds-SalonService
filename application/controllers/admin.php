@@ -39,35 +39,37 @@ class Admin extends CI_Controller {
 		// View data
 		$data = array();
 
-		$data['body'] = $this->load->view('admin/index', $data, true);
-		$this->load->view('templates/wrapper', $data);
+		//$data['body'] = $this->load->view('admin/index', $data, true);
+		//$this->load->view('templates/wrapper', $data);
+		echo "Hay it works";
 	}
 
 
-	// ---------------------------------------------------------------------------/
+	// ------------------------------API for Image upload Module---------------------------------------------/
 
 
-	public function tipsters()
+	public function imageUpload()
 	{
+		$this->load->model('Imageupload_model');
 		// Request params
 		$action = $this->uri->segment(3); // detail|add|edit|delete
-
+	echo "Action=".$action;
 		switch($action)
 		{
 			case 'add':
-				$this->_tipster_add();
+				$this->_image_add();
 				break;
 			case 'edit':
-				$this->_tipster_edit();
+				$this->_image_edit();
 				break;
 			case 'submit':
-				$this->_tipster_submit();
+				$this->_image_submit();
 				break;
 			case 'delete':
-				$this->_tipster_delete();
+				$this->_image_delete();
 				break;
 			default:
-				$this->_tipsters_list();
+				$this->_image_list();
 		}
 	}
 
@@ -87,18 +89,19 @@ class Admin extends CI_Controller {
 	}
 
 
-	public function _tipster_add()
+	public function _image_add()
 	{
+		$this->load->model('Imageupload_model');
 		// View data
 		$data = array();
 
 		$data['form'] = array(
 			'mode' => 'insert',
-			'redirect' => 'admin/tipsters/submit'
+			'redirect' => 'admin/imageUpload/submit'
 			);
 
-			$data['tipster'] = $this->Tips_model->make_tipster();
-			$data['body'] = $this->load->view('admin/tipsters/form', $data, true);
+			$data['imageupload'] = $this->Imageupload_model->make_imageuploader();
+			$data['body'] = $this->load->view('admin/image_upload/form', $data, true);
 			$this->load->view('templates/wrapper', $data);
 	}
 
@@ -136,7 +139,7 @@ class Admin extends CI_Controller {
 	}
 
 
-	public function _tipster_submit()
+	public function _image_submit()
 	{
 		// SET VALIDATION RULES
 		$this->form_validation->set_rules('name', 'name','trim|required|min_length[2]|max_length[512]|xss_clean');

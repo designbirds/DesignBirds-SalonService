@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Tips_model extends CI_Model {
+class Imageupload_model extends CI_Model {
 
    
 	// ---------------------------------------------------------------------------/
@@ -64,32 +64,30 @@ class Tips_model extends CI_Model {
 	 * @param data	- k/v array of data to populate Tipster
 	 * @return array
 	 */
-	function make_tipster($data = NULL)
+	function make_imageuploader($data = NULL)
 	{
-		$tipster = array(
+		$imageuploader = array(
 				'id' => 0,
 				'name' => '',
-				'biline' => '',
-				'biography' => '',
-				'lastupdated' => '',
-				'photo_icon' => '',
-				'photo_profile' => '',
+				'category_id' => '',
+				'description' => '',
+				'alt' => '',
 		);
 
 		if (empty($data))
 		{
-			return $tipster;
+			return $imageuploader;
 		}
 
-		foreach ($tipster as $k => $v)
+		foreach ($imageuploader as $k => $v)
 		{
 			if (isset($data[$k]))
 			{
-				$tipster[$k] = $data[$k];
+				$imageuploader[$k] = $data[$k];
 			}
 		}
 
-		return $tipster;
+		return $imageuploader;
 	}
 
 
