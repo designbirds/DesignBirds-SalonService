@@ -47,7 +47,8 @@ class Admin extends CI_Controller {
 
 	// ------------------------------API for Image upload Module---------------------------------------------/
 
-
+	// user clicks imageupload link with this url localhost:8080/admin/imageUpload
+	// display list of added images without parameter 
 	public function imageUpload()
 	{
 		$this->load->model('Imageupload_model');
@@ -74,17 +75,17 @@ class Admin extends CI_Controller {
 	}
 
 
-	public function _tipsters_list()
+	public function _image_list()
 	{
-		$this->load->model('Tips_model');
+		$this->load->model('Imageupload_model');
 
 		// View data
 		$data = array();
+		// getting list imageupload table results as an arry
+		$data['imageupload'] = $this->Imageupload_model->fetch_imageuploads();
 
-		$data['tipsters'] = $this->Tips_model->fetch_tipsters();
 
-
-		$data['body'] = $this->load->view('admin/tipsters/index', $data, true);
+		$data['body'] = $this->load->view('admin/image_upload/index', $data, true);
 		$this->load->view('templates/wrapper', $data);
 	}
 

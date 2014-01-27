@@ -22,9 +22,9 @@ class Imageupload_model extends CI_Model {
 	 *
 	 * @return	array	- Tipster data as array.
 	 */
-	public function fetch_tipsters()
+	public function fetch_imageuploads()
 	{
-		$table = 'tipster';
+		$table = 'imageupload';
 		$query = $this->db->get($table);
 
 		$result = array();
@@ -36,19 +36,17 @@ class Imageupload_model extends CI_Model {
 
 		foreach ($query->result_array() as $row)
 		{
-			$tipster = array();
+			$imageupload = array();
 
 
-			$tipster['id'] 				= (integer)$row['id'];
-			$tipster['name'] 			= $row['name'];
-			$tipster['biline'] 			= $row['biline'];
-			$tipster['biography'] 		= $row['biography'];
-			//$tipster['photo'] 			= base_url() . $row['photo'];
-			$tipster['lastupdated'] 	= strtotime($row['lastupdated']);
-			$tipster['photo_icon'] 		= strtotime($row['photo_icon']);
-			$tipster['photo_profile'] 	= strtotime($row['photo_profile']);
+			$imageupload['id'] 				= (integer)$row['id'];
+			$imageupload['name'] 			= $row['name'];
+			$imageupload['category_id'] 	= $row['category_id'];
+			$imageupload['description'] 	= $row['description'];
+			$imageupload['alt'] 			= strtotime($row['alt']);
+			
 
-			$result[] = $tipster;
+			$result[] = $imageupload;
 		}
 
 		return $result;
