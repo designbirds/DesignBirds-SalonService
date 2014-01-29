@@ -24,8 +24,9 @@ class Imageupload_model extends CI_Model {
 	 */
 	public function fetch_imageuploads()
 	{
+		$this->load->database();
 		$table = 'imageupload';
-		$query = $this->db->get($table);
+			$query = $this->db->get($table);
 
 		$result = array();
 
@@ -43,7 +44,7 @@ class Imageupload_model extends CI_Model {
 			$imageupload['name'] 			= $row['name'];
 			$imageupload['category_id'] 	= $row['category_id'];
 			$imageupload['description'] 	= $row['description'];
-			$imageupload['alt'] 			= strtotime($row['alt']);
+			$imageupload['alt'] 			= $row['alt'];
 			
 
 			$result[] = $imageupload;

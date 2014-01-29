@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Admin extends CI_Controller {
+class Admin extends CI_Controller { 
 
 	/**
 	 * Initialize controller dependencies, etc.
@@ -54,7 +54,7 @@ class Admin extends CI_Controller {
 		$this->load->model('Imageupload_model');
 		// Request params
 		$action = $this->uri->segment(3); // detail|add|edit|delete
-	echo "Action=".$action;
+	
 		switch($action)
 		{
 			case 'add':
@@ -81,7 +81,7 @@ class Admin extends CI_Controller {
 
 		// View data
 		$data = array();
-		// getting list imageupload table results as an arry
+		// getting list imageupload table results as an array
 		$data['imageupload'] = $this->Imageupload_model->fetch_imageuploads();
 
 
@@ -100,7 +100,7 @@ class Admin extends CI_Controller {
 		// create form atrribute and assing a key vale pare
 		$data['form'] = array(
 			'mode' => 'insert',
-			'redirect' => 'admin/imageUpload/submit'    // to redirect to submit action
+			'redirect' => 'admin/imageUpload/image_submit'    // to redirect to submit action
 			);
 			
 			// cerate imageupload attribute inside data array and assinging table collumns
@@ -114,17 +114,17 @@ class Admin extends CI_Controller {
 	}
 
 
-	public function _tipster_edit()
+	public function _image_edit()
 	{
 		// Request params
-		$tipster_id = $this->uri->segment(4);
+		$image_id = $this->uri->segment(4);
 
 		// View data
 		$data = array();
 
 		$data['form'] = array(
 			'mode' => 'update',
-			'redirect' => 'admin/tipsters/submit'
+			'redirect' => 'admin/imageUpload/submit'
 			);
 
 			// Allow for form redisplay variation.
@@ -133,7 +133,7 @@ class Admin extends CI_Controller {
 				// We're redisplaying form, but ...
 				// We need a Tipster data bean to satisfy compiler, so make an empty one.
 				// We don't really need it as will be using data from $_POST array anyway.
-				$data['tipster'] = $this->Tips_model->make_tipster();
+				$data['imageupload'] = $this->imageupload_model->make_imageuploader();
 			}
 			else
 			{
@@ -257,7 +257,7 @@ class Admin extends CI_Controller {
 		}
 		else
 		{
-			$this->_tipster_add();
+			$this->_image_add();
 		}
 	}
 
