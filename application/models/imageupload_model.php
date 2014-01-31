@@ -24,7 +24,7 @@ class Imageupload_model extends CI_Model {
 	 */
 	public function fetch_imageuploads()
 	{
-		$this->load->database();
+		
 		$table = 'imageupload';
 			$query = $this->db->get($table);
 

@@ -16,7 +16,6 @@
 			<td><?php echo $row['category_id'] ?></td>
 			<td><?php echo $row['description'] ?></td>
 			<td><?php echo $row['alt'] ?></td>
-
 		</tr>
 		<?php } ?>
 	</tbody>
