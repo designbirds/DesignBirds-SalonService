@@ -11,9 +11,6 @@
 		
 		<?php if ($form['mode'] == 'update') : ?>
 			<?php echo form_hidden('id', set_value('id', $imageupload['id'])); ?>
-			<?php echo form_hidden('name', set_value('name', $imageupload['name'])); ?>
-			<?php echo form_hidden('category_id', set_value('category_id', $imageupload['category_id'])); ?>
-			<?php echo form_hidden('description', set_value('description', $imageupload['description'])); ?>
 		<?php endif; ?>
 	
 		<div id="field-name" class="control-group">
@@ -27,12 +24,27 @@
 		<div id="field-category" class="control-group">
 			<div class="controls">
 				<?php form_label('Name', 'category_id'); ?>
-				<input type="text" id="image-category-id" name="category" placeholder="category" value="<?php echo set_value('category_id', $imageupload['category_id']); ?>" />
+				<input type="text" id="image-category-id" name="category_id" placeholder="category" value="<?php echo set_value('category_id', $imageupload['category_id']); ?>" />
 				<?php echo form_error('category_id'); ?>
 			</div>
 		</div>
 		
-
+		
+		 <div id="field-description" class="control-group">
+			<div class="controls">
+				<?php form_label('description', 'imasge-description'); ?>
+				<textarea id="imasge-description" name="description" placeholder="Enter imasge description here."><?php echo set_value('description', $imageupload['description']); ?></textarea>
+				<?php echo form_error('biography'); ?>
+			</div>
+		</div>
+		
+		<div id="field-small-image" class="control-group">
+		<div class="controls">
+				<?php form_label('Photo', 'tipster-icon-ldpi'); ?>
+				<input type="file" id="tipster-icon-ldpi" name="image_small" placeholder="Small image" />
+				<?php echo form_error('userfile'); ?>
+			</div>
+			</div>
 		<!--  <div id="field-biography" class="control-group">
 			<div class="controls">
 				<?php form_label('Biography', 'tipster-biography'); ?>

@@ -11,7 +11,7 @@
 	<tbody>
 	<?php foreach($imageupload as $row){ ?>
 		<tr>
-			<td><?php echo $row['name']// echo anchor('admin/imageUpload/edit/'.$row['id'], $row['name'], 'title="Edit ImageUplaod"'); ?>
+			<td><?php echo anchor('admin/imageUpload/edit/'.$row['id'], $row['name'], 'title="Edit ImageUplaod"'); ?>
 			</td>
 			<td><?php echo $row['category_id'] ?></td>
 			<td><?php echo $row['description'] ?></td>

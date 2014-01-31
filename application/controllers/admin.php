@@ -39,8 +39,8 @@ class Admin extends CI_Controller {
 		// View data
 		$data = array();
 
-		//$data['body'] = $this->load->view('admin/index', $data, true);
-		//$this->load->view('templates/wrapper', $data);
+		$data['body'] = $this->load->view('admin/index', $data, true);
+		$this->load->view('templates/wrapper', $data);
 		echo "Hay it works";
 	}
 
@@ -100,7 +100,7 @@ class Admin extends CI_Controller {
 		// create form atrribute and assing a key vale pare
 		$data['form'] = array(
 			'mode' => 'insert',
-			'redirect' => 'admin/imageUpload/image_submit'    // to redirect to submit action
+			'redirect' => 'admin/imageUpload/submit'    // to redirect to submit action
 			);
 			
 			// cerate imageupload attribute inside data array and assinging table collumns
@@ -139,65 +139,59 @@ class Admin extends CI_Controller {
 			{
 				// This is an initial GET request for data,
 				// so pull Event data from database.
-				$data['tipster'] = $this->Tips_model->fetch_tipster($tipster_id);
+				$data['tipster'] = $this->Imageupload_model->fetch_tipster($tipster_id);
 			}
 
 			$data['body'] = $this->load->view('admin/tipsters/form', $data, true);
 			$this->load->view('templates/wrapper', $data);
 	}
-
-
+	
+	
 	public function _image_submit()
 	{
+		$data = array();
+		$this->form_validation->set_rules('name', 'name','trim|required|min_length[2]|max_length[512]|xss_clean');
+		$data['imageupload'] = $this->imageupload_model->make_imageuploader();
+			
+	}
+
+	public function _image_submit_old()
+	{
+		
 		// SET VALIDATION RULES
 		$this->form_validation->set_rules('name', 'name','trim|required|min_length[2]|max_length[512]|xss_clean');
-		$this->form_validation->set_rules('biline', 'biline', 'trim|required|min_length[2]|max_length[256]|xss_clean');
-		$this->form_validation->set_rules('biography', 'biography', 'trim|required|min_length[2]|max_length[1000]|xss_clean');
-		$this->form_validation->set_error_delimiters('<span>','</span>');
+		//$this->form_validation->set_rules('biline', 'biline', 'trim|required|min_length[2]|max_length[256]|xss_clean');
+		//$this->form_validation->set_rules('biography', 'biography', 'trim|required|min_length[2]|max_length[1000]|xss_clean');
+		//$this->form_validation->set_error_delimiters('<span>','</span>');
 			
 		// Form is valid ... process
-		if ($this->form_validation->run())
-		{
-			$lastupdated = date("Y-m-d H:i:s");
+		//if ($this->form_validation->run())
+		//{
+			//$lastupdated = date("Y-m-d H:i:s");
 			//echo ' $lastupdated >>>'.$lastupdated;
-			$_POST['lastupdated'] = $lastupdated;
+			//$_POST['lastupdated'] = $lastupdated;
 
-			foreach($_FILES as $key => $value)
-			{
-				if( ! empty($value['name']))
-				{
-					if (stripos($key, 'icon')!==false)
-					{
-						$_POST['photo_icon'] = $lastupdated;
-					}
-					if (stripos($key, 'profile')!==false)
-					{
-						$_POST['photo_profile'] = $lastupdated;
-					}
-				}
-
-			}
 			//print_r($_POST);
-			$tipster = $this->Tips_model->make_tipster($this->input->post());
-			//print_r($tipster);
+			 //$imageuploader = $this->Imageupload_model->make_imageuploader($this->input->post())
+			//print_r($imageuploader);
 
-			if ($this->input->post('id')) // we're updating, not inserting.
-			{
-				$this->Tips_model->update_tipster($tipster);
-			}
-			else
-			{
-				$last_inserted = $this->Tips_model->insert_tipster($tipster);
-			}
+			// ($this->input->post('id')) // we're updating, not inserting.
+			//{
+				//$this->Tips_model->update_tipster($tipster);
+			//}
+			//else
+			//{
+				//$last_inserted = $this->Imageupload_model->insert_imageUploader($imageuploader);
+			//}
 
 			// =======================image upload======================================
-			$config['upload_path'] = './content/tipster/';
-			$config['allowed_types'] = 'gif|jpg|png';
-			$config['max_size']	= '100';
-			$config['max_width']  = '1024';
-			$config['max_height']  = '768';
+			//$config['upload_path'] = './content/tipster/';
+			//$config['allowed_types'] = 'gif|jpg|png';
+			//$config['max_size']	= '100';
+			//$config['max_width']  = '1024';
+			//$config['max_height']  = '768';
 
-
+			/*
 			$this->load->library('upload');
 			foreach($_FILES as $key => $value)
 			{
@@ -243,22 +237,15 @@ class Admin extends CI_Controller {
 					}
 				}
 
-			}
+			}*/
 
 			//=====================================end========================================================
 
-			redirect('admin/tipsters');
-		}
+			//redirect('admin/imageUpload/add');
+		//}
 			
 		// Form is not valid ... redisplay!
-		if ($this->input->post('id')) // we're updating, not inserting.
-		{
-			$this->_tipster_edit();
-		}
-		else
-		{
-			$this->_image_add();
-		}
+		
 	}
 
 

@@ -126,10 +126,10 @@ class Imageupload_model extends CI_Model {
 	 * @param tipster	- k/v array of Tipster data to insert into db.
 	 * @return void
 	 */
-	function insert_tipster($tipster)
+	function insert_imageUploader($imageuploader)
 	{
-		unset($tipster['id']); // sanity
-		$this->db->insert('tipster', $tipster);
+		//unset($imageuploader['id']); // sanity
+		$this->db->insert('imageupload', $imageuploader);
 		return $this->db->insert_id();
 	}
 
