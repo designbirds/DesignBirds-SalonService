@@ -99,7 +99,7 @@ class Admin extends CI_Controller {
 		$data = array();
 		// create form atrribute and assing a key vale pare
 		$data['form'] = array(
-			'mode' => 'insert',
+			'mode' => 'insert', //from display with ibsert mopde and not assigining Id
 			'redirect' => 'admin/imageUpload/submit'    // to redirect to submit action
 			);
 			
@@ -123,7 +123,7 @@ class Admin extends CI_Controller {
 		$data = array();
 
 		$data['form'] = array(
-			'mode' => 'update',
+			'mode' => 'update', //from display with update mopde and  assigining Id param
 			'redirect' => 'admin/imageUpload/submit'
 			);
 
@@ -139,10 +139,10 @@ class Admin extends CI_Controller {
 			{
 				// This is an initial GET request for data,
 				// so pull Event data from database.
-				$data['tipster'] = $this->Imageupload_model->fetch_tipster($tipster_id);
+				$data['imageupload'] = $this->Imageupload_model->fetch_imageuploader($image_id);
 			}
 
-			$data['body'] = $this->load->view('admin/tipsters/form', $data, true);
+			$data['body'] = $this->load->view('admin/image_upload/form', $data, true);
 			$this->load->view('templates/wrapper', $data);
 	}
 	
@@ -151,8 +151,34 @@ class Admin extends CI_Controller {
 	{
 		$data = array();
 		$this->form_validation->set_rules('name', 'name','trim|required|min_length[2]|max_length[512]|xss_clean');
-		$imageupload = $this->Imageupload_model->make_imageuploader();
-		print_r ($imageupload);	
+		if ($this->form_validation->run())
+		{
+		 
+	     $imageupload = $this->Imageupload_model->make_imageuploader($this->input->post());	
+		
+	     if ($this->input->post('id')) // we're updating, not inserting.
+			{
+				$this->Imageupload_model->update_imageuploader($imageupload);
+			}
+			else
+			{
+				$last_inserted = $this->Imageupload_model->insert_imageUploader($imageupload);
+			}
+			
+		redirect('admin/imageUpload');
+		}
+			
+		// Form is not valid ... redisplay!
+		if ($this->input->post('id')) // we're updating, not inserting.
+		{
+			$this->_image_edit();
+		}
+		else
+		{
+			$this->_image_add();
+		}
+		
+
 	}
 
 	public function _image_submit_old()

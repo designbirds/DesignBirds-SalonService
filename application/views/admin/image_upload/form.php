@@ -23,9 +23,9 @@
 		
 		<div id="field-category" class="control-group">
 			<div class="controls">
-				<?php form_label('Name', 'category_id'); ?>
-				<input type="text" id="image-category-id" name="category_id" placeholder="category" value="<?php echo set_value('category_id', $imageupload['category_id']); ?>" />
-				<?php echo form_error('category_id'); ?>
+				<?php form_label('Name', 'category'); ?>
+				<input type="text" id="image-category-id" name="category" placeholder="category" value="<?php echo set_value('category', $imageupload['category']); ?>" />
+				<?php echo form_error('category'); ?>
 			</div>
 		</div>
 		

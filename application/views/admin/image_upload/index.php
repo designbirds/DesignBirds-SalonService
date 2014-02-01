@@ -13,7 +13,7 @@
 		<tr>
 			<td><?php echo anchor('admin/imageUpload/edit/'.$row['id'], $row['name'], 'title="Edit ImageUplaod"'); ?>
 			</td>
-			<td><?php echo $row['category_id'] ?></td>
+			<td><?php echo $row['category'] ?></td>
 			<td><?php echo $row['description'] ?></td>
 			<td><?php echo $row['alt'] ?></td>
 		</tr>

@@ -42,7 +42,7 @@ class Imageupload_model extends CI_Model {
 
 			$imageupload['id'] 				= (integer)$row['id'];
 			$imageupload['name'] 			= $row['name'];
-			$imageupload['category_id'] 	= $row['category_id'];
+			$imageupload['category'] 	= $row['category'];
 			$imageupload['description'] 	= $row['description'];
 			$imageupload['alt'] 			= $row['alt'];
 			
@@ -66,9 +66,9 @@ class Imageupload_model extends CI_Model {
 	function make_imageuploader($data = NULL)
 	{
 		$imageuploader = array(
-				'id' => 0,
+				'id' => '',
 				'name' => '',
-				'category_id' => '',
+				'category' => '',
 				'description' => '',
 				'alt' => '',
 		);
@@ -93,9 +93,9 @@ class Imageupload_model extends CI_Model {
 	// ---------------------------------------------------------------------------/
 
 
-	public function fetch_tipster($id)
+	public function fetch_imageuploader($id)
 	{
-		$query = $this->db->get_where('tipster', array('id' => $id));
+		$query = $this->db->get_where('imageupload', array('id' => $id));
 
 		$tipster = array();
 
@@ -105,12 +105,10 @@ class Imageupload_model extends CI_Model {
 
 			$tipster['id'] 				= (integer)$row['id'];
 			$tipster['name'] 			= $row['name'];
-			$tipster['biline'] 			= $row['biline'];
-			$tipster['biography'] 		= $row['biography'];
-			$tipster['lastupdated'] 	= $row['lastupdated'];
-			$tipster['photo_icon'] 		= $row['photo_icon'];
-			$tipster['photo_profile']	= $row['photo_profile'];
-	
+			$tipster['category'] 			= $row['category'];
+			$tipster['description'] 		= $row['description'];
+			$tipster['alt'] 	= $row['alt'];
+			
 		}
 
 		return $tipster;
@@ -126,10 +124,10 @@ class Imageupload_model extends CI_Model {
 	 * @param tipster	- k/v array of Tipster data to insert into db.
 	 * @return void
 	 */
-	function insert_imageUploader($imageuploader)
+	function insert_imageUploader($imageupload)
 	{
-		//unset($imageuploader['id']); // sanity
-		$this->db->insert('imageupload', $imageuploader);
+		unset($imageupload['id']); // sanity
+		$this->db->insert('imageupload', $imageupload);
 		return $this->db->insert_id();
 	}
 
@@ -139,11 +137,11 @@ class Imageupload_model extends CI_Model {
 	 * @param tipster	- k/v array of Tipster data to update db.
 	 * @return void
 	 */
-	function update_tipster($tipster)
+	function update_imageuploader($imageupload)
 	{
-		$id = $tipster['id'];
+		$id = $imageupload['id'];
 		$this->db->where('id', $id);
-		$this->db->update('tipster', $tipster);
+		$this->db->update('imageupload', $imageupload);
 	}
 
 
