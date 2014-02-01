@@ -151,8 +151,8 @@ class Admin extends CI_Controller {
 	{
 		$data = array();
 		$this->form_validation->set_rules('name', 'name','trim|required|min_length[2]|max_length[512]|xss_clean');
-		$data['imageupload'] = $this->imageupload_model->make_imageuploader();
-			
+		$imageupload = $this->Imageupload_model->make_imageuploader();
+		print_r ($imageupload);	
 	}
 
 	public function _image_submit_old()
