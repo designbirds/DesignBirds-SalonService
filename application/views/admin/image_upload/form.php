@@ -12,7 +12,35 @@
 		<?php if ($form['mode'] == 'update') : ?>
 			<?php echo form_hidden('id', set_value('id', $imageupload['id'])); ?>
 		<?php endif; ?>
-	
+		
+		<div id="field-name" class="control-group">	
+			<div class="controls">
+			<div>
+				<input type="hidden" name="hidid" value="<?php echo $feature['id']; ?>">
+				<?php echo form_dropdown('name', $dropdown, $feature['name']); ?>
+			</div>
+		
+			</div>
+		</div>
+		<div id="field-name" class="control-group">	
+			<div class="controls">
+			<div>
+				<input type="hidden" name="hidid" value="<?php echo $feature['id']; ?>">
+				<?php echo form_dropdown('name', $dropdown, $feature['name']); ?>
+			</div>
+		
+			</div>
+		</div>
+		<div id="field-name" class="control-group">	
+			<div class="controls">
+			<div>
+				<input type="hidden" name="hidid" value="<?php echo $feature['id']; ?>">
+				<?php echo form_dropdown('name', $dropdown, $feature['name']); ?>
+			</div>
+		
+			</div>
+		</div>	
+		
 		<div id="field-name" class="control-group">
 			<div class="controls">
 				<?php form_label('Name', 'Image Name'); ?>
@@ -39,9 +67,9 @@
 		
 		<div id="field-small-image" class="control-group">
 			<div class="controls">
-				<?php form_label('Photo', 'tipster-icon-ldpi'); ?>
-				<input type="file" id="tipster-icon-ldpi" name="image_small" placeholder="Small image" />
-				<?php echo form_error('userfile'); ?>
+				<?php form_label('Photo', 'image_name'); ?>
+				<input type="file" id="image_name" name="image_name" placeholder="Small image" />
+				<?php echo form_error('image_name'); ?>
 			</div>
 		</div>
 <!--   <div id="field-biography" class="control-group">

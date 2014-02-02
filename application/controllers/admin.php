@@ -102,6 +102,9 @@ class Admin extends CI_Controller {
 			'redirect' => 'admin/imageUpload/submit'    // to redirect to submit action
 			);
 			
+			$data['feature'] = $this->Imageupload_model->make_tips();
+			$data['dropdown'] = $this->Imageupload_model->fetch_tipsters_dropdown();
+			
 			// cerate imageupload attribute inside data array and assinging table collumns
 			$data['imageupload'] = $this->Imageupload_model->make_imageuploader();
 			
@@ -163,18 +166,82 @@ class Admin extends CI_Controller {
 				$last_inserted = $this->Imageupload_model->insert_imageUploader($imageupload);
 			}
 			
-		redirect('admin/imageUpload');
+/*/ =======================image upload======================================
+
+			$lastupdated = date("Y-m-d H:i:s");
+			echo ' $lastupdated >>>'.$lastupdated;
+			
+			$config['upload_path'] = './content/tipster/';
+			$config['allowed_types'] = 'gif|jpg|png';
+			$config['max_size']	= '100';
+			$config['max_width']  = '1024';
+			$config['max_height']  = '768';
+
+			
+			$this->load->library('upload');
+			foreach($_FILES as $key => $value)
+			{
+
+				if( ! empty($value['name']))
+				{
+					echo ' name >>>'.$key;
+
+					if ($this->input->post('id')) // we're updating, not inserting.
+					{
+						$filename = $this->input->post('id').'-'.$key.'-'.strtotime($lastupdated).'.png';
+
+						$config['file_name']  = $filename;
+
+					}
+					else
+					{
+						$filename = $last_inserted.'-'.$key.'-'.strtotime($lastupdated).'.png';
+
+						$config['file_name']  = $filename;
+
+					}
+
+					$this->upload->initialize($config);
+
+					echo ' filename before >>>'.$filename.'</br>';
+					echo ' >>>'. $this->upload->do_upload($key);
+					
+					if ( ! $this->upload->do_upload($key))
+					{
+						$error = array('error' => $this->upload->display_errors());
+
+						$data['body'] = $this->load->view('admin/tipsters/upload_unsuccess', $error);
+					}
+					else
+					{
+						$data = array('upload_data' => $this->upload->data());
+
+						foreach($data as $row)
+						{
+						$file_path = '/content/tipster/'.$row['file_name'];
+						echo ' filename after >>>'.$file_path.'</br>';
+						$_POST['image_name'] = $file_path;
+						}
+					}
+				}
+
+			}
+
+			//=====================================end========================================================
+			*/
+			
+		//redirect('admin/imageUpload');
 		}
 			
 		// Form is not valid ... redisplay!
-		//if ($this->input->post('id')) // we're updating, not inserting.
-		//{
-		//	$this->_image_edit();
-		//}
-		//else
-		//{
-		//	$this->_image_add();
-		//}
+		if ($this->input->post('id')) // we're updating, not inserting.
+		{
+			$this->_image_edit();
+		}
+		else
+		{
+			$this->_image_add();
+		}
 		
 
 	}

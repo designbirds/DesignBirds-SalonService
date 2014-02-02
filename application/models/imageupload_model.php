@@ -171,10 +171,8 @@ class Imageupload_model extends CI_Model {
 	{
 		$tips = array(
 				'id' => 0,
-				'tipster' => '',
-				'match' => '',
-				'comment' => '',
-				'date' => '',
+				'name' => '',
+				'description' => '',
 		);
 
 		if (empty($data))
@@ -316,9 +314,9 @@ class Imageupload_model extends CI_Model {
 
 	public function fetch_tipsters_dropdown()
 	{
-		$table = 'tipster';
+		$table = 'tbl_main_features';
 		$query = $this->db->get($table);
-
+	    //$this->db->where('id', $id);
 
 		$dropdown = array();
 
