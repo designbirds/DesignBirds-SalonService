@@ -42,7 +42,7 @@ class Imageupload_model extends CI_Model {
 
 			$imageupload['id'] 				= (integer)$row['id'];
 			$imageupload['name'] 			= $row['name'];
-			$imageupload['category'] 	= $row['category'];
+			$imageupload['category'] 		= $row['category'];
 			$imageupload['description'] 	= $row['description'];
 			$imageupload['alt'] 			= $row['alt'];
 			
@@ -66,11 +66,11 @@ class Imageupload_model extends CI_Model {
 	function make_imageuploader($data = NULL)
 	{
 		$imageuploader = array(
-				'id' => '',
-				'name' => '',
-				'category' => '',
-				'description' => '',
-				'alt' => '',
+				'id' 			=> '',
+				'name' 			=> '',
+				'category' 		=> '',
+				'description' 	=> '',
+				'alt' 			=> '',
 		);
 
 		if (empty($data))
@@ -105,9 +105,9 @@ class Imageupload_model extends CI_Model {
 
 			$tipster['id'] 				= (integer)$row['id'];
 			$tipster['name'] 			= $row['name'];
-			$tipster['category'] 			= $row['category'];
-			$tipster['description'] 		= $row['description'];
-			$tipster['alt'] 	= $row['alt'];
+			$tipster['category'] 		= $row['category'];
+			$tipster['description'] 	= $row['description'];
+			$tipster['alt'] 			= $row['alt'];
 			
 		}
 

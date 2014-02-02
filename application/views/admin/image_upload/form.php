@@ -1,6 +1,6 @@
 
 <div id="container">
-
+<?php $this->load->helper('form'); ?>
 <?php echo form_open_multipart($form['redirect']); ?>
 
 	<?php if ($this->session->flashdata('message')) : ?>
@@ -29,7 +29,6 @@
 			</div>
 		</div>
 		
-		
 		 <div id="field-description" class="control-group">
 			<div class="controls">
 				<?php form_label('description', 'imasge-description'); ?>
@@ -39,13 +38,13 @@
 		</div>
 		
 		<div id="field-small-image" class="control-group">
-		<div class="controls">
+			<div class="controls">
 				<?php form_label('Photo', 'tipster-icon-ldpi'); ?>
 				<input type="file" id="tipster-icon-ldpi" name="image_small" placeholder="Small image" />
 				<?php echo form_error('userfile'); ?>
 			</div>
-			</div>
-		<!--  <div id="field-biography" class="control-group">
+		</div>
+<!--   <div id="field-biography" class="control-group">
 			<div class="controls">
 				<?php form_label('Biography', 'tipster-biography'); ?>
 				<textarea id="tipster-biography" name="biography" placeholder="Enter Tipster bio here."><?php echo set_value('biography', $imageupload['biography']); ?></textarea>

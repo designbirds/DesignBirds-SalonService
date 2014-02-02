@@ -89,7 +89,6 @@ class Admin extends CI_Controller {
 		$this->load->view('templates/wrapper', $data);
 	}
 
-
 	public function _image_add()
 	{
 		// load Imageupload_model
@@ -99,7 +98,7 @@ class Admin extends CI_Controller {
 		$data = array();
 		// create form atrribute and assing a key vale pare
 		$data['form'] = array(
-			'mode' => 'insert', //from display with ibsert mopde and not assigining Id
+			'mode' => 'insert', //form display with insert mode and not assigining Id
 			'redirect' => 'admin/imageUpload/submit'    // to redirect to submit action
 			);
 			
@@ -107,12 +106,11 @@ class Admin extends CI_Controller {
 			$data['imageupload'] = $this->Imageupload_model->make_imageuploader();
 			
 			// cerate body attribute inside data array and assinging from php bypassing data array($data)
-			
 			$data['body'] = $this->load->view('admin/image_upload/form', $data, true);
+			
 			// calling wraper view with data array include from body
 			$this->load->view('templates/wrapper', $data);
 	}
-
 
 	public function _image_edit()
 	{
@@ -156,7 +154,7 @@ class Admin extends CI_Controller {
 		 
 	     $imageupload = $this->Imageupload_model->make_imageuploader($this->input->post());	
 		
-	     if ($this->input->post('id')) // we're updating, not inserting.
+	     if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
 			{
 				$this->Imageupload_model->update_imageuploader($imageupload);
 			}
@@ -169,14 +167,14 @@ class Admin extends CI_Controller {
 		}
 			
 		// Form is not valid ... redisplay!
-		if ($this->input->post('id')) // we're updating, not inserting.
-		{
-			$this->_image_edit();
-		}
-		else
-		{
-			$this->_image_add();
-		}
+		//if ($this->input->post('id')) // we're updating, not inserting.
+		//{
+		//	$this->_image_edit();
+		//}
+		//else
+		//{
+		//	$this->_image_add();
+		//}
 		
 
 	}
@@ -462,9 +460,135 @@ class Admin extends CI_Controller {
 	}
 
 
-	// ==============================================================================/
+	
+// ------------------------------API for Comment Management Module---------------------------------------------/
+
+public function commentMng()
+	{
+		$this->load->model('Comment_model');
+		// Request params
+		$action = $this->uri->segment(3); 
+	
+		switch($action)
+		{
+			case 'add':
+				$this->_comment_add();
+				break;
+			case 'edit':
+				$this->_comment_edit();
+				break;
+			case 'submit':
+				$this->_comment_submit();
+				break;
+			case 'delete':
+				$this->_comment_delete();
+				break;
+			default:
+				$this->_comment_list();
+		}
+	}
+	
+public function _comment_list()
+	{
+		$this->load->model('Comment_model');
+
+		// View data
+		$data = array();
+		// getting list imageupload table results as an array
+		$data['comments'] = $this->Comment_model->fetch_comments();
 
 
+		$data['body'] = $this->load->view('admin/comment_management/index', $data, true);
+		$this->load->view('templates/wrapper', $data);
+	}
+	
+public function _comment_add()
+	{
+		
+		$this->load->model('Comment_model');
+		
+		
+		$data = array();
+		
+		$data['form'] = array(
+			'mode' => 'insert', 
+			'redirect' => 'admin/commentMng/submit'    
+			);
+			
+			// cerate imageupload attribute inside data array and assinging table collumns
+			$data['comments'] = $this->Comment_model->make_comments();
+			
+			// cerate body attribute inside data array and assinging from php bypassing data array($data)
+			$data['body'] = $this->load->view('admin/comment_management/comment_form', $data, true);
+			
+			// calling wraper view with data array include from body
+			$this->load->view('templates/wrapper', $data);
+	}
+	
+public function _comment_submit()
+	{
+		$data = array();
+		$this->form_validation->set_rules('comment', 'comment','trim|required|min_length[2]|max_length[512]|xss_clean');
+		if ($this->form_validation->run())
+		{
+		 
+	     $comments = $this->Comment_model->make_comments($this->input->post());	
+		
+	     if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
+			{
+				$this->Comment_model->update_comments($comments);
+			}
+			else
+			{
+				$last_inserted = $this->Comment_model->insert_comments($comments);
+			}
+			
+		redirect('admin/commentMng');
+		}
+			
+		// Form is not valid ... redisplay!
+		//if ($this->input->post('id')) // we're updating, not inserting.
+		//{
+		//	$this->_image_edit();
+		//}
+		//else
+		//{
+		//	$this->_image_add();
+		//}
+		
+
+	}
+	
+public function _comment_edit()
+	{
+		// Request params
+		$comment_id = $this->uri->segment(4);
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'update', 
+			'redirect' => 'admin/commentMng/submit'
+			);
+
+			if ($this->input->post('submit'))
+			{
+			
+				$data['comments'] = $this->Comment_model->make_comments();
+			}
+			else
+			{
+				
+				$data['comments'] = $this->Comment_model->fetch_editcomments($comment_id);
+			}
+
+			$data['body'] = $this->load->view('admin/comment_management/comment_form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	}
+		
+	
+// ==============================================================================/
 	public function agencies()
 	{
 		$this->load->model('Agencies_model');
