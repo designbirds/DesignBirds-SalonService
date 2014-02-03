@@ -1,6 +1,6 @@
 
 <div id="container">
-<?php $this->load->helper('form'); ?>
+
 <?php echo form_open_multipart($form['redirect']); ?>
 
 	<?php if ($this->session->flashdata('message')) : ?>
@@ -31,6 +31,7 @@
 		
 			</div>
 		</div>
+		
 		<div id="field-name" class="control-group">	
 			<div class="controls">
 			<div>
