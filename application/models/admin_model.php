@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Imageupload_model extends CI_Model {
+class Admin_model extends CI_Model {
 
    
 	// ---------------------------------------------------------------------------/
@@ -22,10 +22,10 @@ class Imageupload_model extends CI_Model {
 	 *
 	 * @return	array	- Tipster data as array.
 	 */
-	public function fetch_imageuploads()
+	public function fetch_image_uploads()
 	{
 		
-		$table = 'imageupload';
+		$table = 'tbl_image_upload';
 			$query = $this->db->get($table);
 
 		$result = array();
@@ -37,17 +37,17 @@ class Imageupload_model extends CI_Model {
 
 		foreach ($query->result_array() as $row)
 		{
-			$imageupload = array();
+			$tbl_image_upload = array();
 
 
-			$imageupload['id'] 				= (integer)$row['id'];
-			$imageupload['name'] 			= $row['name'];
-			$imageupload['category'] 		= $row['category'];
-			$imageupload['description'] 	= $row['description'];
-			$imageupload['alt'] 			= $row['alt'];
+			$tbl_image_upload['id'] 				= (integer)$row['id'];
+			$tbl_image_upload['name'] 			= $row['name'];
+			$tbl_image_upload['category'] 		= $row['category'];
+			$tbl_image_upload['description'] 	= $row['description'];
+			$tbl_image_upload['alt'] 			= $row['alt'];
 			
 
-			$result[] = $imageupload;
+			$result[] = $tbl_image_upload;
 		}
 
 		return $result;
@@ -63,9 +63,9 @@ class Imageupload_model extends CI_Model {
 	 * @param data	- k/v array of data to populate Tipster
 	 * @return array
 	 */
-	function make_imageuploader($data = NULL)
+	function make_image_uploade($data = NULL)
 	{
-		$imageuploader = array(
+		$image_uploade = array(
 				'id' 			=> '',
 				'name' 			=> '',
 				'category' 		=> '',
@@ -75,43 +75,43 @@ class Imageupload_model extends CI_Model {
 
 		if (empty($data))
 		{
-			return $imageuploader;
+			return $image_uploade;
 		}
 
-		foreach ($imageuploader as $k => $v)
+		foreach ($image_uploade as $k => $v)
 		{
 			if (isset($data[$k]))
 			{
-				$imageuploader[$k] = $data[$k];
+				$image_uploade[$k] = $data[$k];
 			}
 		}
 
-		return $imageuploader;
+		return $image_uploade;
 	}
 
 
 	// ---------------------------------------------------------------------------/
 
 
-	public function fetch_imageuploader($id)
+	public function fetch_image_uploade($id)
 	{
-		$query = $this->db->get_where('imageupload', array('id' => $id));
+		$query = $this->db->get_where('tbl_image_upload', array('id' => $id));
 
-		$tipster = array();
+		$image_uploade = array();
 
 		if ($query->num_rows() > 0)
 		{
 			$row = $query->row_array();
 
-			$tipster['id'] 				= (integer)$row['id'];
-			$tipster['name'] 			= $row['name'];
-			$tipster['category'] 		= $row['category'];
-			$tipster['description'] 	= $row['description'];
-			$tipster['alt'] 			= $row['alt'];
+			$image_uploade['id'] 				= (integer)$row['id'];
+			$image_uploade['name'] 				= $row['name'];
+			$image_uploade['category'] 			= $row['category'];
+			$image_uploade['description'] 		= $row['description'];
+			$image_uploade['alt'] 				= $row['alt'];
 			
 		}
 
-		return $tipster;
+		return $image_uploade;
 	}
 
 
@@ -124,10 +124,10 @@ class Imageupload_model extends CI_Model {
 	 * @param tipster	- k/v array of Tipster data to insert into db.
 	 * @return void
 	 */
-	function insert_imageUploader($imageupload)
+	function insert_image_uploade($image_upload)
 	{
-		unset($imageupload['id']); // sanity
-		$this->db->insert('imageupload', $imageupload);
+		unset($image_upload['id']); // sanity
+		$this->db->insert('tbl_image_upload', $image_upload);
 		return $this->db->insert_id();
 	}
 
@@ -137,11 +137,11 @@ class Imageupload_model extends CI_Model {
 	 * @param tipster	- k/v array of Tipster data to update db.
 	 * @return void
 	 */
-	function update_imageuploader($imageupload)
+	function update_image_uploade($image_upload)
 	{
-		$id = $imageupload['id'];
+		$id = $image_upload['id'];
 		$this->db->where('id', $id);
-		$this->db->update('imageupload', $imageupload);
+		$this->db->update('tbl_image_upload', $image_upload);
 	}
 
 

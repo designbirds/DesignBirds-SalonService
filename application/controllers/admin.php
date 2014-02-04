@@ -51,7 +51,9 @@ class Admin extends CI_Controller {
 	// display list of added images without parameter 
 	public function imageUpload()
 	{
-		$this->load->model('Imageupload_model');
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
 		// Request params
 		$action = $this->uri->segment(3); // detail|add|edit|delete
 	
@@ -77,12 +79,13 @@ class Admin extends CI_Controller {
 
 	public function _image_list()
 	{
-		$this->load->model('Imageupload_model');
-
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
 		// View data
 		$data = array();
 		// getting list imageupload table results as an array
-		$data['imageupload'] = $this->Imageupload_model->fetch_imageuploads();
+		$data['imageupload'] = $this->Admin_model->fetch_imageuploads();
 
 
 		$data['body'] = $this->load->view('admin/image_upload/index', $data, true);
@@ -91,8 +94,9 @@ class Admin extends CI_Controller {
 
 	public function _image_add()
 	{
-		// load Imageupload_model
-		$this->load->model('Imageupload_model');
+		// load Admin_model
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
 		
 		// defining data array
 		$data = array();
@@ -102,11 +106,18 @@ class Admin extends CI_Controller {
 			'redirect' => 'admin/imageUpload/submit'    // to redirect to submit action
 			);
 			
-			$data['feature'] = $this->Imageupload_model->make_tips();
-			$data['dropdown'] = $this->Imageupload_model->fetch_tipsters_dropdown();
+			$data['feature'] = $this->Common_model->make_feature();
+			$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
+			
+			
+			$data['services'] = $this->Common_model->make_feature();
+			$data['dropdown_services'] = $this->Common_model->fetch_common_dropdown('services');
+			
+			$data['hairdress'] = $this->Common_model->make_feature();
+			$data['dropdown_hairdress'] = $this->Common_model->fetch_common_dropdown('hairdress');
 			
 			// cerate imageupload attribute inside data array and assinging table collumns
-			$data['imageupload'] = $this->Imageupload_model->make_imageuploader();
+			$data['imageupload'] = $this->Admin_model->make_image_uploade();
 			
 			// cerate body attribute inside data array and assinging from php bypassing data array($data)
 			$data['body'] = $this->load->view('admin/image_upload/form', $data, true);
@@ -134,13 +145,17 @@ class Admin extends CI_Controller {
 				// We're redisplaying form, but ...
 				// We need a Tipster data bean to satisfy compiler, so make an empty one.
 				// We don't really need it as will be using data from $_POST array anyway.
-				$data['imageupload'] = $this->imageupload_model->make_imageuploader();
+				$data['feature'] = $this->Admin_model->make_tips();
+				$data['dropdown'] = $this->Admin_model->fetch_tipsters_dropdown();
+				$data['imageupload'] = $this->Admin_model->make_imageuploader();
 			}
 			else
 			{
 				// This is an initial GET request for data,
 				// so pull Event data from database.
-				$data['imageupload'] = $this->Imageupload_model->fetch_imageuploader($image_id);
+				$data['feature'] = $this->Admin_model->make_tips();
+				$data['dropdown'] = $this->Admin_model->fetch_tipsters_dropdown();
+				$data['imageupload'] = $this->Admin_model->fetch_imageuploader($image_id);
 			}
 
 			$data['body'] = $this->load->view('admin/image_upload/form', $data, true);
@@ -155,18 +170,18 @@ class Admin extends CI_Controller {
 		if ($this->form_validation->run())
 		{
 		 
-	     $imageupload = $this->Imageupload_model->make_imageuploader($this->input->post());	
+	     $imageupload = $this->Admin_model->make_imageuploader($this->input->post());	
 		
 	     if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
 			{
-				$this->Imageupload_model->update_imageuploader($imageupload);
+				$this->Admin_model->update_imageuploader($imageupload);
 			}
 			else
 			{
-				$last_inserted = $this->Imageupload_model->insert_imageUploader($imageupload);
+				$last_inserted = $this->Admin_model->insert_imageUploader($imageupload);
 			}
 			
-/*/ =======================image upload======================================
+// =======================image upload======================================
 
 			$lastupdated = date("Y-m-d H:i:s");
 			echo ' $lastupdated >>>'.$lastupdated;
@@ -228,7 +243,7 @@ class Admin extends CI_Controller {
 			}
 
 			//=====================================end========================================================
-			*/
+			
 			
 		//redirect('admin/imageUpload');
 		}
@@ -263,7 +278,7 @@ class Admin extends CI_Controller {
 			//$_POST['lastupdated'] = $lastupdated;
 
 			//print_r($_POST);
-			 //$imageuploader = $this->Imageupload_model->make_imageuploader($this->input->post())
+			 //$imageuploader = $this->Admin_model->make_imageuploader($this->input->post())
 			//print_r($imageuploader);
 
 			// ($this->input->post('id')) // we're updating, not inserting.
@@ -272,7 +287,7 @@ class Admin extends CI_Controller {
 			//}
 			//else
 			//{
-				//$last_inserted = $this->Imageupload_model->insert_imageUploader($imageuploader);
+				//$last_inserted = $this->Admin_model->insert_imageUploader($imageuploader);
 			//}
 
 			// =======================image upload======================================

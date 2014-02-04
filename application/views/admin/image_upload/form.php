@@ -17,7 +17,7 @@
 			<div class="controls">
 			<div>
 				<input type="hidden" name="hidid" value="<?php echo $feature['id']; ?>">
-				<?php echo form_dropdown('name', $dropdown, $feature['name']); ?>
+				<?php echo form_dropdown('name', $dropdown_feature, $feature['name']); ?>
 			</div>
 		
 			</div>
@@ -25,8 +25,8 @@
 		<div id="field-name" class="control-group">	
 			<div class="controls">
 			<div>
-				<input type="hidden" name="hidid" value="<?php echo $feature['id']; ?>">
-				<?php echo form_dropdown('name', $dropdown, $feature['name']); ?>
+				<input type="hidden" name="hidid" value="<?php echo $services['id']; ?>">
+				<?php echo form_dropdown('name', $dropdown_services, $services['name']); ?>
 			</div>
 		
 			</div>
@@ -35,8 +35,8 @@
 		<div id="field-name" class="control-group">	
 			<div class="controls">
 			<div>
-				<input type="hidden" name="hidid" value="<?php echo $feature['id']; ?>">
-				<?php echo form_dropdown('name', $dropdown, $feature['name']); ?>
+				<input type="hidden" name="hidid" value="<?php echo $hairdress['id']; ?>">
+				<?php echo form_dropdown('name', $dropdown_hairdress, $hairdress['name']); ?>
 			</div>
 		
 			</div>
