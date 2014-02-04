@@ -298,6 +298,138 @@ class Admin_model extends CI_Model {
 		$this->db->where('id', $id);
 		$this->db->delete($table);
 	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////
+	
+
+	/**
+	 * Returns list of Features, as stored in DB.
+	 *
+	 * @return	array	- Features data as array.
+	 */
+	public function fetch_services()
+	{
+		$table = 'tbl_main_services';
+
+		$query = $this->db->get($table);
+		
+		$result = array();
+
+		if ($query->num_rows() == 0)
+		{
+			return $result;
+		}
+
+		foreach ($query->result_array() as $row)
+		{
+			$service = array();
+
+			// Need to iterate over dataset keys in order to force
+			// type-casting for later JSON encoding.
+
+			$service['id'] 				= (integer)$row['id'];
+			$service['name'] 			= $row['name'];
+			$service['description'] 	= $row['description'];
+			$service['status'] 			= $row['status'];
+			
+			$result[] = $service;
+		}
+
+		return $result;
+	}
+	
+	/**
+	 * Create an array of Tipster data, to back or receive form data.
+	 *
+	 * @param data	- k/v array of data to populate Tipster
+	 * @return array
+	 */
+	function make_service($data = NULL)
+	{
+		//print_r($data);
+		$services = array(
+				'id' => 0,
+				'name' => '',
+				'description' => '',
+		);
+
+		if (empty($data))
+		{
+			return $services;
+		}
+
+		foreach ($services as $k => $v)
+		{
+			if (isset($data[$k]))
+			{
+				$services[$k] = $data[$k];
+			}
+		}
+
+		return $services;
+	}
+	
+	public function fetch_service($id)
+	{
+		$table = 'tbl_main_services';
+		
+		$query = $this->db->get_where($table, array('id' => $id));
+
+		$service = array();
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row_array();
+
+			$service['id'] 			= $row['id'];
+			$service['name'] 		= $row['name'];
+			$service['description']	= $row['description'];
+		}
+
+		return $service;
+	}
+	
+/**
+	 * Insert Tip database record.
+	 *
+	 * @param tip	- k/v array of Tip data to insert into db.
+	 * @return void
+	 */
+	public function insert_service($service)
+	{
+		$table = 'tbl_main_services';
+		unset($service['id']); // sanity
+		$this->db->insert($table, $service);
+	}
+	
+/**
+	 * Update Tip database record.
+	 *
+	 * @param tip	- k/v array of Tip data to update db.
+	 * @return void
+	 */
+	function update_service($service)
+	{
+		$table = 'tbl_main_services';
+		$id = $service['id'];
+		$this->db->where('id', $id);
+		$this->db->update($table, $service);
+	}
+
+
+	/**
+	 * Delete Tip database record.
+	 *
+	 * @param id	- numeric id of Tip record to delete from db.
+	 * @return void
+	 */
+	public function delete_service($id)
+	{
+		$table = 'tbl_main_services';
+		$this->db->where('id', $id);
+		$this->db->delete($table);
+	}
+	
 }
 
 /* End of file tips_model.php */
