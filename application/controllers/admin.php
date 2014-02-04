@@ -379,48 +379,47 @@ class Admin extends CI_Controller {
 
 
 
-	public function tips()
+	public function features()
 	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
 		// Request params
 		$action = $this->uri->segment(3); // detail|add|edit|delete
 
 		switch($action)
 		{
 			case 'add':
-				$this->_tips_add();
+				$this->_feature_add();
 				break;
 			case 'edit':
-				$this->_tips_edit();
+				$this->_feature_edit();
 				break;
 			case 'submit':
-				$this->_tips_submit();
+				$this->_feature_submit();
 				break;
 			case 'delete':
-				$this->_tips_delete();
+				$this->_feature_delete();
 				break;
 			default:
-				$this->_tips_list();
+				$this->_feature_list();
 		}
 	}
 
 
-	public function _tips_list()
+	public function _feature_list()
 	{
 		// View data
 		$data = array();
 		$tipster_id = $this->uri->segment(3);
 
-		$tipster = array(
-		'tipster' => $tipster_id
-		);
-
-		$data['tips'] = $this->Tips_model->fetch_tips($tipster);
-		$data['body'] = $this->load->view('admin/tips/index', $data, true);
+		$data['feature'] = $this->Admin_model->fetch_features();
+		$data['body'] = $this->load->view('admin/features/index', $data, true);
 		$this->load->view('templates/wrapper', $data);
 	}
 
 
-	public function _tips_add()
+	public function _feature_add()
 	{
 
 		// View data
@@ -428,29 +427,29 @@ class Admin extends CI_Controller {
 
 		$data['form'] = array(
 			'mode' => 'insert',
-			'redirect' => 'admin/tips/submit'
+			'redirect' => 'admin/features/submit'
 			);
 
-			$this->load->helper('dropdown_helper');
-			$data['tips'] = $this->Tips_model->make_tips();
-			$data['dropdown'] = $this->Tips_model->fetch_tipsters_dropdown();
+			//$this->load->helper('dropdown_helper');
+			$data['feature'] = $this->Admin_model->make_feature();
+			//$data['dropdown'] = $this->Admin_model->fetch_tipsters_dropdown();
 
-			$data['body'] = $this->load->view('admin/tips/form', $data, true);
+			$data['body'] = $this->load->view('admin/features/form', $data, true);
 			$this->load->view('templates/wrapper', $data);
 	}
 
 
-	public function _tips_edit()
+	public function _feature_edit()
 	{
 		// Request params
-		$tips_id = $this->uri->segment(4);
+		$feature_id = $this->uri->segment(4);
 
 		// View data
 		$data = array();
 
 		$data['form'] = array(
 			'mode' => 'update',
-			'redirect' => 'admin/tips/submit'
+			'redirect' => 'admin/features/submit'
 			);
 
 			// Allow for form redisplay variation.
@@ -459,85 +458,85 @@ class Admin extends CI_Controller {
 				// We're redisplaying form, but ...
 				// We need a Tipster data bean to satisfy compiler, so make an empty one.
 				// We don't really need it as will be using data from $_POST array anyway.
-				$data['tips'] = $this->Tips_model->make_tips();
+				$data['feature'] = $this->Admin_model->make_feature();
 			}
 			else
 			{
 				// This is an initial GET request for data,
 				// so pull Event data from database.
-				$data['tips'] = $this->Tips_model->fetch_tip($tips_id);
+				$data['feature'] = $this->Admin_model->fetch_feature($feature_id);
 			}
 			//print_r($data);
 
-			$this->load->helper('dropdown_helper');
-			$this->load->model('Tips_model');
-			$data['dropdown'] = $this->Tips_model->fetch_tipsters_dropdown();
+			//$this->load->helper('dropdown_helper');
+			//$this->load->model('feature_model');
+			//$data['dropdown'] = $this->feature_model->fetch_tipsters_dropdown();
 
-			$data['body'] = $this->load->view('admin/tips/form', $data, true);
+			$data['body'] = $this->load->view('admin/features/form', $data, true);
 			$this->load->view('templates/wrapper', $data);
 	}
 
 
-	public function _tips_submit()
+	public function _feature_submit()
 	{
 		// SET VALIDATION RULES
-		$this->form_validation->set_rules('match', 'match','trim|required|min_length[1]|max_length[12]|numeric|xss_clean');
-		$this->form_validation->set_rules('comment', 'comment', 'trim|required|min_length[2]|max_length[1000]|xss_clean');
-		$this->form_validation->set_error_delimiters('<span>','</span>');
+		$this->form_validation->set_rules('name', 'name','trim|required|min_length[1]|max_length[50]|xss_clean');
+		//$this->form_validation->set_rules('comment', 'comment', 'trim|required|min_length[2]|max_length[1000]|xss_clean');
+		//$this->form_validation->set_error_delimiters('<span>','</span>');
 			
 		// Form is valid ... process
 		if ($this->form_validation->run())
 		{
-			$date = $this->input->post("start_year") ."-". $this->input->post("start_month"). "-" .$this->input->post("start_day");
-			$date = date("Y-m-d H:i:s", strtotime($date));
+			//$date = $this->input->post("start_year") ."-". $this->input->post("start_month"). "-" .$this->input->post("start_day");
+			//$date = date("Y-m-d H:i:s", strtotime($date));
 
-			$_POST['date'] = $date;
-
-			$tips = $this->Tips_model->make_tips($this->input->post());
-
+			//$_POST['date'] = $date;
+			//print_r($this->input->post());
+			$feature = $this->Admin_model->make_feature($this->input->post());
+			//print_r($feature);
 			//$tips['date'] = $date;
 
 
 			if ($this->input->post('id')) // we're updating, not inserting.
 			{
-				$this->Tips_model->update_tip($tips);
+				$this->Admin_model->update_feature($feature);
 			}
 			else
 			{
-				$this->Tips_model->insert_tip($tips);
+				$this->Admin_model->insert_feature($feature);
 			}
 
-			redirect('admin/tips/'.$tips['tipster']);
+			redirect('admin/features/'.$feature['id']);
 		}
 			
 		// Form is not valid ... redisplay!
 		if ($this->input->post('id')) // we're updating, not inserting.
 		{
-			$this->_tips_edit();
+			$this->_feature_edit();
 		}
 		else
 		{
-			$this->_tips_add();
+			$this->_feature_add();
 		}
 	}
 
 
-	public function _tips_delete()
+	public function _feature_delete()
 	{
 		// Request params
-		$tips_id = $this->uri->segment(4);
+		$feature_id = $this->uri->segment(4);
 
 		if ($this->uri->segment(5) === FALSE)
 		{
-			$data['tips'] = array('id' => $tips_id);
+			$data['feature'] = array('id' => $feature_id);
 
-			$data['body'] = $this->load->view('admin/tips/delete', $data, true);
+			$data['body'] = $this->load->view('admin/features/delete', $data, true);
 			$this->load->view('templates/wrapper', $data);
 		}
 		else
 		{
-			$this->Tips_model->delete_tip($tips_id);
-			redirect('admin/tips');
+			$this->Admin_model->delete_feature($feature_id);
+			redirect('admin/features');
 		}
 	}
 
