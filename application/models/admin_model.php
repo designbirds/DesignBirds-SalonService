@@ -429,6 +429,134 @@ class Admin_model extends CI_Model {
 		$this->db->where('id', $id);
 		$this->db->delete($table);
 	}
+//////////////////////////////////////////////////////////////////////////////////////	
+	
+public function fetch_service_categories()
+	{
+		$table = 'tbl_service_categories';
+
+		$query = $this->db->get($table);
+		
+		$result = array();
+
+		if ($query->num_rows() == 0)
+		{
+			return $result;
+		}
+
+		foreach ($query->result_array() as $row)
+		{
+			$service_category = array();
+
+			// Need to iterate over dataset keys in order to force
+			// type-casting for later JSON encoding.
+
+			$service_category['id'] 				= (integer)$row['id'];
+			$service_category['name'] 				= $row['name'];
+			$service_category['description'] 		= $row['description'];
+			$service_category['service_id'] 		= $row['service_id'];
+			
+			$result[] = $service_category;
+		}
+
+		return $result;
+	}
+	
+	/**
+	 * Create an array of Tipster data, to back or receive form data.
+	 *
+	 * @param data	- k/v array of data to populate Tipster
+	 * @return array
+	 */
+	function make_service_category($data = NULL)
+	{
+		//print_r($data);
+		$service_categories = array(
+				'id' => 0,
+				'name' => '',
+				'description' => '',
+				'service_id' => 0,
+		);
+
+		if (empty($data))
+		{
+			return $service_categories;
+		}
+
+		foreach ($service_categories as $k => $v)
+		{
+			if (isset($data[$k]))
+			{
+				$service_categories[$k] = $data[$k];
+			}
+		}
+
+		return $service_categories;
+	}
+	
+public function fetch_service_category($id)
+	{
+		$table = 'tbl_service_categories';
+		
+		$query = $this->db->get_where($table, array('id' => $id));
+
+		$service_category = array();
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row_array();
+
+			$service_category['id'] 			= $row['id'];
+			$service_category['name'] 			= $row['name'];
+			$service_category['description']	= $row['description'];
+			$service_category['service_id']		= $row['service_id'];
+		}
+
+		return $service_category;
+	}
+	
+	
+/**
+	 * Insert Tip database record.
+	 *
+	 * @param tip	- k/v array of Tip data to insert into db.
+	 * @return void
+	 */
+	public function insert_service_category($service_category)
+	{
+		$table = 'tbl_service_categories';
+		unset($service_category['id']); // sanity
+		$this->db->insert($table, $service_category);
+	}
+	
+/**
+	 * Update Tip database record.
+	 *
+	 * @param tip	- k/v array of Tip data to update db.
+	 * @return void
+	 */
+	function update_service_category($service_category)
+	{
+		$table = 'tbl_service_categories';
+		$id = $service_category['id'];
+		$this->db->where('id', $id);
+		$this->db->update($table, $service_category);
+	}
+
+
+	/**
+	 * Delete Tip database record.
+	 *
+	 * @param id	- numeric id of Tip record to delete from db.
+	 * @return void
+	 */
+	public function delete_service_category($id)
+	{
+		$table = 'tbl_service_categories';
+		$this->db->where('id', $id);
+		$this->db->delete($table);
+	}
+	
 	
 }
 

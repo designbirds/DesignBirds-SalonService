@@ -48,26 +48,42 @@ class Common_model extends CI_Model {
 
 		return $features;
 	}
-
-
-
-
 	
-
-	public function fetch_common_dropdown($name,$id=null)
+function make_service($data = NULL)
 	{
-	if ($name=='feature'){
-		$table = 'tbl_main_features';
-	}else if ($name=='services') {
-		$table = 'tbl_main_services';
-	} else if ($name=='hairdress'){
-		$table = 'tbl_main_hair_dress';
+		$service = array(
+				'id' => 0,
+				'name' => '',
+		);
+
+		if (empty($data))
+		{
+			return $service;
+		}
+
+		foreach ($service as $k => $v)
+		{
+			if (isset($data[$k]))
+			{
+				$service[$k] = $data[$k];
+			}
+		}
+
+		return $service;
 	}
+
+		
+
+	public function fetch_common_dropdown($name, $id=null)
+	{
+	
+		$table = 'tbl_main_services';
+	
 		$query = $this->db->get($table);
 	    if($id!=null){
 			$this->db->where('id', $id);
 	    }
-		$dropdown = array('-'=> 'please select a value');
+		$dropdown = array('-'=> 'please Select The Service');
 
 		if ($query->num_rows() == 0)
 		{

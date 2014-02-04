@@ -85,7 +85,7 @@ class Admin extends CI_Controller {
 		// View data
 		$data = array();
 		// getting list imageupload table results as an array
-		$data['imageupload'] = $this->Admin_model->fetch_imageuploads();
+		$data['imageupload'] = $this->Admin_model->fetch_image_uploads();
 
 
 		$data['body'] = $this->load->view('admin/image_upload/index', $data, true);
@@ -705,6 +705,175 @@ class Admin extends CI_Controller {
 		}
 	}
 	
+// ==================================Start Service Category==========================================/
+
+
+
+	public function service_category()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		// Request params
+		$action = $this->uri->segment(3); // detail|add|edit|delete
+
+		switch($action)
+		{
+			case 'add':
+				$this->_service_category_add();
+				break;
+			case 'edit':
+				$this->_service_category_edit();
+				break;
+			case 'submit':
+				$this->_service_category_submit();
+				break;
+			case 'delete':
+				$this->_service_category_delete();
+				break;
+			default:
+				$this->_service_category_list();
+		}
+	}
+
+
+	public function _service_category_list()
+	{
+		// View data
+		$data = array();
+		$tipster_id = $this->uri->segment(3);
+		
+		$data['service_category'] = $this->Admin_model->fetch_service_categories();
+		$data['body'] = $this->load->view('admin/service_category/index', $data, true);
+		$this->load->view('templates/wrapper', $data);
+	}
+
+
+	public function _service_category_add()
+	{
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'insert',
+			'redirect' => 'admin/service_category/submit'
+			);
+
+			//$this->load->helper('dropdown_helper');
+			$data['service_category'] = $this->Admin_model->make_service_category();
+			
+			$data['service'] = $this->Common_model->make_service();
+			$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown($data['service']);
+			//$data['dropdown'] = $this->Admin_model->fetch_tipsters_dropdown();
+
+			$data['body'] = $this->load->view('admin/service_category/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	}
+
+
+	public function _service_category_edit()
+	{
+		// Request params
+		$service_category_id = $this->uri->segment(4);
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'update',
+			'redirect' => 'admin/service_category/submit'
+			);
+
+			// Allow for form redisplay variation.
+			if ($this->input->post('submit'))
+			{
+				// We're redisplaying form, but ...
+				// We need a Tipster data bean to satisfy compiler, so make an empty one.
+				// We don't really need it as will be using data from $_POST array anyway.
+				$data['service_category'] = $this->Admin_model->make_service_category();
+			}
+			else
+			{
+				// This is an initial GET request for data,
+				// so pull Event data from database.
+				$data['service_category'] = $this->Admin_model->fetch_service_category($service_category_id);
+			}
+			//print_r($data);
+
+			//$this->load->helper('dropdown_helper');
+			//$this->load->model('feature_model');
+			//$data['dropdown'] = $this->feature_model->fetch_tipsters_dropdown();
+
+			$data['body'] = $this->load->view('admin/service_category/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	}
+
+
+	public function _service_category_submit()
+	{
+		// SET VALIDATION RULES
+		$this->form_validation->set_rules('name', 'name','trim|required|min_length[1]|max_length[50]|xss_clean');
+		//$this->form_validation->set_rules('comment', 'comment', 'trim|required|min_length[2]|max_length[1000]|xss_clean');
+		//$this->form_validation->set_error_delimiters('<span>','</span>');
+			
+		// Form is valid ... process
+		if ($this->form_validation->run())
+		{
+			//$date = $this->input->post("start_year") ."-". $this->input->post("start_month"). "-" .$this->input->post("start_day");
+			//$date = date("Y-m-d H:i:s", strtotime($date));
+
+			//$_POST['date'] = $date;
+			
+			$service_category = $this->Admin_model->make_service_category($this->input->post());
+			//print_r($feature);
+			//$tips['date'] = $date;
+
+
+			if ($this->input->post('id')) // we're updating, not inserting.
+			{
+				$this->Admin_model->update_service_category($service_category);
+			}
+			else
+			{
+				$this->Admin_model->insert_service_category($service_category);
+			}
+
+			//redirect('admin/service_category/'.$service_category['id']);
+			
+		}
+			
+		// Form is not valid ... redisplay!
+		if ($this->input->post('id')) // we're updating, not inserting.
+		{
+			$this->_service_category_edit();
+		}
+		else
+		{
+			$this->_service_category_add();
+			print_r($this->input->post());
+		}
+	}
+
+
+	public function _service_category_delete()
+	{
+		// Request params
+		$service_category_id = $this->uri->segment(4);
+
+		if ($this->uri->segment(5) === FALSE)
+		{
+			$data['service_category'] = array('id' => $service_category_id);
+
+			$data['body'] = $this->load->view('admin/service_category/delete', $data, true);
+			$this->load->view('templates/wrapper', $data);
+		}
+		else
+		{
+			$this->Admin_model->delete_service_category($service_category_id);
+			redirect('admin/service_category');
+		}
+	}
 	
 	
 	
