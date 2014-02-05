@@ -11,14 +11,12 @@
 		
 		<?php if ($form['mode'] == 'update') : ?>
 			<?php echo form_hidden('id', set_value('id', $service_category['id'])); ?>
-			<?php echo form_hidden('service_id', set_value('service_id', $service_category['service_id'])); ?>
 			<?php endif; ?>
 	
 		<div id="field-name" class="control-group">	
 			<div class="controls">
 			<div>
-				<input type="hidden" name="service_id" value="<?php echo $service['id']; ?>">
-				<?php echo form_dropdown('name', $dropdown_service, $service['name']); ?>
+				<?php echo form_dropdown('service_id', $dropdown_service, set_value('service_id', $service_category['service_id']), 'id="service_id"' ); ?>
 			</div>
 			</div>
 		</div>

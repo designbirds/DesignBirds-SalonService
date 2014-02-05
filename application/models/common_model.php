@@ -25,7 +25,7 @@ class Common_model extends CI_Model {
 	 * @param data	- k/v array of data to populate Tipster
 	 * @return array
 	 */
-	function make_feature($data = NULL)
+	/* function make_feature($data = NULL)
 	{
 		$features = array(
 				'id' => 0,
@@ -48,6 +48,7 @@ class Common_model extends CI_Model {
 
 		return $features;
 	}
+	*/
 	
 function make_service($data = NULL)
 	{
@@ -97,6 +98,26 @@ function make_service($data = NULL)
 
 		return ($dropdown);
 	}
+	
+	public function fetch_service_name($id=null)
+	{
+	
+		$table = 'tbl_main_services';
+	
+		$query = $this->db->get_where($table, array('id' => $id));
+
+		$service_name = array();
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row_array();
+
+			$service_name['name'] = $row['name'];
+		}
+
+		return $service_name;
+	}
+	
 
 
 	// ---------------------------------------------------------------------------/

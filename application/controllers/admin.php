@@ -765,6 +765,7 @@ class Admin extends CI_Controller {
 			
 			$data['service'] = $this->Common_model->make_service();
 			$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown($data['service']);
+
 			//$data['dropdown'] = $this->Admin_model->fetch_tipsters_dropdown();
 
 			$data['body'] = $this->load->view('admin/service_category/form', $data, true);
@@ -791,12 +792,16 @@ class Admin extends CI_Controller {
 				// We're redisplaying form, but ...
 				// We need a Tipster data bean to satisfy compiler, so make an empty one.
 				// We don't really need it as will be using data from $_POST array anyway.
+				$data['service'] = $this->Common_model->make_service();
+				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown($data['service']);
 				$data['service_category'] = $this->Admin_model->make_service_category();
 			}
 			else
 			{
 				// This is an initial GET request for data,
 				// so pull Event data from database.
+				$data['service'] = $this->Common_model->make_service();
+				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown($data['service']);
 				$data['service_category'] = $this->Admin_model->fetch_service_category($service_category_id);
 			}
 			//print_r($data);
@@ -826,9 +831,11 @@ class Admin extends CI_Controller {
 			//$_POST['date'] = $date;
 			
 			$service_category = $this->Admin_model->make_service_category($this->input->post());
+			
+			// getting the service name to display in index
+			$data['service_name'] = $this->Common_model->fetch_service_name($this->input->post('service_id'));
 			//print_r($feature);
 			//$tips['date'] = $date;
-
 
 			if ($this->input->post('id')) // we're updating, not inserting.
 			{
@@ -851,7 +858,9 @@ class Admin extends CI_Controller {
 		else
 		{
 			$this->_service_category_add();
-			print_r($this->input->post());
+			//print_r($this->input->post());
+			//print_r($this->input->post('service_id'));
+			//print_r($service_name);
 		}
 	}
 
