@@ -25,7 +25,7 @@ class Common_model extends CI_Model {
 	 * @param data	- k/v array of data to populate Tipster
 	 * @return array
 	 */
-	/* function make_feature($data = NULL)
+	 function make_feature($data = NULL)
 	{
 		$features = array(
 				'id' => 0,
@@ -48,7 +48,7 @@ class Common_model extends CI_Model {
 
 		return $features;
 	}
-	*/
+	
 	
 function make_service($data = NULL)
 	{

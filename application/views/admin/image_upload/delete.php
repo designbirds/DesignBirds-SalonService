@@ -1,3 +1,3 @@
 <h1>Confirm Delete</h1>
 
-<?php echo anchor('admin/tipsters/delete/'.$tipster['id'].'/confirm', 'Delete Tipster', 'title="Delete Tipster"'); ?>
+<?php echo anchor('admin/imageUpload/delete/'.$image_upload['id'].'/confirm', 'Delete Image', 'title="Delete Image"'); ?>

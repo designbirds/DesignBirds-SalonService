@@ -16,6 +16,8 @@
 			<td><?php echo $row['category'] ?></td>
 			<td><?php echo $row['description'] ?></td>
 			<td><?php echo $row['alt'] ?></td>
+			<td><?php echo anchor('admin/imageUpload/delete/'.$row['id'], 'Delete', 'title="Delete Service Category"'); ?>
+			</td>
 		</tr>
 		<?php } ?>
 	</tbody>

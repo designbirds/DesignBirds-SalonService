@@ -151,10 +151,10 @@ class Admin_model extends CI_Model {
 	 * @param id	- numeric id of Tipster record to delete from db.
 	 * @return void
 	 */
-	public function delete_tipster($id)
+	public function delete_image($id)
 	{
 		$this->db->where('id', $id);
-		$this->db->delete('tipster');
+		$this->db->delete('tbl_image_upload');
 	}
 
 	

@@ -17,7 +17,7 @@
 			<div class="controls">
 			<div>
 				<input type="hidden" name="hidid" value="<?php echo $feature['id']; ?>">
-				<?php echo form_dropdown('name', $dropdown_feature, $feature['name']); ?>
+				<?php echo form_dropdown('name', $dropdown_feature, set_value('name', $imageupload['name'])); ?>
 			</div>
 		
 			</div>
@@ -26,7 +26,7 @@
 			<div class="controls">
 			<div>
 				<input type="hidden" name="hidid" value="<?php echo $services['id']; ?>">
-				<?php echo form_dropdown('name', $dropdown_services, $services['name']); ?>
+				<?php echo form_dropdown('name', $dropdown_services, set_value('name', $imageupload['name'])); ?>
 			</div>
 		
 			</div>
@@ -36,7 +36,7 @@
 			<div class="controls">
 			<div>
 				<input type="hidden" name="hidid" value="<?php echo $hairdress['id']; ?>">
-				<?php echo form_dropdown('name', $dropdown_hairdress, $hairdress['name']); ?>
+				<?php echo form_dropdown('name', $dropdown_hairdress, set_value('name', $imageupload['name'])); ?>
 			</div>
 		
 			</div>
@@ -127,7 +127,7 @@
 
 	<fieldset class="form-actions">
 		<button type="submit" name="submit" value="upload" class="send btn btn-primary"><span>Submit</span></button>
-		<?php echo anchor('admin/tipsters/', 'Cancel'); ?>
+		<?php echo anchor('admin/imageUpload/', 'Cancel'); ?>
 	</fieldset>
 
 <?php echo form_close(); ?>

@@ -145,17 +145,17 @@ class Admin extends CI_Controller {
 				// We're redisplaying form, but ...
 				// We need a Tipster data bean to satisfy compiler, so make an empty one.
 				// We don't really need it as will be using data from $_POST array anyway.
-				$data['feature'] = $this->Admin_model->make_tips();
-				$data['dropdown'] = $this->Admin_model->fetch_tipsters_dropdown();
-				$data['imageupload'] = $this->Admin_model->make_imageuploader();
+				$data['feature'] = $this->Admin_model->make_feature();
+				$data['dropdown'] = $this->Common_model->fetch_common_dropdown();
+				$data['imageupload'] = $this->Admin_model->make_image_uploade();
 			}
 			else
 			{
 				// This is an initial GET request for data,
 				// so pull Event data from database.
-				$data['feature'] = $this->Admin_model->make_tips();
-				$data['dropdown'] = $this->Admin_model->fetch_tipsters_dropdown();
-				$data['imageupload'] = $this->Admin_model->fetch_imageuploader($image_id);
+				$data['feature'] = $this->Admin_model->make_feature();
+				$data['dropdown'] = $this->Common_model->fetch_common_dropdown();
+				$data['imageupload'] = $this->Admin_model->fetch_image_uploade($image_id);
 			}
 
 			$data['body'] = $this->load->view('admin/image_upload/form', $data, true);
@@ -170,15 +170,15 @@ class Admin extends CI_Controller {
 		if ($this->form_validation->run())
 		{
 		 
-	     $imageupload = $this->Admin_model->make_imageuploader($this->input->post());	
+	     $imageupload = $this->Admin_model->make_image_uploade($this->input->post());	
 		
 	     if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
 			{
-				$this->Admin_model->update_imageuploader($imageupload);
+				$this->Admin_model->update_image_uploade($imageupload);
 			}
 			else
 			{
-				$last_inserted = $this->Admin_model->insert_imageUploader($imageupload);
+				$last_inserted = $this->Admin_model->insert_image_uploade($imageupload);
 			}
 			
 // =======================image upload======================================
@@ -186,14 +186,14 @@ class Admin extends CI_Controller {
 			$lastupdated = date("Y-m-d H:i:s");
 			echo ' $lastupdated >>>'.$lastupdated;
 			
-			$config['upload_path'] = './content/tipster/';
+			$config['upload_path'] = realpath(APPPATH . './content/');
 			$config['allowed_types'] = 'gif|jpg|png';
-			$config['max_size']	= '100';
+			/*$config['max_size']	= '100';
 			$config['max_width']  = '1024';
 			$config['max_height']  = '768';
-
+			*/
 			
-			$this->load->library('upload');
+			$this->load->library('upload', $config);
 			foreach($_FILES as $key => $value)
 			{
 
@@ -215,11 +215,11 @@ class Admin extends CI_Controller {
 						$config['file_name']  = $filename;
 
 					}
-
+					// Assigning the file name to the file
 					$this->upload->initialize($config);
-
-					echo ' filename before >>>'.$filename.'</br>';
-					echo ' >>>'. $this->upload->do_upload($key);
+					
+					//echo ' filename before >>>'.$filename.'</br>';
+					//echo ' >>>'. $this->upload->do_upload($key);
 					
 					if ( ! $this->upload->do_upload($key))
 					{
@@ -233,7 +233,7 @@ class Admin extends CI_Controller {
 
 						foreach($data as $row)
 						{
-						$file_path = '/content/tipster/'.$row['file_name'];
+						$file_path = './content/'.$row['file_name'];
 						echo ' filename after >>>'.$file_path.'</br>';
 						$_POST['image_name'] = $file_path;
 						}
@@ -355,22 +355,22 @@ class Admin extends CI_Controller {
 	}
 
 
-	public function _tipster_delete()
+	public function _image_delete()
 	{
 		// Request params
 		$tipster_id = $this->uri->segment(4);
 
 		if ($this->uri->segment(5) === FALSE)
 		{
-			$data['tipster'] = array('id' => $tipster_id);
+			$data['image_upload'] = array('id' => $tipster_id);
 
-			$data['body'] = $this->load->view('admin/tipsters/delete', $data, true);
+			$data['body'] = $this->load->view('admin/image_upload/delete', $data, true);
 			$this->load->view('templates/wrapper', $data);
 		}
 		else
 		{
-			$this->Tips_model->delete_tipster($tipster_id);
-			redirect('admin/tipsters');
+			$this->Admin_model->delete_image($tipster_id);
+			redirect('admin/imageUpload');
 		}
 	}
 
