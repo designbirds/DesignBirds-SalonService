@@ -44,22 +44,51 @@
 
   <!-- JavaScript at the bottom for fast page loading -->
 
-  <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+        	$('#feature_name').change(function () {
+           // alert('jquary loaded');
+            var selectVal = $('#feature_name :selected').val();
+                console.log(selectVal);
+                alert(selectVal);
+                $.ajax({
+                    url: "../first_level_dropdown_call",
+                    async: false,
+                    type: "POST",
+                    data: "feature_id="+selectVal,
+                    dataType: "html",
 
-  <!-- scripts concatenated and minified via build script -->
-  <script src="js/plugins.js"></script>
-  <script src="js/script.js"></script>
-  <!-- end scripts -->
+                    success: function(data) {
+                        $('#service_name').html(data);
+                    }
+                })
+            });
 
-  <!-- Asynchronous Google Analytics snippet. Change UA-XXXXX-X to be your site's ID.
-       mathiasbynens.be/notes/async-analytics-snippet -->
-  <script>
-    var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-    s.parentNode.insertBefore(g,s)}(document,'script'));
-  </script>
+        	$('#service_name').change(function () {
+                // alert('jquary loaded');
+                 var selectVal = $('#service_name :selected').val();
+                     //console.log(selectVal);
+                     //alert(selectVal);
+                     $.ajax({
+                         url: "../second_level_dropdown_call",
+                         async: false,
+                         type: "POST",
+                         data: "service_id="+selectVal,
+                         dataType: "html",
+
+                         success: function(data) {
+                             $('#category_name').html(data);
+                         }
+                     })
+                 });
+
+            
+        });
+    </script>
+
+
+
+ 
 </body>
 </html>

@@ -110,11 +110,6 @@ class Admin extends CI_Controller {
 			$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
 			
 			
-			$data['services'] = $this->Common_model->make_feature();
-			$data['dropdown_services'] = $this->Common_model->fetch_common_dropdown('services');
-			
-			$data['hairdress'] = $this->Common_model->make_feature();
-			$data['dropdown_hairdress'] = $this->Common_model->fetch_common_dropdown('hairdress');
 			
 			// cerate imageupload attribute inside data array and assinging table collumns
 			$data['imageupload'] = $this->Admin_model->make_image_uploade();
@@ -375,6 +370,38 @@ class Admin extends CI_Controller {
 	}
 
 
+	public function  first_level_dropdown_call()
+	{
+		//echo 'dropdown_call' ; 
+		$feature_id = $this->input->post('feature_id');
+		
+		$this->load->model('Common_model');
+		if ($feature_id=='2'){
+		 $data['dropdown_services'] = $this->Common_model->fetch_common_dropdown('services',$feature_id);
+	    }	
+			//$data['hairdress'] = $this->Common_model->make_feature();
+			//$data['dropdown_hairdress'] = $this->Common_model->fetch_common_dropdown('hairdress');
+			
+		$this->load->view('templates/first_level_dropdown', $data);
+	
+	
+	}
+	
+	
+	public function  second_level_dropdown_call()
+	{
+		//echo 'dropdown_call' ; 
+		$service_id = $this->input->post('service_id');
+		
+		$this->load->model('Common_model');
+		$data['dropdown_categories'] = $this->Common_model->fetch_common_dropdown('category',$service_id);
+			
+		$this->load->view('templates/second_level_dropdown', $data);
+	
+	
+	}
+	
+	
 	// ==================================Start Feature==========================================/
 
 

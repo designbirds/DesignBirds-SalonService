@@ -78,13 +78,25 @@ function make_service($data = NULL)
 	public function fetch_common_dropdown($name, $id=null)
 	{
 	
+		if ($name == 'feature'){
+		$table = 'tbl_main_features';
+	
+		} elseif ($name == 'services'){
 		$table = 'tbl_main_services';
+		
+		} elseif ($name == 'category'){
+		 $table = 'tbl_service_categories';
+		} 
+		
+		
+		
+		//$table = 'tbl_main_features';
 	
 		$query = $this->db->get($table);
 	    if($id!=null){
 			$this->db->where('id', $id);
 	    }
-		$dropdown = array('-'=> 'please Select The Service');
+		$dropdown = array('-'=> 'Select a '.$name);
 
 		if ($query->num_rows() == 0)
 		{
