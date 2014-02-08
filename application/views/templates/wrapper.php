@@ -69,7 +69,7 @@
                 // alert('jquary loaded');
                  var selectVal = $('#service_name :selected').val();
                      //console.log(selectVal);
-                     //alert(selectVal);
+                     alert(selectVal);
                      $.ajax({
                          url: "../second_level_dropdown_call",
                          async: false,

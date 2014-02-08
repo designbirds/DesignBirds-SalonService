@@ -377,7 +377,7 @@ class Admin extends CI_Controller {
 		
 		$this->load->model('Common_model');
 		if ($feature_id=='2'){
-		 $data['dropdown_services'] = $this->Common_model->fetch_common_dropdown('services',$feature_id);
+		 $data['dropdown_services'] = $this->Common_model->fetch_common_dropdown('services');
 	    }	
 			//$data['hairdress'] = $this->Common_model->make_feature();
 			//$data['dropdown_hairdress'] = $this->Common_model->fetch_common_dropdown('hairdress');

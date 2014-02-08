@@ -86,16 +86,14 @@ function make_service($data = NULL)
 		
 		} elseif ($name == 'category'){
 		 $table = 'tbl_service_categories';
-		} 
+			$this->db->where('service_id', $id);
+	    } 
 		
 		
 		
-		//$table = 'tbl_main_features';
-	
+		
 		$query = $this->db->get($table);
-	    if($id!=null){
-			$this->db->where('id', $id);
-	    }
+	    
 		$dropdown = array('-'=> 'Select a '.$name);
 
 		if ($query->num_rows() == 0)
