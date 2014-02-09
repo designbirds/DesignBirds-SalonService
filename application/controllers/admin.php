@@ -141,7 +141,7 @@ class Admin extends CI_Controller {
 				// We need a Tipster data bean to satisfy compiler, so make an empty one.
 				// We don't really need it as will be using data from $_POST array anyway.
 				$data['feature'] = $this->Admin_model->make_feature();
-				$data['dropdown'] = $this->Common_model->fetch_common_dropdown();
+				$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
 				$data['imageupload'] = $this->Admin_model->make_image_uploade();
 			}
 			else
@@ -149,7 +149,7 @@ class Admin extends CI_Controller {
 				// This is an initial GET request for data,
 				// so pull Event data from database.
 				$data['feature'] = $this->Admin_model->make_feature();
-				$data['dropdown'] = $this->Common_model->fetch_common_dropdown();
+				$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
 				$data['imageupload'] = $this->Admin_model->fetch_image_uploade($image_id);
 			}
 
@@ -397,7 +397,6 @@ class Admin extends CI_Controller {
 		$data['dropdown_categories'] = $this->Common_model->fetch_common_dropdown('category',$service_id);
 			
 		$this->load->view('templates/second_level_dropdown', $data);
-	
 	
 	}
 	
@@ -1274,6 +1273,181 @@ public function _comment_edit()
 		}
 	}
 
+
+	
+// ==================================Start Service Price==========================================/
+
+
+
+	public function service_price()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		// Request params
+		$action = $this->uri->segment(3); // detail|add|edit|delete
+
+		switch($action)
+		{
+			case 'add':
+				$this->_service_price_add();
+				break;
+			case 'edit':
+				$this->_service_price_edit();
+				break;
+			case 'submit':
+				$this->_service_price_submit();
+				break;
+			case 'delete':
+				$this->_service_price_delete();
+				break;
+			default:
+				$this->_service_price_list();
+		}
+	}
+
+
+	public function _service_price_list()
+	{
+		// View data
+		$data = array();
+		$tipster_id = $this->uri->segment(3);
+
+		$data['service_price'] = $this->Admin_model->fetch_service_prices();
+		$data['body'] = $this->load->view('admin/service_price/index', $data, true);
+		$this->load->view('templates/wrapper', $data);
+	}
+
+
+	public function _service_price_add()
+	{
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'insert',
+			'redirect' => 'admin/service_price/submit'
+			);
+			
+			$data['service'] = $this->Common_model->make_service();
+			$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
+			
+			//$this->load->helper('dropdown_helper');
+			$data['service_price'] = $this->Admin_model->make_service_price();
+			//$data['dropdown'] = $this->Admin_model->fetch_tipsters_dropdown();
+
+			$data['body'] = $this->load->view('admin/service_price/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	}
+
+
+	public function _service_price_edit()
+	{
+		// Request params
+		$service_price_id = $this->uri->segment(4);
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'update',
+			'redirect' => 'admin/service_price/submit'
+			);
+
+			// Allow for form redisplay variation.
+			if ($this->input->post('submit'))
+			{
+				// We're redisplaying form, but ...
+				// We need a Tipster data bean to satisfy compiler, so make an empty one.
+				// We don't really need it as will be using data from $_POST array anyway.
+				$data['service'] = $this->Common_model->make_service();
+				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
+				$data['service_price'] = $this->Admin_model->make_service_price();
+			}
+			else
+			{
+				// This is an initial GET request for data,
+				// so pull Event data from database.
+				$data['service'] = $this->Common_model->make_service();
+				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
+				$data['service_price'] = $this->Admin_model->fetch_service_price($service_price_id);
+			}
+			//print_r($data);
+
+			//$this->load->helper('dropdown_helper');
+			//$this->load->model('feature_model');
+			//$data['dropdown'] = $this->feature_model->fetch_tipsters_dropdown();
+
+			$data['body'] = $this->load->view('admin/service_price/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	}
+
+
+	public function _service_price_submit()
+	{
+		// SET VALIDATION RULES
+		$this->form_validation->set_rules('price', 'price','trim|required|min_length[1]|max_length[50]|xss_clean');
+		//$this->form_validation->set_rules('comment', 'comment', 'trim|required|min_length[2]|max_length[1000]|xss_clean');
+		//$this->form_validation->set_error_delimiters('<span>','</span>');
+			
+		// Form is valid ... process
+		if ($this->form_validation->run())
+		{
+			//$date = $this->input->post("start_year") ."-". $this->input->post("start_month"). "-" .$this->input->post("start_day");
+			//$date = date("Y-m-d H:i:s", strtotime($date));
+
+			//$_POST['date'] = $date;
+			//print_r($this->input->post());
+			$service_price = $this->Admin_model->make_service_price($this->input->post());
+			//print_r($feature);
+			//$tips['date'] = $date;
+
+
+			if ($this->input->post('id')) // we're updating, not inserting.
+			{
+				$this->Admin_model->update_service_price($service_price);
+			}
+			else
+			{
+				$this->Admin_model->insert_service_price($service_price);
+			}
+
+			redirect('admin/service_price/'.$service_price['id']);
+		}
+			
+		// Form is not valid ... redisplay!
+		if ($this->input->post('id')) // we're updating, not inserting.
+		{
+			$this->_service_price_edit();
+		}
+		else
+		{
+			$this->_service_price_add();
+		}
+	}
+
+
+	public function _service_price_delete()
+	{
+		// Request params
+		$service_id = $this->uri->segment(4);
+
+		if ($this->uri->segment(5) === FALSE)
+		{
+			$data['service'] = array('id' => $service_id);
+
+			$data['body'] = $this->load->view('admin/services/delete', $data, true);
+			$this->load->view('templates/wrapper', $data);
+		}
+		else
+		{
+			$this->Admin_model->delete_service($service_id);
+			redirect('admin/services');
+		}
+	}
+	
+	
 
 	// ==============================================================================/
 }

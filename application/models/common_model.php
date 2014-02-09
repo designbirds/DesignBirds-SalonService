@@ -90,8 +90,6 @@ function make_service($data = NULL)
 	    } 
 		
 		
-		
-		
 		$query = $this->db->get($table);
 	    
 		$dropdown = array('-'=> 'Select a '.$name);

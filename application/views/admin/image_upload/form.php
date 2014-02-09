@@ -17,19 +17,19 @@
 			<div class="controls">
 			<div>
 				<input type="hidden" name="hidid" value="<?php echo $feature['id']; ?>">
-				<?php echo form_dropdown('feature_name', $dropdown_feature, set_value('name', $imageupload['name']),'id="feature_name"'); ?>
+				<?php echo form_dropdown('feature_name', $dropdown_feature, set_value('name', $feature['name']),'id="feature_name"'); ?>
 			</div>
-		
 			</div>
 		</div>
+		<!-- For replaced and displayed -->
 		<div id="service_name"><select><option value=''>Select a service</option></select></div>
 		<div id="category_name"><select><option value=''>Select a category</option></select></div>
 		
 		<!-- div id="field-name" class="control-group">	
 			<div class="controls">
 			<div>
-				<input type="hidden" name="hidid" value="<?php echo $services['id']; ?>">
-				<?php echo form_dropdown('name', $dropdown_services, set_value('name', $imageupload['name'])); ?>
+				<input type="hidden" name="hidid" value="<?php //echo $services['id']; ?>">
+				<?php //echo form_dropdown('name', $dropdown_services, set_value('name', $imageupload['name'])); ?>
 			</div>
 		
 			</div>
@@ -38,8 +38,8 @@
 		<div id="field-name" class="control-group">	
 			<div class="controls">
 			<div>
-				<input type="hidden" name="hidid" value="<?php echo $hairdress['id']; ?>">
-				<?php echo form_dropdown('name', $dropdown_hairdress, set_value('name', $imageupload['name'])); ?>
+				<input type="hidden" name="hidid" value="<?php //echo $hairdress['id']; ?>">
+				<?php //echo form_dropdown('name', $dropdown_hairdress, set_value('name', $imageupload['name'])); ?>
 			</div>
 		
 			</div>

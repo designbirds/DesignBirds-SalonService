@@ -557,6 +557,150 @@ public function fetch_service_category($id)
 		$this->db->delete($table);
 	}
 	
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+public function fetch_service_prices()
+	{
+		
+		$this->db->select("tbl_main_service_price.id as id,tbl_main_service_price.price as price,tbl_main_service_price.description as description,tbl_main_service_price.service_id as service_id,tbl_main_service_price.category_id as category_id,tbl_main_service_price.discount as discount,tbl_main_services.name as service_name,tbl_service_categories.name as category_name");
+		$this->db->from("tbl_main_service_price");
+		$this->db->join("tbl_main_services", "tbl_main_service_price.service_id = tbl_main_services.id");
+		$this->db->join("tbl_service_categories", "tbl_main_service_price.category_id = tbl_service_categories.id");
+		//$table = 'tbl_main_service_price';
+
+		$query = $this->db->get();
+		
+		$result = array();
+
+		if ($query->num_rows() == 0)
+		{
+			return $result;
+		}
+
+		foreach ($query->result_array() as $row)
+		{
+			$service_price = array();
+
+			// Need to iterate over dataset keys in order to force
+			// type-casting for later JSON encoding.
+
+			$service_price['id'] 				= (integer)$row['id'];
+			$service_price['price'] 			= $row['price'];
+			$service_price['description'] 		= $row['description'];
+			$service_price['service_id'] 		= $row['service_id'];
+			$service_price['service_name'] 		= $row['service_name'];
+			$service_price['category_name'] 	= $row['category_name'];
+			$service_price['category_id'] 		= $row['category_id'];
+			$service_price['discount'] 			= $row['discount'];
+			
+			$result[] = $service_price;
+		}
+
+		return $result;
+	}
+
+/**
+	 * Create an array of Tipster data, to back or receive form data.
+	 *
+	 * @param data	- k/v array of data to populate Tipster
+	 * @return array
+	 */
+	public function make_service_price($data = NULL)
+	{
+		//print_r($data);
+		$service_price = array(
+				'id' => 0,
+				'price' => '',
+				'description' => '',
+				'service_id' => 0,
+				'category_id' => 0,
+				'discount' => 0,
+		);
+
+		if (empty($data))
+		{
+			return $service_price;
+		}
+
+		foreach ($service_price as $k => $v)
+		{
+			if (isset($data[$k]))
+			{
+				$service_price[$k] = $data[$k];
+			}
+		}
+
+		return $service_price;
+	}
+
+	
+public function fetch_service_price($id)
+	{
+		$table = 'tbl_main_service_price';
+		
+		$query = $this->db->get_where($table, array('id' => $id));
+
+		$service_price = array();
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row_array();
+
+			$service_price['id'] 			= $row['id'];
+			$service_price['price'] 		= $row['price'];
+			$service_price['description']	= $row['description'];
+			$service_price['service_id']	= $row['service_id'];
+			$service_price['category_id']	= $row['category_id'];
+			$service_price['discount']		= $row['discount'];
+		}
+
+		return $service_price;
+	}
+	
+	
+	
+/**
+	 * Insert Tip database record.
+	 *
+	 * @param tip	- k/v array of Tip data to insert into db.
+	 * @return void
+	 */
+	public function insert_service_price($service_price)
+	{
+		$table = 'tbl_main_service_price';
+		unset($service_price['id']); // sanity
+		$this->db->insert($table, $service_price);
+	}
+	
+/**
+	 * Update Tip database record.
+	 *
+	 * @param tip	- k/v array of Tip data to update db.
+	 * @return void
+	 */
+	public function update_service_price($service_price)
+	{
+		$table = 'tbl_main_service_price';
+		$id = $service_price['id'];
+		$this->db->where('id', $id);
+		$this->db->update($table, $service_price);
+	}
+
+
+	/**
+	 * Delete Tip database record.
+	 *
+	 * @param id	- numeric id of Tip record to delete from db.
+	 * @return void
+	 */
+	public function delete_service_price($id)
+	{
+		$table = 'tbl_main_service_price';
+		$this->db->where('id', $id);
+		$this->db->delete($table);
+	}
+	
+	
 	
 }
 
