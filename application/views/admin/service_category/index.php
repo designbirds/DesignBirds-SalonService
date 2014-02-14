@@ -1,4 +1,5 @@
-<table border="1">
+<div class="table-responsive">
+ <table class="table table-striped table-bordered table-hover" id="dataTables-example">
 	<thead>
 		<p>
 		
@@ -22,5 +23,6 @@
 		<?php } ?>
 	</tbody>
 </table>
+</div>
 
 		<?php echo anchor('admin/service_category/add', 'Add Service Category', 'title="Add Service Category"'); ?>

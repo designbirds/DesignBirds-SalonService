@@ -1,4 +1,4 @@
-
+<div class="form-group">
 <div id="container">
 
 <?php echo form_open_multipart($form['redirect']); ?>
@@ -37,4 +37,5 @@
 	</fieldset>
 
 <?php echo form_close(); ?>
+</div>
 </div>

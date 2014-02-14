@@ -1,4 +1,5 @@
-<table border="1">
+<div class="table-responsive">
+ <table class="table table-striped table-bordered table-hover" id="dataTables-example">
 	<thead>
 		<tr>
 			<th>Type</th>
@@ -18,5 +19,5 @@
 		<?php } ?>
 	</tbody>
 </table>
-
+</div>
 		<?php echo anchor('admin/commentMng/add', 'Add Comment', 'title="Add Comment"'); ?>

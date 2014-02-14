@@ -11,7 +11,7 @@ class Admin extends CI_Controller {
 		parent::__construct();
 
 		$this->load->library(array('form_validation', 'session'));
-		$this->load->helper('form');
+		$this->load->helper('url', 'form');
 	}
 
 
@@ -790,7 +790,7 @@ class Admin extends CI_Controller {
 			$data['service_category'] = $this->Admin_model->make_service_category();
 			
 			$data['service'] = $this->Common_model->make_service();
-			$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown($data['service']);
+			$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
 
 			//$data['dropdown'] = $this->Admin_model->fetch_tipsters_dropdown();
 
@@ -819,7 +819,7 @@ class Admin extends CI_Controller {
 				// We need a Tipster data bean to satisfy compiler, so make an empty one.
 				// We don't really need it as will be using data from $_POST array anyway.
 				$data['service'] = $this->Common_model->make_service();
-				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown($data['service']);
+				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown(('services'));
 				$data['service_category'] = $this->Admin_model->make_service_category();
 			}
 			else
@@ -827,7 +827,7 @@ class Admin extends CI_Controller {
 				// This is an initial GET request for data,
 				// so pull Event data from database.
 				$data['service'] = $this->Common_model->make_service();
-				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown($data['service']);
+				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
 				$data['service_category'] = $this->Admin_model->fetch_service_category($service_category_id);
 			}
 			//print_r($data);
@@ -1347,6 +1347,7 @@ public function _comment_edit()
 		// Request params
 		$service_price_id = $this->uri->segment(4);
 
+
 		// View data
 		$data = array();
 
@@ -1371,7 +1372,9 @@ public function _comment_edit()
 				// so pull Event data from database.
 				$data['service'] = $this->Common_model->make_service();
 				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
+				//$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('category', $service_id);
 				$data['service_price'] = $this->Admin_model->fetch_service_price($service_price_id);
+				
 			}
 			//print_r($data);
 

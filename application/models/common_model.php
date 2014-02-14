@@ -83,6 +83,9 @@ function make_service($data = NULL)
 	
 		} elseif ($name == 'services'){
 		$table = 'tbl_main_services';
+			if($id){
+				$this->db->where('id', $id);
+			}
 		
 		} elseif ($name == 'category'){
 		 $table = 'tbl_service_categories';

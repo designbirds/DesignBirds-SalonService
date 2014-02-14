@@ -612,8 +612,8 @@ public function fetch_service_prices()
 				'id' => 0,
 				'price' => '',
 				'description' => '',
-				'service_id' => 0,
-				'category_id' => 0,
+				'service_id' => '',
+				'category_id' => '',
 				'discount' => 0,
 		);
 

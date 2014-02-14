@@ -11,7 +11,7 @@ public function __construct()
 	
 public function fetch_comments(){
 	
-		$table = 'commentmng';
+		$table = 'tbl_comment_mgnt';
 			$query = $this->db->get($table);
 
 		$result = array();
@@ -67,7 +67,7 @@ function make_comments($data = NULL)
 function insert_comments($comments)
 	{
 		unset($comments['id']); // sanity
-		$this->db->insert('commentmng', $comments);
+		$this->db->insert('tbl_comment_mgnt', $comments);
 		return $this->db->insert_id();
 	}
 	
@@ -75,12 +75,12 @@ function update_comments($comments)
 	{
 		$id = $comments['id'];
 		$this->db->where('id', $id);
-		$this->db->update('commentmng', $comments);
+		$this->db->update('tbl_comment_mgnt', $comments);
 	}
 	
 public function fetch_editcomments($id)
 	{
-		$query = $this->db->get_where('commentmng', array('id' => $id));
+		$query = $this->db->get_where('tbl_comment_mgnt', array('id' => $id));
 
 		$editdata = array();
 

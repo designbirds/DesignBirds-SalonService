@@ -1,4 +1,5 @@
-<table border="1">
+<div class="table-responsive">
+ <table class="table table-striped table-bordered table-hover" id="dataTables-example">
 	<thead>
 		<p>
 		
@@ -20,5 +21,5 @@
 		<?php } ?>
 	</tbody>
 </table>
-
+</div>
 		<?php echo anchor('admin/features/add', 'Add Feature', 'title="Add Features"'); ?>
