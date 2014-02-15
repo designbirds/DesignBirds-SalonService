@@ -372,12 +372,19 @@ class Admin extends CI_Controller {
 
 	public function  first_level_dropdown_call()
 	{
-		//echo 'dropdown_call' ; 
+		//echo 'dropdown_call'; 
 		$feature_id = $this->input->post('feature_id');
 		
 		$this->load->model('Common_model');
-		if ($feature_id=='2'){
+		// This if statement define where it needs to call in feature table
+		if ($feature_id=='1'){
+		 $data['dropdown_services'] = $this->Common_model->fetch_common_dropdown('header');
+	    }
+		else if ($feature_id=='2'){
 		 $data['dropdown_services'] = $this->Common_model->fetch_common_dropdown('services');
+	    }
+		else if ($feature_id=='4'){
+		 $data['dropdown_services'] = $this->Common_model->fetch_common_dropdown('events');
 	    }	
 			//$data['hairdress'] = $this->Common_model->make_feature();
 			//$data['dropdown_hairdress'] = $this->Common_model->fetch_common_dropdown('hairdress');
@@ -394,8 +401,9 @@ class Admin extends CI_Controller {
 		$service_id = $this->input->post('service_id');
 		
 		$this->load->model('Common_model');
-		$data['dropdown_categories'] = $this->Common_model->fetch_common_dropdown('category',$service_id);
+		$data['dropdown_categories'] = $this->Common_model->fetch_common_dropdown('category', $service_id);
 			
+		
 		$this->load->view('templates/second_level_dropdown', $data);
 	
 	}
@@ -1038,7 +1046,6 @@ public function _comment_edit()
 			$data['body'] = $this->load->view('admin/comment_management/comment_form', $data, true);
 			$this->load->view('templates/wrapper', $data);
 	}
-		
 	
 // ==============================================================================/
 	public function agencies()
@@ -1346,6 +1353,10 @@ public function _comment_edit()
 	{
 		// Request params
 		$service_price_id = $this->uri->segment(4);
+		$category_data['data'] = $this->Admin_model->fetch_service_price($service_price_id);
+		$service_id = $category_data['data']['service_id'];
+		
+		
 
 
 		// View data
@@ -1371,12 +1382,10 @@ public function _comment_edit()
 				// This is an initial GET request for data,
 				// so pull Event data from database.
 				$data['service'] = $this->Common_model->make_service();
-				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
-				//$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('category', $service_id);
-				$data['service_price'] = $this->Admin_model->fetch_service_price($service_price_id);
-				
+				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services'); 
+				$data['service_price'] = $this->Admin_model->fetch_service_price($service_price_id);	
 			}
-			//print_r($data);
+			//print_r($data['service_price']);
 
 			//$this->load->helper('dropdown_helper');
 			//$this->load->model('feature_model');

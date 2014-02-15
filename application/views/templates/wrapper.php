@@ -281,7 +281,7 @@
                         <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
                     </li>
                     <li>
-                        <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
+                        <a href="/admin"><i class="fa fa-edit fa-fw"></i> Forms</a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
@@ -415,7 +415,7 @@
                 console.log(selectVal);
                 alert(selectVal);
                 $.ajax({
-                    url: "../first_level_dropdown_call",
+                    url: "/admin/first_level_dropdown_call",
                     async: false,
                     type: "POST",
                     data: "feature_id="+selectVal,
@@ -433,7 +433,8 @@
                      //console.log(selectVal);
                      alert(selectVal);
                      $.ajax({
-                         url: "../second_level_dropdown_call",
+                         // It must be used as absolute path not relative because otherwise cannot use in EDIT. edit uri and add uri is DIFFERENT
+                         url: "/admin/second_level_dropdown_call",
                          async: false,
                          type: "POST",
                          data: "service_id="+selectVal,
@@ -445,7 +446,7 @@
                      })
                  });
 
-            
+        	
         });
     </script>
 

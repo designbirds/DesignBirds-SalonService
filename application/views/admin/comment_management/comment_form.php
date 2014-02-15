@@ -43,7 +43,7 @@
 
 	<fieldset class="form-actions">
 		<button type="submit" name="submit" value="upload" class="send btn btn-primary"><span>Submit</span></button>
-		<?php echo anchor('admin/tipsters/', 'Cancel'); ?>
+		<?php echo anchor('admin/commentMng/', 'Cancel'); ?>
 	</fieldset>
 
 <?php echo form_close(); ?>

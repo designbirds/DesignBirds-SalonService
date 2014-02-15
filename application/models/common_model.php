@@ -83,14 +83,26 @@ function make_service($data = NULL)
 	
 		} elseif ($name == 'services'){
 		$table = 'tbl_main_services';
-			if($id){
+		if($id){
 				$this->db->where('id', $id);
-			}
+		}
 		
 		} elseif ($name == 'category'){
 		 $table = 'tbl_service_categories';
 			$this->db->where('service_id', $id);
-	    } 
+	    
+		}elseif ($name == 'header'){
+		$table = 'tbl_main_header';
+		if($id){
+			$this->db->where('id', $id);
+		}
+		
+		}elseif ($name == 'events'){
+		$table = 'tbl_main_events';
+		if($id){
+			$this->db->where('id', $id);
+		}
+		} 
 		
 		
 		$query = $this->db->get($table);
