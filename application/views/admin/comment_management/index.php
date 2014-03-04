@@ -14,10 +14,10 @@
 			<td><?php echo anchor('admin/commentMng/edit/'.$row['id'], $row['type'], 'title="Edit Comments"'); ?>
 			</td>
 			<td><?php echo $row['comment'] ?></td>
-			<td><?php echo $row['service'] ?></td>
+			<td><?php echo $row['category_id'] ?></td>
 		</tr>
 		<?php } ?>
 	</tbody>
 </table>
 </div>
-		<?php echo anchor('admin/commentMng/add', 'Add Comment', 'title="Add Comment"'); ?>
+		<?php echo anchor('admin/commentMng/add', 'Add Comment', 'class="btn btn-primary btn-sm" title="Add Comment"'); ?>

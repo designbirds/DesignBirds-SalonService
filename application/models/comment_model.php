@@ -29,7 +29,7 @@ public function fetch_comments(){
 			$comments['id'] 			= (integer)$row['id'];
 			$comments['type'] 			= $row['type'];
 			$comments['comment'] 		= $row['comment'];
-			$comments['service'] 		= $row['service'];
+			$comments['category_id'] 		= $row['category_id'];
 
 			
 
@@ -44,7 +44,7 @@ function make_comments($data = NULL)
 		$comments = array(
 				'id' 			=> '',
 				'type' 			=> '',
-				'service' 		=> '',
+				'category_id' 		=> '',
 				'comment' 		=> '',
 		);
 
@@ -91,7 +91,7 @@ public function fetch_editcomments($id)
 			$editdata['id'] 		= (integer)$row['id'];
 			$editdata['type'] 		= $row['type'];
 			$editdata['comment'] 	= $row['comment'];
-			$editdata['service'] 	= $row['service'];
+			$editdata['category_id'] 	= $row['category_id'];
 			
 		}
 

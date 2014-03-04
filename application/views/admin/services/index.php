@@ -17,11 +17,11 @@
 			</td>
 			<td><?php echo $row['description'] ?></td>
 			<td><?php echo $row['status'] ?></td>
-			<td><?php echo anchor('admin/services/delete/'.$row['id'], 'Delete', 'title="Delete Services"'); ?>
+			<td><?php echo anchor('admin/services/delete/'.$row['id'], 'Delete', 'class="btn btn-danger btn-xs" title="Delete Services"'); ?>
 			</td>
 		</tr>
 		<?php } ?>
 	</tbody>
 </table>
 </div>
-		<?php echo anchor('admin/services/add', 'Add Service', 'title="Add Services"'); ?>
+		<?php echo anchor('admin/services/add', 'Add Service', 'class="btn btn-primary btn-sm" title="Add Services"'); ?>

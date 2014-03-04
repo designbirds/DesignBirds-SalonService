@@ -8,11 +8,22 @@
 
     <title>Odel Hair and Beauty</title>
 
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+
 	<!-- Core CSS - Include with every page -->
     <link href="<?php echo base_url(); ?>css/bootstrap.min.css" rel="stylesheet">
     <link href="<?php echo base_url(); ?>font-awesome/css/font-awesome.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	<link href="<?php echo base_url(); ?>css/jquery.datetimepicker.css" rel="stylesheet">
+	
     <!-- Page-Level Plugin CSS - Forms -->
+        <link href="<?php echo base_url(); ?>css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+    <link href="<?php echo base_url(); ?>css/plugins/timeline/timeline.css" rel="stylesheet">
 
     <!-- SB Admin CSS - Include with every page -->
     <link href="<?php echo base_url(); ?>css/sb-admin.css" rel="stylesheet">
@@ -236,7 +247,7 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="/user/index/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -263,59 +274,68 @@
                         <!-- /input-group -->
                     </li>
                     <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <a href="/admin"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                     </li>
-                    <li>
+                    <li id="charts">
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                  
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="flot.html">Flot Charts</a>
+                                <a href="#">Flot Charts</a>
                             </li>
                             <li>
-                                <a href="morris.html">Morris.js Charts</a>
+                                <a href="#">Morris.js Charts</a>
                             </li>
                         </ul>
+                        
                         <!-- /.nav-second-level -->
                     </li>
                     <li>
                         <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
                     </li>
-                    <li>
-                        <a href="/admin"><i class="fa fa-edit fa-fw"></i> Forms</a>
+                    <li id="user_roll_assign">
+                        <a href="/admin/user_roll_assign" ><i class="fa fa-edit fa-fw"></i> User Rolls<span class="fa arrow"></span></a>
+                    </li>
+                    <li id="customer_details">
+                        <a href="/admin/customer_details" ><i class="fa fa-edit fa-fw"></i> Customer Details<span class="fa arrow"></span></a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="panels-wells.html">Panels and Wells</a>
-                            </li>
-                            <li>
-                                <a href="buttons.html">Buttons</a>
-                            </li>
-                            <li>
-                                <a href="notifications.html">Notifications</a>
-                            </li>
-                            <li>
-                                <a href="typography.html">Typography</a>
-                            </li>
-                            <li>
-                                <a href="grid.html">Grid</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
+                        <a href="/admin/imageUpload" ><i class="fa fa-edit fa-fw"></i> Image Upload<span class="fa arrow"></span></a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
+                        <a href="/admin/content_management" ><i class="fa fa-edit fa-fw"></i> Content Management<span class="fa arrow"></span></a>
+                    </li>
+                     <li>
+                        <a href="/admin/commentMng" ><i class="fa fa-edit fa-fw"></i> Comment Management<span class="fa arrow"></span></a>
+                    </li>
+                    <li>
+                        <a href="/admin/user_time_allocation" ><i class="fa fa-edit fa-fw"></i> Booking Management<span class="fa arrow"></span></a>
+                    </li>
+                    <li>
+                        <a href="/admin/features" ><i class="fa fa-edit fa-fw"></i> Features<span class="fa arrow"></span></a>
+                    	<ul class="nav nav-second-level">
                             <li>
-                                <a href="#">Second Level Item</a>
+                                <a href="#">Headers</a>
                             </li>
                             <li>
-                                <a href="#">Second Level Item</a>
+                                <a href="#">Services <span class="fa arrow"></span></a>
+                            	<ul class="nav nav-third-level">
+                                     <li>
+                                        <a href="/admin/services">Services List</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/service_category">Service Categories</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/service_price">Service Prices</a>
+                                    </li>
+                                    
+                                </ul>
+                                <!-- /.nav-third-level -->
                             </li>
                             <li>
-                                <a href="#">Third Level <span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
+                                <a href="/admin/event_management">Events <span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level" >
                                     <li>
                                         <a href="#">Third Level Item</a>
                                     </li>
@@ -334,18 +354,13 @@
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
+                   
+                    
                     <li>
-                        <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="blank.html">Blank Page</a>
-                            </li>
-                            <li>
-                                <a href="login.html">Login Page</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
+                        <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
+                        
                     </li>
+                   
                 </ul>
                 <!-- /#side-menu -->
             </div>
@@ -393,23 +408,32 @@
     <!-- /#wrapper -->
 
     <!-- Core Scripts - Include with every page -->
-    <script src="js/jquery-1.10.2.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-1.10.2.js">
+    </script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>js/plugins/metisMenu/jquery.metisMenu.js"></script>
 
     <!-- Page-Level Plugin Scripts - Forms -->
+ 
 
     <!-- SB Admin Scripts - Include with every page -->
-    <script src="js/sb-admin.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>js/sb-admin.js"></script>
 
     <!-- Page-Level Demo Scripts - Forms - Use for reference -->
-	
+	   <script type="text/javascript" src="<?php echo base_url(); ?>js/demo/dashboard-demo.js"></script>
 	  <!-- JavaScript at the bottom for fast page loading -->
 
+
+<script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
+	
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	<script src="<?php echo base_url(); ?>js/jquery.datetimepicker.js"></script>
+
     <script type="text/javascript">
         $(document).ready(function () {
-        	$('#feature_name').change(function () {
+			
+           	$('#feature_name').change(function () {
            // alert('jquary loaded');
             var selectVal = $('#feature_name :selected').val();
                 console.log(selectVal);
@@ -445,10 +469,108 @@
                          }
                      })
                  });
-
+            
+		
         	
         });
     </script>
+    <script type="text/javascript">
+    document.querySelector(".active a")
+	var subheader = document.querySelector(".active a").innerHTML;
+    	
+    	var header = document.querySelector(".panel-heading");
+    	header.innerHTML = subheader;
+
+    </script>
+   
+  <script type="text/javascript">
+
+  $('#datetimepicker10').datetimepicker({
+		step:5,
+		inline:true
+	});
+	$('#datetimepicker_mask').datetimepicker({
+		mask:'9999/19/39 29:59'
+	});
+	$('#datetimepicker_mask1').datetimepicker({
+		mask:'9999/19/39 29:59'
+	});
+	$('#datetimepicker').datetimepicker();
+	$('#datetimepicker').datetimepicker({value:'2015/04/15 05:03',step:10});
+	$('#datetimepicker1').datetimepicker({
+		datepicker:false,
+		format:'H:i',
+		step:5
+	});
+	$('#datetimepicker2').datetimepicker({
+		yearOffset:222,
+		lang:'ch',
+		timepicker:false,
+		format:'d/m/Y',
+		formatDate:'Y/m/d',
+		minDate:'-1970/01/02', // yesterday is minimum date
+		maxDate:'+1970/01/02' // and tommorow is maximum date calendar
+	});
+	$('#datetimepicker3').datetimepicker({
+		inline:true
+	});
+	$('#datetimepicker4').datetimepicker();
+	$('#open').click(function(){
+		$('#datetimepicker4').datetimepicker('show');
+	});
+	$('#close').click(function(){
+		$('#datetimepicker4').datetimepicker('hide');
+	});
+	$('#reset').click(function(){
+		$('#datetimepicker4').datetimepicker('reset');
+	});
+	$('#datetimepicker5').datetimepicker({
+		datepicker:false,
+		allowTimes:['12:00','13:00','15:00','17:00','17:05','17:20','19:00','20:00']
+	});
+	$('#datetimepicker6').datetimepicker();
+	$('#destroy').click(function(){
+		if( $('#datetimepicker6').data('xdsoft_datetimepicker') ){
+			$('#datetimepicker6').datetimepicker('destroy');
+			this.value = 'create';
+		}else{
+			$('#datetimepicker6').datetimepicker();
+			this.value = 'destroy';
+		}
+	});
+	var logic = function( currentDateTime ){
+		if( currentDateTime.getDay()==6 ){
+			this.setOptions({
+				minTime:'11:00'
+			});
+		}else
+			this.setOptions({
+				minTime:'8:00'
+			});
+	};
+	$('#datetimepicker7').datetimepicker({
+		onChangeDateTime:logic,
+		onShow:logic
+	});
+	$('#datetimepicker8').datetimepicker({
+		onGenerate:function( ct ){
+			$(this).find('.xdsoft_date')
+				.toggleClass('xdsoft_disabled');
+		},
+		minDate:'-1970/01/2',
+		maxDate:'+1970/01/2',
+		timepicker:false
+	});
+	$('#datetimepicker9').datetimepicker({
+		onGenerate:function( ct ){
+			$(this).find('.xdsoft_date.xdsoft_weekend')
+				.addClass('xdsoft_disabled');
+		},
+		weekends:['01.01.2014','02.01.2014','03.01.2014','04.01.2014','05.01.2014','06.01.2014'],
+		timepicker:false
+	});
+	
+</script>
 
 </body>
 

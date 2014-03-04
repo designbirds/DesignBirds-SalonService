@@ -17,7 +17,7 @@
 			</td>
 			<td><?php echo $row['description'] ?></td>
 			<td><?php echo $row['service_id'] ?></td>
-			<td><?php echo anchor('admin/service_category/delete/'.$row['id'], 'Delete', 'title="Delete Service Category"'); ?>
+			<td><?php echo anchor('admin/service_category/delete/'.$row['id'], 'Delete', 'class="btn btn-danger btn-xs" title="Delete Service Category"'); ?>
 			</td>
 		</tr>
 		<?php } ?>
@@ -25,4 +25,4 @@
 </table>
 </div>
 
-		<?php echo anchor('admin/service_category/add', 'Add Service Category', 'title="Add Service Category"'); ?>
+		<?php echo anchor('admin/service_category/add', 'Add Service Category', 'class="btn btn-primary btn-sm" title="Add Service Category"'); ?>
