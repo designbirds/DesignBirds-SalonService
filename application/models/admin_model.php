@@ -1001,7 +1001,7 @@ public function fetch_service_price($id)
 			return $tbl_employee_details;
 		}
 
-		foreach ($tbl_customer_details as $k => $v)
+		foreach ($tbl_employee_details as $k => $v)
 		{
 			if (isset($data[$k]))
 			{
@@ -1053,7 +1053,7 @@ public function fetch_service_price($id)
 	 */
 	public function insert_employee_details($employee_details)
 	{
-		$table = 'tbl_main_employee_details';
+		$table = 'tbl_main_employ_details';
 		unset($employee_details['id']); // sanity
 		$this->db->insert($table, $employee_details);
 	}
@@ -1066,7 +1066,7 @@ public function fetch_service_price($id)
 	 */
 	function update_employee_details($employee_details)
 	{
-		$table = 'tbl_main_employee_details';
+		$table = 'tbl_main_employ_details';
 		$id = $employee_details['id'];
 		$this->db->where('id', $id);
 		$this->db->update($table, $employee_details);
@@ -1081,7 +1081,7 @@ public function fetch_service_price($id)
 	 */
 	public function delete_employee_details($id)
 	{
-		$table = 'tbl_main_employee_details';
+		$table = 'tbl_main_employ_details';
 		$this->db->where('id', $id);
 		$this->db->delete($table);
 	}

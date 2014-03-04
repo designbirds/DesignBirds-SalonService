@@ -1739,19 +1739,19 @@ public function _comment_edit()
 		switch($action)
 		{
 			case 'add':
-				$this->_customer_add();
+				$this->_employee_add();
 				break;
 			case 'edit':
-				$this->_customer_edit();
+				$this->_employee_edit();
 				break;
 			case 'submit':
-				$this->_customer_submit();
+				$this->_employee_submit();
 				break;
 			case 'delete':
-				$this->_customer_delete();
+				$this->_employee_delete();
 				break;
 			default:
-				$this->_customer_list();
+				$this->_employee_list();
 		}
 		}else{
 			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
@@ -1760,19 +1760,19 @@ public function _comment_edit()
 	}
 
 
-	public function _customer_list()
+	public function _employee_list()
 	{
 		// View data
 		$data = array();
 		$tipster_id = $this->uri->segment(3);
 
-		$data['customers'] = $this->Admin_model->fetch_customer_details();
-		$data['body'] = $this->load->view('admin/customer_details/index', $data, true);
+		$data['employ'] = $this->Admin_model->fetch_employee_details();
+		$data['body'] = $this->load->view('admin/employ_details/index', $data, true);
 		$this->load->view('templates/wrapper', $data);
 	}
 
 
-	public function _customer_add()
+	public function _employee_add()
 	{
 
 		// View data
@@ -1780,19 +1780,19 @@ public function _comment_edit()
 
 		$data['form'] = array(
 			'mode' => 'insert',
-			'redirect' => 'admin/customer_details/submit'
+			'redirect' => 'admin/employee_details/submit'
 			);
 
 			//$this->load->helper('dropdown_helper');
-			$data['customers'] = $this->Admin_model->make_customer_details();
+			$data['employ'] = $this->Admin_model->make_employee_details();
 			//$data['dropdown'] = $this->Admin_model->fetch_tipsters_dropdown();
 
-			$data['body'] = $this->load->view('admin/customer_details/form', $data, true);
+			$data['body'] = $this->load->view('admin/employ_details/form', $data, true);
 			$this->load->view('templates/wrapper', $data);
 	}
 
 
-	public function _customer_edit()
+	public function _employee_edit()
 	{
 		// Request params
 		$customer_id = $this->uri->segment(4);
@@ -1802,7 +1802,7 @@ public function _comment_edit()
 
 		$data['form'] = array(
 			'mode' => 'update',
-			'redirect' => 'admin/customer_details/submit'
+			'redirect' => 'admin/employee_details/submit'
 			);
 
 			// Allow for form redisplay variation.
@@ -1811,13 +1811,13 @@ public function _comment_edit()
 				// We're redisplaying form, but ...
 				// We need a Tipster data bean to satisfy compiler, so make an empty one.
 				// We don't really need it as will be using data from $_POST array anyway.
-				$data['customers'] = $this->Admin_model->make_customer_details();
+				$data['employ'] = $this->Admin_model->make_employee_details();
 			}
 			else
 			{
 				// This is an initial GET request for data,
 				// so pull Event data from database.
-				$data['customers'] = $this->Admin_model->fetch_customer_detail($customer_id);
+				$data['employ'] = $this->Admin_model->fetch_employee_detail($customer_id);
 			}
 			//print_r($data);
 
@@ -1825,15 +1825,15 @@ public function _comment_edit()
 			//$this->load->model('feature_model');
 			//$data['dropdown'] = $this->feature_model->fetch_tipsters_dropdown();
 
-			$data['body'] = $this->load->view('admin/customer_details/form', $data, true);
+			$data['body'] = $this->load->view('admin/employ_details/form', $data, true);
 			$this->load->view('templates/wrapper', $data);
 	}
 
 
-	public function _customer_submit()
+	public function _employee_submit()
 	{
 		// SET VALIDATION RULES
-		$this->form_validation->set_rules('name', 'name','trim|required|min_length[1]|max_length[50]|xss_clean');
+		$this->form_validation->set_rules('first_name', 'First Name','trim|required|min_length[1]|max_length[50]|xss_clean');
 		//$this->form_validation->set_rules('comment', 'comment', 'trim|required|min_length[2]|max_length[1000]|xss_clean');
 		//$this->form_validation->set_error_delimiters('<span>','</span>');
 			
@@ -1848,53 +1848,53 @@ public function _comment_edit()
 			$username = $this->session->userdata('user_name');
 			$member_id = $this->Admin_model->fetch_member_id($username);
 			
-			$customers = $this->Admin_model->make_customer_details($this->input->post());
-			$customers['member_id'] = $member_id['id'];
+			$employees = $this->Admin_model->make_employee_details($this->input->post());
+			$employees['member_id'] = $member_id['id'];
 			
-			//print_r($feature);
+			//print_r($employees);
 			//$tips['date'] = $date;
 
 
 			if ($this->input->post('id')) // we're updating, not inserting.
 			{
-				$this->Admin_model->update_customer_details($customers);
+				$this->Admin_model->update_employee_details($employees);
 			}
 			else
 			{
-				$this->Admin_model->insert_customer_details($customers);
+				$this->Admin_model->insert_employee_details($employees);
 			}
 
-			redirect('admin/customer_details/'.$customers['id']);
+			redirect('admin/employee_details/'.$employees['id']);
 		}
 			
 		// Form is not valid ... redisplay!
 		if ($this->input->post('id')) // we're updating, not inserting.
 		{
-			$this->_customer_edit();
+			$this->_employee_edit();
 		}
 		else
 		{
-			$this->_customer_add();
+			$this->_employee_add();
 		}
 	}
 
 
-	public function _customer_delete()
+	public function _employee_delete()
 	{
 		// Request params
-		$customer_id = $this->uri->segment(4);
+		$employee_id = $this->uri->segment(4);
 
 		if ($this->uri->segment(5) === FALSE)
 		{
-			$data['customers'] = array('id' => $customer_id);
+			$data['employ'] = array('id' => $employee_id);
 
-			$data['body'] = $this->load->view('admin/customer_details/delete', $data, true);
+			$data['body'] = $this->load->view('admin/employ_details/delete', $data, true);
 			$this->load->view('templates/wrapper', $data);
 		}
 		else
 		{
-			$this->Admin_model->delete_customer_details($customer_id);
-			redirect('admin/customer_details');
+			$this->Admin_model->delete_employee_details($employee_id);
+			redirect('admin/employee_details');
 		}
 	}
 	
