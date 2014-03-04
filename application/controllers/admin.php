@@ -10,8 +10,11 @@ class Admin extends CI_Controller {
 	{
 		parent::__construct();
 
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
 		$this->load->library(array('form_validation', 'session'));
 		$this->load->helper('url', 'form');
+		$this->is_logged_in();
 	}
 
 
@@ -41,7 +44,19 @@ class Admin extends CI_Controller {
 
 		$data['body'] = $this->load->view('admin/index', $data, true);
 		$this->load->view('templates/wrapper', $data);
-		echo "Hay it works";
+		//echo "Hay it works";
+	}
+	
+	public function is_logged_in(){
+		
+		$is_logged_in = $this->session->userdata('is_logged_in');
+		$user_name = $this->session->userdata('user_name');
+		
+		if(!isset($is_logged_in) || $is_logged_in != true){
+			echo '<div style="font-size: 2em;">you don\'t have permission to access this web page</div>';
+			die();
+		}
+		
 	}
 
 
@@ -54,6 +69,9 @@ class Admin extends CI_Controller {
 		$this->load->model('Admin_model');
 		$this->load->model('Common_model');
 		
+		$permission['data'] = $this->Admin_model->permission_check('1');
+		
+		if($permission['data']['status'] || $permission['data']['initial']){
 		// Request params
 		$action = $this->uri->segment(3); // detail|add|edit|delete
 	
@@ -74,6 +92,10 @@ class Admin extends CI_Controller {
 			default:
 				$this->_image_list();
 		}
+		}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+			}
 	}
 
 
@@ -82,15 +104,17 @@ class Admin extends CI_Controller {
 		$this->load->model('Admin_model');
 		$this->load->model('Common_model');
 		
+
 		// View data
 		$data = array();
 		// getting list imageupload table results as an array
 		$data['imageupload'] = $this->Admin_model->fetch_image_uploads();
 
-
 		$data['body'] = $this->load->view('admin/image_upload/index', $data, true);
 		$this->load->view('templates/wrapper', $data);
-	}
+		
+		
+}
 
 	public function _image_add()
 	{
@@ -165,7 +189,12 @@ class Admin extends CI_Controller {
 		if ($this->form_validation->run())
 		{
 		 
-	     $imageupload = $this->Admin_model->make_image_uploade($this->input->post());	
+		$username = $this->session->userdata('user_name');
+		$member_id = $this->Admin_model->fetch_member_id($username);
+			
+	     $imageupload = $this->Admin_model->make_image_uploade($this->input->post());
+	     $imageupload['member_id'] = $member_id['id'];
+
 		
 	     if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
 			{
@@ -418,6 +447,9 @@ class Admin extends CI_Controller {
 		$this->load->model('Admin_model');
 		$this->load->model('Common_model');
 		
+		$permission['data'] = $this->Admin_model->permission_check('5');
+		
+		if($permission['data']['status'] || $permission['data']['initial']){
 		// Request params
 		$action = $this->uri->segment(3); // detail|add|edit|delete
 
@@ -438,6 +470,10 @@ class Admin extends CI_Controller {
 			default:
 				$this->_feature_list();
 		}
+			}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+			}
 	}
 
 
@@ -526,7 +562,11 @@ class Admin extends CI_Controller {
 
 			//$_POST['date'] = $date;
 			//print_r($this->input->post());
+			$username = $this->session->userdata('user_name');
+			$member_id = $this->Admin_model->fetch_member_id($username);
+			
 			$feature = $this->Admin_model->make_feature($this->input->post());
+			$feature['member_id'] = $member_id['id'];
 			//print_r($feature);
 			//$tips['date'] = $date;
 
@@ -583,6 +623,9 @@ class Admin extends CI_Controller {
 		$this->load->model('Admin_model');
 		$this->load->model('Common_model');
 		
+		$permission['data'] = $this->Admin_model->permission_check('6');
+		
+		if($permission['data']['status'] || $permission['data']['initial']){
 		// Request params
 		$action = $this->uri->segment(3); // detail|add|edit|delete
 
@@ -603,6 +646,10 @@ class Admin extends CI_Controller {
 			default:
 				$this->_service_list();
 		}
+		}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+			}
 	}
 
 
@@ -691,7 +738,11 @@ class Admin extends CI_Controller {
 
 			//$_POST['date'] = $date;
 			//print_r($this->input->post());
+			$username = $this->session->userdata('user_name');
+			$member_id = $this->Admin_model->fetch_member_id($username);
+			
 			$service = $this->Admin_model->make_service($this->input->post());
+			$service['member_id'] = $member_id['id'];
 			//print_r($feature);
 			//$tips['date'] = $date;
 
@@ -748,6 +799,9 @@ class Admin extends CI_Controller {
 		$this->load->model('Admin_model');
 		$this->load->model('Common_model');
 		
+		$permission['data'] = $this->Admin_model->permission_check('7');
+		
+		if($permission['data']['status'] || $permission['data']['initial']){
 		// Request params
 		$action = $this->uri->segment(3); // detail|add|edit|delete
 
@@ -768,6 +822,10 @@ class Admin extends CI_Controller {
 			default:
 				$this->_service_category_list();
 		}
+		}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+			}
 	}
 
 
@@ -863,8 +921,11 @@ class Admin extends CI_Controller {
 			//$date = date("Y-m-d H:i:s", strtotime($date));
 
 			//$_POST['date'] = $date;
-			
+			$username = $this->session->userdata('user_name');
+			$member_id = $this->Admin_model->fetch_member_id($username);
+		
 			$service_category = $this->Admin_model->make_service_category($this->input->post());
+			$service_category['member_id'] = $member_id['id'];
 			
 			// getting the service name to display in index
 			$data['service_name'] = $this->Common_model->fetch_service_name($this->input->post('service_id'));
@@ -925,6 +986,9 @@ class Admin extends CI_Controller {
 
 public function commentMng()
 	{
+		$permission['data'] = $this->Admin_model->permission_check('4');
+		
+		if($permission['data']['status'] || $permission['data']['initial']){
 		$this->load->model('Comment_model');
 		// Request params
 		$action = $this->uri->segment(3); 
@@ -946,6 +1010,10 @@ public function commentMng()
 			default:
 				$this->_comment_list();
 		}
+		}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+			}
 	}
 	
 public function _comment_list()
@@ -992,7 +1060,11 @@ public function _comment_submit()
 		if ($this->form_validation->run())
 		{
 		 
+		$username = $this->session->userdata('user_name');
+		$member_id = $this->Admin_model->fetch_member_id($username);
+			
 	     $comments = $this->Comment_model->make_comments($this->input->post());	
+	     $comments['member_id'] = $member_id['id'];
 		
 	     if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
 			{
@@ -1291,6 +1363,9 @@ public function _comment_edit()
 		$this->load->model('Admin_model');
 		$this->load->model('Common_model');
 		
+		$permission['data'] = $this->Admin_model->permission_check('8');
+		
+		if($permission['data']['status'] || $permission['data']['initial']){
 		// Request params
 		$action = $this->uri->segment(3); // detail|add|edit|delete
 
@@ -1311,6 +1386,10 @@ public function _comment_edit()
 			default:
 				$this->_service_price_list();
 		}
+		}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+			}
 	}
 
 
@@ -1411,7 +1490,11 @@ public function _comment_edit()
 
 			//$_POST['date'] = $date;
 			//print_r($this->input->post());
+			$username = $this->session->userdata('user_name');
+			$member_id = $this->Admin_model->fetch_member_id($username);
+			
 			$service_price = $this->Admin_model->make_service_price($this->input->post());
+			$service_price['member_id'] = $member_id['id'];
 			//print_r($feature);
 			//$tips['date'] = $date;
 
@@ -1459,7 +1542,1111 @@ public function _comment_edit()
 		}
 	}
 	
+	// ==================================Start Customer API==========================================/
+
+
+
+	public function customer_details()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		$permission['data'] = $this->Admin_model->permission_check('9');
+		
+		if($permission['data']['status']){
+		// Request params
+		$action = $this->uri->segment(3); // detail|add|edit|delete
+
+		switch($action)
+		{
+			case 'add':
+				$this->_customer_add();
+				break;
+			case 'edit':
+				$this->_customer_edit();
+				break;
+			case 'submit':
+				$this->_customer_submit();
+				break;
+			case 'delete':
+				$this->_customer_delete();
+				break;
+			default:
+				$this->_customer_list();
+		}
+		}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+			}
+	}
+
+
+	public function _customer_list()
+	{
+		// View data
+		$data = array();
+		$tipster_id = $this->uri->segment(3);
+
+		$data['customers'] = $this->Admin_model->fetch_customer_details();
+		$data['body'] = $this->load->view('admin/customer_details/index', $data, true);
+		$this->load->view('templates/wrapper', $data);
+	}
+
+
+	public function _customer_add()
+	{
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'insert',
+			'redirect' => 'admin/customer_details/submit'
+			);
+
+			//$this->load->helper('dropdown_helper');
+			$data['customers'] = $this->Admin_model->make_customer_details();
+			//$data['dropdown'] = $this->Admin_model->fetch_tipsters_dropdown();
+
+			$data['body'] = $this->load->view('admin/customer_details/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	}
+
+
+	public function _customer_edit()
+	{
+		// Request params
+		$customer_id = $this->uri->segment(4);
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'update',
+			'redirect' => 'admin/customer_details/submit'
+			);
+
+			// Allow for form redisplay variation.
+			if ($this->input->post('submit'))
+			{
+				// We're redisplaying form, but ...
+				// We need a Tipster data bean to satisfy compiler, so make an empty one.
+				// We don't really need it as will be using data from $_POST array anyway.
+				$data['customers'] = $this->Admin_model->make_customer_details();
+			}
+			else
+			{
+				// This is an initial GET request for data,
+				// so pull Event data from database.
+				$data['customers'] = $this->Admin_model->fetch_customer_detail($customer_id);
+			}
+			//print_r($data);
+
+			//$this->load->helper('dropdown_helper');
+			//$this->load->model('feature_model');
+			//$data['dropdown'] = $this->feature_model->fetch_tipsters_dropdown();
+
+			$data['body'] = $this->load->view('admin/customer_details/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	}
+
+
+	public function _customer_submit()
+	{
+		// SET VALIDATION RULES
+		$this->form_validation->set_rules('name', 'name','trim|required|min_length[1]|max_length[50]|xss_clean');
+		//$this->form_validation->set_rules('comment', 'comment', 'trim|required|min_length[2]|max_length[1000]|xss_clean');
+		//$this->form_validation->set_error_delimiters('<span>','</span>');
+			
+		// Form is valid ... process
+		if ($this->form_validation->run())
+		{
+			//$date = $this->input->post("start_year") ."-". $this->input->post("start_month"). "-" .$this->input->post("start_day");
+			//$date = date("Y-m-d H:i:s", strtotime($date));
+
+			//$_POST['date'] = $date;
+			//print_r($this->input->post());
+			$username = $this->session->userdata('user_name');
+			$member_id = $this->Admin_model->fetch_member_id($username);
+			
+			$customers = $this->Admin_model->make_customer_details($this->input->post());
+			$customers['member_id'] = $member_id['id'];
+			
+			//print_r($feature);
+			//$tips['date'] = $date;
+
+
+			if ($this->input->post('id')) // we're updating, not inserting.
+			{
+				$this->Admin_model->update_customer_details($customers);
+			}
+			else
+			{
+				$this->Admin_model->insert_customer_details($customers);
+			}
+
+			redirect('admin/customer_details/'.$customers['id']);
+		}
+			
+		// Form is not valid ... redisplay!
+		if ($this->input->post('id')) // we're updating, not inserting.
+		{
+			$this->_customer_edit();
+		}
+		else
+		{
+			$this->_customer_add();
+		}
+	}
+
+
+	public function _customer_delete()
+	{
+		// Request params
+		$customer_id = $this->uri->segment(4);
+
+		if ($this->uri->segment(5) === FALSE)
+		{
+			$data['customers'] = array('id' => $customer_id);
+
+			$data['body'] = $this->load->view('admin/customer_details/delete', $data, true);
+			$this->load->view('templates/wrapper', $data);
+		}
+		else
+		{
+			$this->Admin_model->delete_customer_details($customer_id);
+			redirect('admin/customer_details');
+		}
+	}
 	
+	
+
+	// ==================================Start Employee API==========================================/
+
+
+
+	public function employee_details()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		$permission['data'] = $this->Admin_model->permission_check('9');
+		
+		if($permission['data']['status']){
+		// Request params
+		$action = $this->uri->segment(3); // detail|add|edit|delete
+
+		switch($action)
+		{
+			case 'add':
+				$this->_customer_add();
+				break;
+			case 'edit':
+				$this->_customer_edit();
+				break;
+			case 'submit':
+				$this->_customer_submit();
+				break;
+			case 'delete':
+				$this->_customer_delete();
+				break;
+			default:
+				$this->_customer_list();
+		}
+		}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+			}
+	}
+
+
+	public function _customer_list()
+	{
+		// View data
+		$data = array();
+		$tipster_id = $this->uri->segment(3);
+
+		$data['customers'] = $this->Admin_model->fetch_customer_details();
+		$data['body'] = $this->load->view('admin/customer_details/index', $data, true);
+		$this->load->view('templates/wrapper', $data);
+	}
+
+
+	public function _customer_add()
+	{
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'insert',
+			'redirect' => 'admin/customer_details/submit'
+			);
+
+			//$this->load->helper('dropdown_helper');
+			$data['customers'] = $this->Admin_model->make_customer_details();
+			//$data['dropdown'] = $this->Admin_model->fetch_tipsters_dropdown();
+
+			$data['body'] = $this->load->view('admin/customer_details/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	}
+
+
+	public function _customer_edit()
+	{
+		// Request params
+		$customer_id = $this->uri->segment(4);
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'update',
+			'redirect' => 'admin/customer_details/submit'
+			);
+
+			// Allow for form redisplay variation.
+			if ($this->input->post('submit'))
+			{
+				// We're redisplaying form, but ...
+				// We need a Tipster data bean to satisfy compiler, so make an empty one.
+				// We don't really need it as will be using data from $_POST array anyway.
+				$data['customers'] = $this->Admin_model->make_customer_details();
+			}
+			else
+			{
+				// This is an initial GET request for data,
+				// so pull Event data from database.
+				$data['customers'] = $this->Admin_model->fetch_customer_detail($customer_id);
+			}
+			//print_r($data);
+
+			//$this->load->helper('dropdown_helper');
+			//$this->load->model('feature_model');
+			//$data['dropdown'] = $this->feature_model->fetch_tipsters_dropdown();
+
+			$data['body'] = $this->load->view('admin/customer_details/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	}
+
+
+	public function _customer_submit()
+	{
+		// SET VALIDATION RULES
+		$this->form_validation->set_rules('name', 'name','trim|required|min_length[1]|max_length[50]|xss_clean');
+		//$this->form_validation->set_rules('comment', 'comment', 'trim|required|min_length[2]|max_length[1000]|xss_clean');
+		//$this->form_validation->set_error_delimiters('<span>','</span>');
+			
+		// Form is valid ... process
+		if ($this->form_validation->run())
+		{
+			//$date = $this->input->post("start_year") ."-". $this->input->post("start_month"). "-" .$this->input->post("start_day");
+			//$date = date("Y-m-d H:i:s", strtotime($date));
+
+			//$_POST['date'] = $date;
+			//print_r($this->input->post());
+			$username = $this->session->userdata('user_name');
+			$member_id = $this->Admin_model->fetch_member_id($username);
+			
+			$customers = $this->Admin_model->make_customer_details($this->input->post());
+			$customers['member_id'] = $member_id['id'];
+			
+			//print_r($feature);
+			//$tips['date'] = $date;
+
+
+			if ($this->input->post('id')) // we're updating, not inserting.
+			{
+				$this->Admin_model->update_customer_details($customers);
+			}
+			else
+			{
+				$this->Admin_model->insert_customer_details($customers);
+			}
+
+			redirect('admin/customer_details/'.$customers['id']);
+		}
+			
+		// Form is not valid ... redisplay!
+		if ($this->input->post('id')) // we're updating, not inserting.
+		{
+			$this->_customer_edit();
+		}
+		else
+		{
+			$this->_customer_add();
+		}
+	}
+
+
+	public function _customer_delete()
+	{
+		// Request params
+		$customer_id = $this->uri->segment(4);
+
+		if ($this->uri->segment(5) === FALSE)
+		{
+			$data['customers'] = array('id' => $customer_id);
+
+			$data['body'] = $this->load->view('admin/customer_details/delete', $data, true);
+			$this->load->view('templates/wrapper', $data);
+		}
+		else
+		{
+			$this->Admin_model->delete_customer_details($customer_id);
+			redirect('admin/customer_details');
+		}
+	}
+	
+	
+	// ------------------------------API for Event Management Module---------------------------------------------/
+
+
+	public function event_management()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		$permission['data'] = $this->Admin_model->permission_check('3');
+		
+		if($permission['data']['status']){
+		// Request params
+		$action = $this->uri->segment(3); // detail|add|edit|delete
+	
+		switch($action)
+		{
+			case 'add':
+				$this->_event_add();
+				break;
+			case 'edit':
+				$this->_event_edit();
+				break;
+			case 'submit':
+				$this->_event_submit();
+				break;
+			case 'delete':
+				$this->_event_delete();
+				break;
+			default:
+				$this->_event_list();
+		}
+		}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+			}
+	}
+
+
+	public function _event_list()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		// View data
+		$data = array();
+		// getting list imageupload table results as an array
+		$data['events'] = $this->Admin_model->fetch_events();
+
+		$data['body'] = $this->load->view('admin/event_management/index', $data, true);
+		$this->load->view('templates/wrapper', $data);
+	}
+
+	public function _event_add()
+	{
+		// load Admin_model
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		// defining data array
+		$data = array();
+		// create form atrribute and assing a key vale pare
+		$data['form'] = array(
+			'mode' => 'insert', //form display with insert mode and not assigining Id
+			'redirect' => 'admin/event_management/submit'    // to redirect to submit action
+			);
+			
+			$data['feature'] = $this->Common_model->make_feature();
+			$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
+			
+			
+			
+			// cerate imageupload attribute inside data array and assinging table collumns
+			$data['events'] = $this->Admin_model->make_event();
+			
+			// cerate body attribute inside data array and assinging from php bypassing data array($data)
+			$data['body'] = $this->load->view('admin/event_management/form', $data, true);
+			
+			// calling wraper view with data array include from body
+			$this->load->view('templates/wrapper', $data);
+	}
+
+	public function _event_edit()
+	{
+		// Request params
+		$event_id = $this->uri->segment(4);
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'update', //from display with update mopde and  assigining Id param
+			'redirect' => 'admin/event_management/submit'
+			);
+
+			// Allow for form redisplay variation.
+			if ($this->input->post('submit'))
+			{
+				// We're redisplaying form, but ...
+				// We need a Tipster data bean to satisfy compiler, so make an empty one.
+				// We don't really need it as will be using data from $_POST array anyway.
+				$data['feature'] = $this->Admin_model->make_feature();
+				$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
+				$data['events'] = $this->Admin_model->make_event();
+			}
+			else
+			{
+				// This is an initial GET request for data,
+				// so pull Event data from database.
+				$data['feature'] = $this->Admin_model->make_feature();
+				$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
+				$data['events'] = $this->Admin_model->fetch_event($event_id);
+			}
+
+			$data['body'] = $this->load->view('admin/event_management/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	}
+	
+	
+	public function _event_submit()
+	{
+		$data = array();
+		$this->form_validation->set_rules('name', 'name','trim|required|min_length[2]|max_length[512]|xss_clean');
+		if ($this->form_validation->run())
+		{
+		 
+		$username = $this->session->userdata('user_name');
+		$member_id = $this->Admin_model->fetch_member_id($username);
+		
+	     $event_data = $this->Admin_model->make_event($this->input->post());
+	     $event_data['member_id'] = $member_id['id'];
+
+	     
+		
+	     if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
+			{
+				$this->Admin_model->update_event($event_data);
+			}
+			else
+			{
+				$last_inserted = $this->Admin_model->insert_event($event_data);
+			}
+					
+			
+		//redirect('admin/event_management');
+		}
+			
+		// Form is not valid ... redisplay!
+		if ($this->input->post('id')) // we're updating, not inserting.
+		{
+			$this->_event_edit();
+		}
+		else
+		{
+			$this->_event_add();
+		}
+		
+
+	}
+
+	public function _event_delete()
+	{
+		// Request params
+		$event_id = $this->uri->segment(4);
+
+		if ($this->uri->segment(5) === FALSE)
+		{
+			$data['events'] = array('id' => $event_id);
+
+			$data['body'] = $this->load->view('admin/event_management/delete', $data, true);
+			$this->load->view('templates/wrapper', $data);
+		}
+		else
+		{
+			$this->Admin_model->delete_event($event_id);
+			redirect('admin/event_management');
+		}
+	}
+
+	
+	// ------------------------------API for Content Management Module---------------------------------------------/
+
+
+	public function content_management()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		$permission['data'] = $this->Admin_model->permission_check('2');
+		
+		if($permission['data']['status'] || $permission['data']['initial']){
+		// Request params
+		$action = $this->uri->segment(3); // detail|add|edit|delete
+	
+		switch($action)
+		{
+			case 'add':
+				$this->_content_add();
+				break;
+			case 'edit':
+				$this->_content_edit();
+				break;
+			case 'submit':
+				$this->_content_submit();
+				break;
+			case 'delete':
+				$this->_content_delete();
+				break;
+			default:
+				$this->_content_list();
+		}
+	}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+			}
+}
+
+
+	public function _content_list()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		// View data
+		$data = array();
+		// getting list imageupload table results as an array
+		$data['contents'] = $this->Admin_model->fetch_contents();
+
+		$data['body'] = $this->load->view('admin/content_management/index', $data, true);
+		$this->load->view('templates/wrapper', $data);
+	}
+
+	public function _content_add()
+	{
+		// load Admin_model
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		// defining data array
+		$data = array();
+		// create form atrribute and assing a key vale pare
+		$data['form'] = array(
+			'mode' => 'insert', //form display with insert mode and not assigining Id
+			'redirect' => 'admin/content_management/submit'    // to redirect to submit action
+			);
+			
+			$data['feature'] = $this->Common_model->make_feature();
+			$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
+			
+			
+			
+			// cerate imageupload attribute inside data array and assinging table collumns
+			$data['contents'] = $this->Admin_model->make_content();
+			
+			// cerate body attribute inside data array and assinging from php bypassing data array($data)
+			$data['body'] = $this->load->view('admin/content_management/form', $data, true);
+			
+			// calling wraper view with data array include from body
+			$this->load->view('templates/wrapper', $data);
+	}
+
+	public function _content_edit()
+	{
+		// Request params
+		$content_id = $this->uri->segment(4);
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'update', //from display with update mopde and  assigining Id param
+			'redirect' => 'admin/content_management/submit'
+			);
+
+			// Allow for form redisplay variation.
+			if ($this->input->post('submit'))
+			{
+				// We're redisplaying form, but ...
+				// We need a Tipster data bean to satisfy compiler, so make an empty one.
+				// We don't really need it as will be using data from $_POST array anyway.
+				$data['feature'] = $this->Admin_model->make_feature();
+				$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
+				$data['contents'] = $this->Admin_model->make_content();
+			}
+			else
+			{
+				// This is an initial GET request for data,
+				// so pull Event data from database.
+				$data['feature'] = $this->Admin_model->make_feature();
+				$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
+				$data['contents'] = $this->Admin_model->fetch_content($content_id);
+			}
+
+			$data['body'] = $this->load->view('admin/content_management/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	}
+	
+	
+	public function _content_submit()
+	{
+		$data = array();
+		$this->form_validation->set_rules('small_content', 'Small Content','trim|required|min_length[2]|max_length[512]|xss_clean');
+		if ($this->form_validation->run())
+		{
+		 
+		$username = $this->session->userdata('user_name');
+		$member_id = $this->Admin_model->fetch_member_id($username);
+		
+	     $content_data = $this->Admin_model->make_content($this->input->post());
+	     $content_data['member_id'] = $member_id['id'];
+
+	     
+		
+	     if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
+			{
+				$this->Admin_model->update_content($content_data);
+			}
+			else
+			{
+				$last_inserted = $this->Admin_model->insert_content($content_data);
+			}
+					
+			
+		//redirect('admin/event_management');
+		}
+			
+		// Form is not valid ... redisplay!
+		if ($this->input->post('id')) // we're updating, not inserting.
+		{
+			$this->_content_edit();
+		}
+		else
+		{
+			$this->_content_add();
+		}
+		
+
+	}
+
+	public function _content_delete()
+	{
+		// Request params
+		$content_id = $this->uri->segment(4);
+
+		if ($this->uri->segment(5) === FALSE)
+		{
+			$data['contents'] = array('id' => $content_id);
+
+			$data['body'] = $this->load->view('admin/content_management/delete', $data, true);
+			$this->load->view('templates/wrapper', $data);
+		}
+		else
+		{
+			$this->Admin_model->delete_content($content_id);
+			redirect('admin/content_management');
+		}
+	}
+
+	
+	// ------------------------------API for User Roll Assign Module---------------------------------------------/
+
+
+	public function user_roll_assign()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		$permission['data'] = $this->Admin_model->permission_check('10');
+		
+		if($permission['data']['status']){
+		// Request params
+		$action = $this->uri->segment(3); // detail|add|edit|delete
+	
+		switch($action)
+		{
+			case 'add':
+				$this->_roll_add();
+				break;
+			case 'edit':
+				$this->_roll_edit();
+				break;
+			case 'submit':
+				$this->_roll_submit();
+				break;
+			case 'delete':
+				$this->_roll_delete();
+				break;
+			default:
+				$this->_roll_list();
+		}
+		}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+		}
+	}
+
+
+	public function _roll_list()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		// View data
+		$data = array();
+		// getting list imageupload table results as an array
+		$data['rolls'] = $this->Admin_model->fetch_rolls();
+
+		$data['body'] = $this->load->view('admin/user_roll_assign/index', $data, true);
+		$this->load->view('templates/wrapper', $data);
+		
+	}
+
+	public function _roll_add()
+	{
+		// load Admin_model
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		// defining data array
+		$data = array();
+		// create form atrribute and assing a key vale pare
+		$data['form'] = array(
+			'mode' => 'insert', //form display with insert mode and not assigining Id
+			'redirect' => 'admin/user_roll_assign/submit'    // to redirect to submit action
+			);
+			
+			$data['member'] = $this->Common_model->make_member();
+			$data['dropdown_members'] = $this->Common_model->fetch_membership_dropdown('member');
+			
+			$data['screen'] = $this->Common_model->make_screen();
+			$data['dropdown_screens'] = $this->Common_model->fetch_common_dropdown('screen');
+			
+			
+			// cerate imageupload attribute inside data array and assinging table collumns
+			$data['rolls'] = $this->Admin_model->make_roll();
+			
+			// cerate body attribute inside data array and assinging from php bypassing data array($data)
+			$data['body'] = $this->load->view('admin/user_roll_assign/form', $data, true);
+			
+			// calling wraper view with data array include from body
+			$this->load->view('templates/wrapper', $data);
+		
+	}
+
+	public function _roll_edit()
+	{
+		
+		// Request params
+		$roll_id = $this->uri->segment(4);
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'update', //from display with update mopde and  assigining Id param
+			'redirect' => 'admin/user_roll_assign/submit'
+			);
+
+			// Allow for form redisplay variation.
+			if ($this->input->post('submit'))
+			{
+				// We're redisplaying form, but ...
+				// We need a Tipster data bean to satisfy compiler, so make an empty one.
+				// We don't really need it as will be using data from $_POST array anyway.
+			$data['member'] = $this->Common_model->make_member();
+			$data['dropdown_members'] = $this->Common_model->fetch_membership_dropdown('member');
+			
+			$data['screen'] = $this->Common_model->make_screen();
+			$data['dropdown_screens'] = $this->Common_model->fetch_common_dropdown('screen');
+			
+				$data['rolls'] = $this->Admin_model->make_roll();
+			}
+			else
+			{
+				// This is an initial GET request for data,
+				// so pull Event data from database.
+			$data['member'] = $this->Common_model->make_member();
+			$data['dropdown_members'] = $this->Common_model->fetch_membership_dropdown('member');
+			
+			$data['screen'] = $this->Common_model->make_screen();
+			$data['dropdown_screens'] = $this->Common_model->fetch_common_dropdown('screen');
+			
+				$data['rolls'] = $this->Admin_model->fetch_roll($roll_id);
+			}
+
+			$data['body'] = $this->load->view('admin/user_roll_assign/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	
+	}
+	
+	
+	public function _roll_submit()
+	{
+		$data = array();
+		//$this->form_validation->set_rules('roll', 'Roll','trim|required|min_length[2]|max_length[512]|xss_clean');
+		//if ($this->form_validation->run())
+		//{
+		
+	     $roll_data = $this->Admin_model->make_roll($this->input->post());
+
+	     //print_r($roll_data);
+		
+	     if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
+			{
+				$this->Admin_model->update_roll($roll_data);
+			}
+			else
+			{
+				$last_inserted = $this->Admin_model->insert_roll($roll_data);
+			}
+					
+			
+		//redirect('admin/event_management');
+		//}
+			
+		// Form is not valid ... redisplay!
+		if ($this->input->post('id')) // we're updating, not inserting.
+		{
+			$this->_roll_edit();
+		}
+		else
+		{
+			$this->_roll_add();
+		}
+		
+
+	}
+
+	public function _roll_delete()
+	{
+		// Request params
+		$roll_id = $this->uri->segment(4);
+
+		if ($this->uri->segment(5) === FALSE)
+		{
+			$data['rolls'] = array('id' => $roll_id);
+
+			$data['body'] = $this->load->view('admin/user_roll_assign/delete', $data, true);
+			$this->load->view('templates/wrapper', $data);
+		}
+		else
+		{
+			$this->Admin_model->delete_roll($roll_id);
+			redirect('admin/user_roll_assign');
+		}
+	}
+	
+
+	
+	
+	// ------------------------------API for User Time Allocation Module---------------------------------------------/
+
+
+	public function user_time_allocation()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		$permission['data'] = $this->Admin_model->permission_check('11');
+		
+		if($permission['data']['status'] || $permission['data']['initial']){
+		// Request params
+		$action = $this->uri->segment(3); // detail|add|edit|delete
+	
+		switch($action)
+		{
+			case 'add':
+				$this->_time_allocation_add();
+				break;
+			case 'edit':
+				$this->_time_allocation_edit();
+				break;
+			case 'submit':
+				$this->_time_allocation_submit();
+				break;
+			case 'delete':
+				$this->_time_allocation_delete();
+				break;
+			default:
+				$this->_time_allocation_list();
+		}
+		}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+		}
+	}
+
+
+	public function _time_allocation_list()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		// View data
+		$data = array();
+		
+		$data['time_allocation'] = $this->Admin_model->fetch_time_allocations();
+
+		$data['body'] = $this->load->view('admin/time_allocation/index', $data, true);
+		$this->load->view('templates/wrapper', $data);
+		
+	}
+
+	public function _time_allocation_add()
+	{
+		// load Admin_model
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		// defining data array
+		$data = array();
+		// create form atrribute and assing a key vale pare
+		$data['form'] = array(
+			'mode' => 'insert', //form display with insert mode and not assigining Id
+			'redirect' => 'admin/user_time_allocation/submit'    // to redirect to submit action
+			);
+			
+			$data['feature'] = $this->Common_model->make_feature();
+			$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
+			
+			$data['employ'] = $this->Common_model->make_employ();
+			$data['dropdown_members'] = $this->Common_model->fetch_membership_dropdown('employ_name');
+			
+			// cerate imageupload attribute inside data array and assinging table collumns
+			$data['time_allocation'] = $this->Admin_model->make_time_allocation();
+			
+			// cerate body attribute inside data array and assinging from php bypassing data array($data)
+			$data['body'] = $this->load->view('admin/time_allocation/form', $data, true);
+			
+			// calling wraper view with data array include from body
+			$this->load->view('templates/wrapper', $data);
+		
+	}
+
+	public function _time_allocation_edit()
+	{
+		
+		// Request params
+		$roll_id = $this->uri->segment(4);
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'update', //from display with update mopde and  assigining Id param
+			'redirect' => 'admin/user_time_allocation/submit'
+			);
+
+			// Allow for form redisplay variation.
+			if ($this->input->post('submit'))
+			{
+				// We're redisplaying form, but ...
+				// We need a Tipster data bean to satisfy compiler, so make an empty one.
+				// We don't really need it as will be using data from $_POST array anyway.
+				$data['feature'] = $this->Admin_model->make_feature();
+				$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
+				
+				$data['member'] = $this->Common_model->make_member();
+				$data['dropdown_members'] = $this->Common_model->fetch_membership_dropdown('member_name');
+			
+				$data['time_allocation'] = $this->Admin_model->make_time_allocation();
+			}
+			else
+			{
+				// This is an initial GET request for data,
+				// so pull Event data from database.
+				$data['feature'] = $this->Admin_model->make_feature();
+				$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
+				
+				$data['member'] = $this->Common_model->make_member();
+				$data['dropdown_members'] = $this->Common_model->fetch_membership_dropdown('member_name');
+			
+				$data['time_allocation'] = $this->Admin_model->fetch_time_allocation($roll_id);
+			}
+
+			$data['body'] = $this->load->view('admin/time_allocation/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	
+	}
+	
+	
+	public function _time_allocation_submit()
+	{
+		$data = array();
+		//$this->form_validation->set_rules('roll', 'Roll','trim|required|min_length[2]|max_length[512]|xss_clean');
+		//if ($this->form_validation->run())
+		//{
+		 
+		$username = $this->session->userdata('user_name');
+		$member_id = $this->Admin_model->fetch_member_id($username);
+	    
+	     $time_allocation_data = $this->Admin_model->make_time_allocation($this->input->post());
+	     $time_allocation_data['member_id'] = $member_id['id'];
+
+	     //print_r($roll_data);
+		
+	     if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
+			{
+				$this->Admin_model->update_time_allocation($time_allocation_data);
+				$last_inserted = true;
+			}
+			else
+			{
+				$last_inserted = $this->Admin_model->insert_time_allocation($time_allocation_data);
+				
+			}
+					
+		if($last_inserted){
+			//redirect('admin/event_management');
+			//}
+				
+			// Form is not valid ... redisplay!
+			if ($this->input->post('id')) // we're updating, not inserting.
+			{
+				$this->_time_allocation_edit();
+			}
+			else
+			{
+				$this->_time_allocation_add();
+			}
+					
+		}else{
+				
+				$this->_time_allocation_add();
+				echo 'You have already been alocated this time slot';	
+		}
+		
+		
+
+	}
+
+	public function _time_allocation_delete()
+	{
+		// Request params
+		$time_allocation_id = $this->uri->segment(4);
+
+		if ($this->uri->segment(5) === FALSE)
+		{
+			$data['time_allocation'] = array('id' => $time_allocation_id);
+
+			$data['body'] = $this->load->view('admin/time_allocation/delete', $data, true);
+			$this->load->view('templates/wrapper', $data);
+		}
+		else
+		{
+			$this->Admin_model->delete_time_allocation($time_allocation_id);
+			redirect('admin/user_time_allocation');
+		}
+	}
 
 	// ==============================================================================/
 }

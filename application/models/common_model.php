@@ -72,12 +72,130 @@ function make_service($data = NULL)
 
 		return $service;
 	}
+	
+	 function make_member($data = NULL)
+	{
+		$members = array(
+				'id' => 0,
+				'user_name' => ''
+				
+		);
 
+		if (empty($data))
+		{
+			return $members;
+		}
+
+		foreach ($members as $k => $v)
+		{
+			if (isset($data[$k]))
+			{
+				$members[$k] = $data[$k];
+			}
+		}
+
+		return $members;
+	}
+
+	 function make_employ($data = NULL)
+	{
+		$employ = array(
+				'id' => '',
+				'first_name' => ''
+				
+		);
+
+		if (empty($data))
+		{
+			return $employ;
+		}
+
+		foreach ($employ as $k => $v)
+		{
+			if (isset($data[$k]))
+			{
+				$employ[$k] = $data[$k];
+			}
+		}
+
+		return $employ;
+	}
+	
+function make_screen($data = NULL)
+	{
+		$screens = array(
+				'id' => 0,
+				'name' => ''
+				
+		);
+
+		if (empty($data))
+		{
+			return $screens;
+		}
+
+		foreach ($screens as $k => $v)
+		{
+			if (isset($data[$k]))
+			{
+				$screens[$k] = $data[$k];
+			}
+		}
+
+		return $screens;
+	}
+
+	public function fetch_membership_dropdown($name, $id=null)
+	{
+		if ($name == 'member'){
+		$table = 'tbl_main_membership';
+		if($id){
+			$this->db->where('id', $id);
+		}
+		}elseif ($name == 'member_name'){
+		$table = 'tbl_main_membership';
+		if($id){
+			$this->db->where('id', $id);
+		}
+		}elseif ($name == 'employ_name'){
+		$table = 'tbl_main_employ_details';
+		if($id){
+			$this->db->where('id', $id);
+		}
+		}
 		
+		$query = $this->db->get($table);
+	    
+		$dropdown = array('-'=> 'Select a '.$name);
+
+		if ($query->num_rows() == 0)
+		{
+			return $dropdown;
+		}
+		if($name == 'member'){	
+		foreach($query->result_array() as $row)
+		{
+			$dropdown[$row['id']] = $row['user_name'];
+		}
+		}elseif($name == 'member_name'){
+		foreach($query->result_array() as $row)
+		{
+			$dropdown[$row['id']] = $row['first_name'];
+		}
+		}elseif($name == 'employ_name'){
+		foreach($query->result_array() as $row)
+		{
+			$dropdown[$row['id']] = $row['first_name'];
+		}
+		}
+
+		return ($dropdown);
+		
+	}	
 
 	public function fetch_common_dropdown($name, $id=null)
 	{
-	
+		
 		if ($name == 'feature'){
 		$table = 'tbl_main_features';
 	
@@ -102,7 +220,12 @@ function make_service($data = NULL)
 		if($id){
 			$this->db->where('id', $id);
 		}
-		} 
+		}elseif ($name == 'screen'){
+		$table = 'tbl_main_screens';
+		if($id){
+			$this->db->where('id', $id);
+		}
+		}
 		
 		
 		$query = $this->db->get($table);

@@ -21,7 +21,7 @@
 			<td><?php echo $row['price'] ?></td>
 			<td><?php echo $row['discount'] ?></td>
 			<td><?php echo $row['description'] ?></td>
-			<td><?php echo anchor('admin/service_price/delete/'.$row['id'], 'Delete', 'title="Delete Service Price"'); ?>
+			<td><?php echo anchor('admin/service_price/delete/'.$row['id'], 'Delete', 'class="btn btn-danger btn-xs" title="Delete Service Price"'); ?>
 			</td>
 		</tr>
 		<?php } ?>
@@ -29,4 +29,4 @@
 </table>
 </div>
 
-		<?php echo anchor('admin/service_price/add', 'Add Service Price', 'title="Add Service Price"'); ?>
+		<?php echo anchor('admin/service_price/add', 'Add Service Price', 'class="btn btn-primary btn-sm" title="Add Service Price"'); ?>

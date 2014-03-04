@@ -15,15 +15,15 @@
 		
 		<div id="field-name" class="control-group">	
 			<div class="controls">
-			<div>
+			<div class="form-group">
 				<input type="hidden" name="hidid" value="<?php echo $feature['id']; ?>">
-				<?php echo form_dropdown('feature_name', $dropdown_feature, set_value('name', $feature['name']),'id="feature_name"'); ?>
+				<?php echo form_dropdown('feature_id', $dropdown_feature, set_value('name', $feature['name']),'class="form-control" id="feature_name"'); ?>
 			</div>
 			</div>
 		</div>
 		<!-- For replaced and displayed -->
-		<div id="service_name"><select><option value=''>Select a service</option></select></div>
-		<div id="category_name"><select><option value=''>Select a category</option></select></div>
+		<div class="form-group" id="service_name"><select class="form-control"><option value=''>Select a service</option></select></div>
+		<div class="form-group" id="category_name"><select class="form-control"><option value=''>Select a category</option></select></div>
 		
 		<!-- div id="field-name" class="control-group">	
 			<div class="controls">
@@ -45,27 +45,27 @@
 			</div>
 		</div-->	
 		
-		<div id="field-name" class="control-group">
+		<div id="field-name" class="control-group form-group">
 			<div class="controls">
 				<?php form_label('Name', 'Image Name'); ?>
-				<input type="text" id="image-name" name="name" placeholder="Name" value="<?php echo set_value('name', $imageupload['name']); ?>" />
+				<input class="form-control" type="text" id="image-name" name="name" placeholder="Name" value="<?php echo set_value('name', $imageupload['name']); ?>" />
 				<?php echo form_error('name'); ?>
 			</div>
 		</div>
 		
-		<div id="field-category" class="control-group">
+		 <div id="field-description" class="control-group form-group">
 			<div class="controls">
-				<?php form_label('Name', 'category'); ?>
-				<input type="text" id="image-category-id" name="category" placeholder="category" value="<?php echo set_value('category', $imageupload['category']); ?>" />
-				<?php echo form_error('category'); ?>
+				<?php form_label('description', 'imasge-description'); ?>
+				<textarea class="form-control" rows="5" id="imasge-description" name="description" placeholder="Enter imasge description here."><?php echo set_value('description', $imageupload['description']); ?></textarea>
+				<?php echo form_error('biography'); ?>
 			</div>
 		</div>
 		
-		 <div id="field-description" class="control-group">
+		<div id="field-name" class="control-group form-group">
 			<div class="controls">
-				<?php form_label('description', 'imasge-description'); ?>
-				<textarea id="imasge-description" name="description" placeholder="Enter imasge description here."><?php echo set_value('description', $imageupload['description']); ?></textarea>
-				<?php echo form_error('biography'); ?>
+				<?php form_label('Alt', 'Image Alt'); ?>
+				<input class="form-control" type="text" id="image-alt" name="alt" placeholder="Alt" value="<?php echo set_value('alt', $imageupload['alt']); ?>" />
+				<?php echo form_error('alt'); ?>
 			</div>
 		</div>
 		
@@ -127,10 +127,10 @@
 			</div> -->
 		</div>  
 	</fieldset>
-
+<div class="form-group"></div>
 	<fieldset class="form-actions">
 		<button type="submit" name="submit" value="upload" class="send btn btn-primary"><span>Submit</span></button>
-		<?php echo anchor('admin/imageUpload/', 'Cancel'); ?>
+		<?php echo anchor('admin/imageUpload/', 'Cancel', 'class="btn btn-primary"'); ?>
 	</fieldset>
 
 <?php echo form_close(); ?>
