@@ -1,0 +1,173 @@
+.donate,
+.sidebar-tabs .nav li.active a,
+.pagination ul > li > a:hover,
+.likes:hover
+{
+background-image: linear-gradient(bottom, rgb(189,158,46) 49%, rgb(219,190,96) 70%, rgb(189,158,46) 88%);
+background-image: -o-linear-gradient(bottom, rgb(189,158,46) 49%, rgb(219,190,96) 70%, rgb(189,158,46) 88%);
+background-image: -moz-linear-gradient(bottom, rgb(189,158,46) 49%, rgb(219,190,96) 70%, rgb(189,158,46) 88%);
+background-image: -webkit-linear-gradient(bottom, rgb(189,158,46) 49%, rgb(219,190,96) 70%, rgb(189,158,46) 88%);
+background-image: -ms-linear-gradient(bottom, rgb(189,158,46) 49%, rgb(219,190,96) 70%, rgb(189,158,46) 88%);
+
+background-image: -webkit-gradient(
+linear,
+left bottom,
+left top,
+color-stop(0.49, rgb(189,158,46)),
+color-stop(0.7, rgb(219,190,96)),
+color-stop(0.88, rgb(189,158,46))
+);
+	background-color: #e9c54a;
+}
+.camera_prev:hover, .camera_next:hover, 
+#slider1 .buttons:hover,
+.serve-hover span:hover, 
+#slider2 .buttons:hover,
+.main-page-tabs .nav li.active a, 
+.drop-down > li:hover,
+.days li.active:after, 
+#search-form .search-submit,
+.doc-time:hover .doc-details,
+.accordians li h3:first-child:hover:before,
+.type4 .nav li.active a,
+.onhover a:hover,
+.client-meta > span,
+.serve-hover a:hover,
+.progress.indivisual .bar,
+.our-service h2 i,
+.error-404:before,
+header:before,
+#menu.menu2 li:hover a,
+.doctors-time > a
+{
+	background-color: #939E4F;
+}
+.sidebox-head, 
+.mCSB_horizontal > .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar, 
+.contact-form form .submit:hover, 
+.skill-left > h4:after,
+.blog-post-views,
+#slider3 .buttons:hover,
+.team-grid-title > span,
+.donate-updown,
+.gallery-column:hover .img-title,
+.single-post-date:after ,
+.bottom-footer ul,
+.bottom-footer:After,
+#menu.menu2 li .drop-down li > a:after
+{
+	background-color: transparent;
+}
+header,
+.slider-area, 
+#slider1 .overview li:hover,
+.doc:hover .caption, 
+.full-page-title h1,
+.gallery-item:hover:after,
+.our-service > p,
+.recent-event-img:hover,
+.post-intro,
+.single-post-date,
+.team-list-desc h2,
+.team-list-img:hover,
+.gallery-column:hover,
+.post-gallery,
+.toggle-img:after,
+.toggle-img:before,
+.toggle-title
+{
+	border-color:#bd9d2e;
+}
+.testimonials,
+.blog-list-img:hover,
+.sidebar-widget li a,
+.post-image,
+.post-video,
+footer,
+.flickr-images > a:hover,
+.team-member:hover .contact-bar,
+#menu.menu2 li .drop-down  li  .second li:hover a,
+#menu.menu2 li .drop-down  li:hover > a 
+{
+	border-color:#939E4F;
+}
+.triangle-design, 
+#slider2 .overview li:hover .triangle-design,
+.type3 .nav li.active a,
+.mCSB_dragger_bar:before,
+.blog-list-date,
+.doc:hover
+{
+	border-bottom-color:#bd9d2e;
+}
+#menu ul .drop-down,
+.aboutus .nav li.active a,
+.gallery-tabs .nav li.active a, 
+.gallery-tabs .nav li.active a:hover,
+.gallery-tabs .nav li a:hover,
+.pricing ul:hover .price-head:after,
+.bottom-footer ul:before
+{
+	border-top-color:#bd9d2e;
+}
+.tab-post:hover,
+.viewall:before
+{
+	border-left-color:#bd9d2e;
+}
+#menu li:hover > a, 
+.speciality, 
+ul.round li.roundabout-in-focus h3
+,#tweets li h5, 
+.star, 
+.continue,
+.continue:hover,
+.tabpost-detail > p a:hover,
+.tag-clouds > a:hover,
+.replies,
+.reply,
+.member-name > span,
+.type3 .nav li.active a,
+.readmore:hover,
+.sidebar-widget li a:hover,
+.error-404 h1 span,
+#menu.menu2 li .drop-down  li  .second li:hover a,
+#menu.menu2 li .drop-down  li:hover > a,
+.post-details h2 a:hover,
+.abt-client > p,
+.caption > h5:first-child,
+a,a:hover,
+.sidebar-widget .viewall
+ {
+	color:#e9c54a;
+}
+.slogan, 
+#slider2 .overview li:hover h4, 
+.main-page-tabs .tab-content .days li.active a, 
+.footer-title > span,
+.published-date .blue,
+.service-doc .details span,
+.aboutus .nav li.active a,
+.sidebar-widget-title span,
+.main-title span,
+.blog-list-desc h3:hover a,
+.grid-view h3:hover a,
+#slider3 .overview li h6 a:hover,
+.recent-event-desc h2:hover a,
+.tag-clouds > h4,
+.comment-details > h6,
+.days li.active a,
+.days li.active a:focus,
+.days li.active a:hover
+{
+	color:#bd9d2e;
+}
+.coloured {
+	color:#bd9d2e;
+}
+.img-title,
+.post-img:after,
+.video-title{
+	background:none repeat 0 0 rgba(189, 157, 46, 0.9);
+}
+
