@@ -4,7 +4,7 @@
     <title>Salon Odel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <?php $path = base_url(). 'frontend/'; ?>
+    <?php $path = base_url(). 'frontend/';?>
     <link href="<?php echo $path; ?>/css/common.css" rel="stylesheet">
     <link href="<?php echo $path; ?>/css/style.css" rel="stylesheet">
     <link href="<?php echo $path; ?>/css/katayam_css.css" rel="stylesheet">
@@ -52,6 +52,11 @@
                 Page.init();
             });
 
+             <!-- Logo is dynamically loaded from frontend controller getLogoInfo(client_id)  -->
+               	$("#logo").load("/frontend/getLogoInfo/1");
+
+
+
         });
 
     </script>
@@ -67,9 +72,9 @@
     <div class="theme-layout">
         <header>
             <div class="container">
-                <div class="logo">
-                    <a href="index.html" title=""><img src="<?php echo $path; ?>/img/resource/logo1.jpg" alt="" /></a>
-                </div>
+                <!-- Logo is dynamically loaded from frontend controller getLogoInfo(cleint_id)  -->
+                <div class="logo" id="logo"></div>
+                
 
                 <div id="menu">
                     <ul>
@@ -163,34 +168,9 @@
         <h2><i class="theme-icon big lab"></i>Hair Cut 2</h2>
         <p>designbirds sample description for odel salondesignbirds sample description for odel salondesignbirds sample description for odel salon</p>
       </div>
-                
-   
-    
-      
-                    
-     
-                
-     
-
-
-					
-      
+                   
     </div>
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                     
+
                                     </div>
                                     <div class="boxes-right">
                                           

@@ -446,9 +446,36 @@
                     dataType: "html",
 
                     success: function(data) {
-                        $('#service_name').html(data);
+                        
+						
+						$('#service_name').html(data);
+						//alert('kugdfskjf');
+                        
                     }
+                	
+
+                
                 })
+
+                	if ($('#feature_name').val()=='10'){
+					alert('came here');
+						$.ajax({
+                         // It must be used as absolute path not relative because otherwise cannot use in EDIT. edit uri and add uri is DIFFERENT
+                         url: "/admin/second_level_dropdown_call_empty",
+                         async: false,
+                         type: "POST",
+                         data: "service_id",
+                         dataType: "html",
+
+                         success: function(data) {
+                             $('#category_name').html(data);
+                         }
+                     })
+									
+					}
+
+
+                
             });
 
         	$('#service_name').change(function () {

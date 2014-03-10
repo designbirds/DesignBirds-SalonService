@@ -191,19 +191,17 @@ class Admin extends CI_Controller {
 		 
 		$username = $this->session->userdata('user_name');
 		$member_id = $this->Admin_model->fetch_member_id($username);
-			
+
 	     $imageupload = $this->Admin_model->make_image_uploade($this->input->post());
+	     	if($imageupload['feature_id']== 10){
+	     		$imageupload['category_id'] = 100;
+	     		$imageupload['service_id'] = 100;
+	     	}
+	     print_r($imageupload);
 	     $imageupload['member_id'] = $member_id['id'];
 
 		
-	     if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
-			{
-				$this->Admin_model->update_image_uploade($imageupload);
-			}
-			else
-			{
-				$last_inserted = $this->Admin_model->insert_image_uploade($imageupload);
-			}
+	    $last_inserted = $this->input->post('id');
 			
 // =======================image upload======================================
 
@@ -230,6 +228,7 @@ class Admin extends CI_Controller {
 						$filename = $this->input->post('id').'-'.$key.'-'.strtotime($lastupdated).'.png';
 
 						$config['file_name']  = $filename;
+						$imageupload['name'] = $config['file_name'];
 
 					}
 					else
@@ -237,6 +236,7 @@ class Admin extends CI_Controller {
 						$filename = $last_inserted.'-'.$key.'-'.strtotime($lastupdated).'.png';
 
 						$config['file_name']  = $filename;
+						$imageupload['name'] = $config['file_name'];
 
 					}
 					// Assigning the file name to the file
@@ -258,14 +258,21 @@ class Admin extends CI_Controller {
 						foreach($data as $row)
 						{
 						$file_path = './content/'.$row['file_name'];
-						echo ' filename after >>>'.$file_path.'</br>';
+						//echo ' filename after >>>'.$file_path.'</br>';
 						$_POST['image_name'] = $file_path;
 						}
 					}
 				}
 
 			}
-
+			 if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
+			{
+				$this->Admin_model->update_image_uploade($imageupload);
+			}
+			else
+			{
+				$last_inserted = $this->Admin_model->insert_image_uploade($imageupload);
+			}
 			//=====================================end========================================================
 			
 			
@@ -404,21 +411,27 @@ class Admin extends CI_Controller {
 		//echo 'dropdown_call'; 
 		$feature_id = $this->input->post('feature_id');
 		
+		
+		
 		$this->load->model('Common_model');
 		// This if statement define where it needs to call in feature table
-		if ($feature_id=='1'){
-		 $data['dropdown_services'] = $this->Common_model->fetch_common_dropdown('header');
-	    }
-		else if ($feature_id=='2'){
+		if ($feature_id=='2'){
 		 $data['dropdown_services'] = $this->Common_model->fetch_common_dropdown('services');
-	    }
+	    $this->load->view('templates/first_level_dropdown', $data);
+		}
 		else if ($feature_id=='4'){
 		 $data['dropdown_services'] = $this->Common_model->fetch_common_dropdown('events');
-	    }	
+	    $this->load->view('templates/first_level_dropdown', $data);
+		}
+		else if ($feature_id=='10'){
+		 
+	    $this->load->view('templates/first_level_dropdown_empty');
+		
+		}	
 			//$data['hairdress'] = $this->Common_model->make_feature();
 			//$data['dropdown_hairdress'] = $this->Common_model->fetch_common_dropdown('hairdress');
 			
-		$this->load->view('templates/first_level_dropdown', $data);
+		
 	
 	
 	}
@@ -434,6 +447,14 @@ class Admin extends CI_Controller {
 			
 		
 		$this->load->view('templates/second_level_dropdown', $data);
+	
+	}
+	
+	
+public function  second_level_dropdown_call_empty()
+	{
+		//echo 'dropdown_call' ; 
+		$this->load->view('templates/second_level_dropdown_empty');
 	
 	}
 	

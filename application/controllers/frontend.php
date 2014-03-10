@@ -38,9 +38,25 @@ class Frontend extends CI_Controller {
 	 */
 	public function index()
 	{
-			$data = array();
+		$data = array();
 
 		//$data['body'] = $this->load->view('admin/index', $data, true);
 		$this->load->view('front-end/odelsalon/index', $data);
+			
+	}
+	
+	public function getLogoInfo($client_id){
+		// Camel Case
+		$data = array();
+		$this->load->model('Frontend_model');
+			$data['member_id'] = $this->Frontend_model->getMemberId('admin');
+			$data['featureId'] = $this->Frontend_model->getFeatureId('logo');
+		
+		$var1 = $data['member_id']['id'];
+		$var2 = $data['featureId']['id'];
+		
+		$data['logo'] = $this->Frontend_model->getLogoArray($var1,$var2);
+		
+		$this->load->view('front-end/odelsalon/elements/logo', $data);
 	}
 }

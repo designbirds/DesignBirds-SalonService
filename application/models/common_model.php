@@ -209,11 +209,10 @@ function make_screen($data = NULL)
 		 $table = 'tbl_service_categories';
 			$this->db->where('service_id', $id);
 	    
-		}elseif ($name == 'header'){
-		$table = 'tbl_main_header';
-		if($id){
-			$this->db->where('id', $id);
-		}
+		}elseif ($name == 'banner'){
+			
+			$dropdown = array('-'=> 'No need to Select a '.$name);
+			return $dropdown;
 		
 		}elseif ($name == 'events'){
 		$table = 'tbl_main_events';
