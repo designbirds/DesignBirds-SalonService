@@ -41,7 +41,7 @@ class Admin extends CI_Controller {
 
 		// View data
 		$data = array();
-
+		$data['active'] = array('1' => '','2' => 'active','3' => '','4' => '');
 		$data['body'] = $this->load->view('admin/index', $data, true);
 		$this->load->view('templates/wrapper', $data);
 		//echo "Hay it works";
@@ -68,6 +68,7 @@ class Admin extends CI_Controller {
 	{
 		$this->load->model('Admin_model');
 		$this->load->model('Common_model');
+		
 		
 		$permission['data'] = $this->Admin_model->permission_check('1');
 		
@@ -107,9 +108,11 @@ class Admin extends CI_Controller {
 
 		// View data
 		$data = array();
+		$data['active'] = array('1' => '','2' => '','3' => 'active','4' => '');
+
 		// getting list imageupload table results as an array
 		$data['imageupload'] = $this->Admin_model->fetch_image_uploads();
-
+		
 		$data['body'] = $this->load->view('admin/image_upload/index', $data, true);
 		$this->load->view('templates/wrapper', $data);
 		
@@ -124,14 +127,15 @@ class Admin extends CI_Controller {
 		
 		// defining data array
 		$data = array();
+	
 		// create form atrribute and assing a key vale pare
 		$data['form'] = array(
 			'mode' => 'insert', //form display with insert mode and not assigining Id
 			'redirect' => 'admin/imageUpload/submit'    // to redirect to submit action
 			);
 			
-			$data['feature'] = $this->Common_model->make_feature();
-			$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
+			$data['service'] = $this->Common_model->make_service();
+			$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
 			
 			
 			
@@ -152,7 +156,8 @@ class Admin extends CI_Controller {
 
 		// View data
 		$data = array();
-
+	
+		
 		$data['form'] = array(
 			'mode' => 'update', //from display with update mopde and  assigining Id param
 			'redirect' => 'admin/imageUpload/submit'
@@ -164,17 +169,17 @@ class Admin extends CI_Controller {
 				// We're redisplaying form, but ...
 				// We need a Tipster data bean to satisfy compiler, so make an empty one.
 				// We don't really need it as will be using data from $_POST array anyway.
-				$data['feature'] = $this->Admin_model->make_feature();
-				$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
-				$data['imageupload'] = $this->Admin_model->make_image_uploade();
+				$data['service'] = $this->Common_model->make_service();
+			$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
+			$data['imageupload'] = $this->Admin_model->make_image_uploade();
 			}
 			else
 			{
 				// This is an initial GET request for data,
 				// so pull Event data from database.
-				$data['feature'] = $this->Admin_model->make_feature();
-				$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
-				$data['imageupload'] = $this->Admin_model->fetch_image_uploade($image_id);
+				$data['service'] = $this->Common_model->make_service();
+			$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
+			$data['imageupload'] = $this->Admin_model->fetch_image_uploade($image_id);
 			}
 
 			$data['body'] = $this->load->view('admin/image_upload/form', $data, true);
@@ -185,20 +190,22 @@ class Admin extends CI_Controller {
 	public function _image_submit()
 	{
 		$data = array();
-		$this->form_validation->set_rules('name', 'name','trim|required|min_length[2]|max_length[512]|xss_clean');
+		$this->form_validation->set_rules('description', 'description','trim|required|min_length[2]|max_length[512]|xss_clean');
 		if ($this->form_validation->run())
 		{
 		 
 		$username = $this->session->userdata('user_name');
 		$member_id = $this->Admin_model->fetch_member_id($username);
+		$client_id = $this->Admin_model->fetch_client_id('odel');
 
 	     $imageupload = $this->Admin_model->make_image_uploade($this->input->post());
-	     	if($imageupload['feature_id']== 10){
+	     	/*if($imageupload['feature_id']== 10){
 	     		$imageupload['category_id'] = 100;
 	     		$imageupload['service_id'] = 100;
-	     	}
-	     print_r($imageupload);
+	     	}*/
+	     //print_r($imageupload);
 	     $imageupload['member_id'] = $member_id['id'];
+	     $imageupload['client_id'] = $client_id['id'];
 
 		
 	    $last_inserted = $this->input->post('id');
@@ -208,7 +215,7 @@ class Admin extends CI_Controller {
 			$lastupdated = date("Y-m-d H:i:s");
 			echo ' $lastupdated >>>'.$lastupdated;
 			
-			$config['upload_path'] = realpath(APPPATH . './content/');
+			$config['upload_path'] = realpath(APPPATH . '../frontend/img/resource');
 			$config['allowed_types'] = 'gif|jpg|png';
 			/*$config['max_size']	= '100';
 			$config['max_width']  = '1024';
@@ -225,16 +232,16 @@ class Admin extends CI_Controller {
 
 					if ($this->input->post('id')) // we're updating, not inserting.
 					{
-						$filename = $this->input->post('id').'-'.$key.'-'.strtotime($lastupdated).'.png';
-
+						$filename = 'service-'.strtotime($lastupdated).'.png';
+						
 						$config['file_name']  = $filename;
 						$imageupload['name'] = $config['file_name'];
 
 					}
 					else
 					{
-						$filename = $last_inserted.'-'.$key.'-'.strtotime($lastupdated).'.png';
-
+						$filename = 'service-'.strtotime($lastupdated).'.png';
+						
 						$config['file_name']  = $filename;
 						$imageupload['name'] = $config['file_name'];
 
@@ -390,7 +397,8 @@ class Admin extends CI_Controller {
 	{
 		// Request params
 		$tipster_id = $this->uri->segment(4);
-
+	
+		
 		if ($this->uri->segment(5) === FALSE)
 		{
 			$data['image_upload'] = array('id' => $tipster_id);
@@ -405,48 +413,281 @@ class Admin extends CI_Controller {
 		}
 	}
 
+	
+	
+	// ------------------------------API for Recent Image upload Module---------------------------------------------/
+
+	// user clicks imageupload link with this url localhost:8080/admin/imageUpload
+	// display list of added images without parameter 
+	public function recent_imageUpload()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		$permission['data'] = $this->Admin_model->permission_check('1');
+		
+		if($permission['data']['status'] || $permission['data']['initial']){
+		// Request params
+		$action = $this->uri->segment(3); // detail|add|edit|delete
+	
+		switch($action)
+		{
+			case 'add':
+				$this->_recent_image_add();
+				break;
+			case 'edit':
+				$this->_recent_image_edit();
+				break;
+			case 'submit':
+				$this->_recent_image_submit();
+				break;
+			case 'delete':
+				$this->_recent_image_delete();
+				break;
+			default:
+				$this->_recent_image_list();
+		}
+		}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+			}
+	}
+
+
+	public function _recent_image_list()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+
+		// View data
+		$data = array();
+		// getting list imageupload table results as an array
+		$data['imageupload'] = $this->Admin_model->fetch_recent_image_uploads();
+
+		$data['body'] = $this->load->view('admin/recent_image_upload/index', $data, true);
+		$this->load->view('templates/wrapper', $data);
+		
+		
+}
+
+	public function _recent_image_add()
+	{
+		// load Admin_model
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		// defining data array
+		$data = array();
+		// create form atrribute and assing a key vale pare
+		$data['form'] = array(
+			'mode' => 'insert', //form display with insert mode and not assigining Id
+			'redirect' => 'admin/recent_imageUpload/submit'    // to redirect to submit action
+			);
+			
+			$data['service'] = $this->Common_model->make_service();
+			$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
+			
+			
+			
+			// cerate imageupload attribute inside data array and assinging table collumns
+			$data['imageupload'] = $this->Admin_model->make_recent_image_uploade();
+			
+			// cerate body attribute inside data array and assinging from php bypassing data array($data)
+			$data['body'] = $this->load->view('admin/recent_image_upload/form', $data, true);
+			
+			// calling wraper view with data array include from body
+			$this->load->view('templates/wrapper', $data);
+	}
+
+	public function _recent_image_edit()
+	{
+		// Request params
+		$image_id = $this->uri->segment(4);
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'update', //from display with update mopde and  assigining Id param
+			'redirect' => 'admin/recent_imageUpload/submit'
+			);
+
+			// Allow for form redisplay variation.
+			if ($this->input->post('submit'))
+			{
+				// We're redisplaying form, but ...
+				// We need a Tipster data bean to satisfy compiler, so make an empty one.
+				// We don't really need it as will be using data from $_POST array anyway.
+				$data['service'] = $this->Common_model->make_service();
+			$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
+			$data['imageupload'] = $this->Admin_model->make_recent_image_uploade();
+			}
+			else
+			{
+				// This is an initial GET request for data,
+				// so pull Event data from database.
+				$data['service'] = $this->Common_model->make_service();
+			$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
+			$data['imageupload'] = $this->Admin_model->fetch_recent_image_uploade($image_id);
+			}
+
+			$data['body'] = $this->load->view('admin/recent_image_upload/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	}
+	
+	
+	public function _recent_image_submit()
+	{
+		$data = array();
+		$this->form_validation->set_rules('description', 'description','trim|required|min_length[2]|max_length[512]|xss_clean');
+		if ($this->form_validation->run())
+		{
+		 
+		$username = $this->session->userdata('user_name');
+		$member_id = $this->Admin_model->fetch_member_id($username);
+		$client_id = $this->Admin_model->fetch_client_id('odel');
+
+	     $imageupload = $this->Admin_model->make_recent_image_uploade($this->input->post());
+	     	/*if($imageupload['feature_id']== 10){
+	     		$imageupload['category_id'] = 100;
+	     		$imageupload['service_id'] = 100;
+	     	}*/
+	     //print_r($imageupload);
+	     $imageupload['member_id'] = $member_id['id'];
+	     $imageupload['client_id'] = $client_id['id'];
+
+		
+	    $last_inserted = $this->input->post('id');
+			
+// =======================image upload======================================
+
+			$lastupdated = date("Y-m-d H:i:s");
+			echo ' $lastupdated >>>'.$lastupdated;
+			
+			$config['upload_path'] = realpath(APPPATH . '../frontend/img/resource');
+			$config['allowed_types'] = 'gif|jpg|png';
+			/*$config['max_size']	= '100';
+			$config['max_width']  = '1024';
+			$config['max_height']  = '768';
+			*/
+			
+			$this->load->library('upload', $config);
+			foreach($_FILES as $key => $value)
+			{
+
+				if( ! empty($value['name']))
+				{
+					echo ' name >>>'.$key;
+
+					if ($this->input->post('id')) // we're updating, not inserting.
+					{
+						$filename = 'recent-'.strtotime($lastupdated).'.png';
+						
+						$config['file_name']  = $filename;
+						$imageupload['name'] = $config['file_name'];
+
+					}
+					else
+					{
+						$filename = 'recent-'.strtotime($lastupdated).'.png';
+						
+						$config['file_name']  = $filename;
+						$imageupload['name'] = $config['file_name'];
+
+					}
+					// Assigning the file name to the file
+					$this->upload->initialize($config);
+					
+					//echo ' filename before >>>'.$filename.'</br>';
+					//echo ' >>>'. $this->upload->do_upload($key);
+					
+					if ( ! $this->upload->do_upload($key))
+					{
+						$error = array('error' => $this->upload->display_errors());
+
+						$data['body'] = $this->load->view('admin/tipsters/upload_unsuccess', $error);
+					}
+					else
+					{
+						$data = array('upload_data' => $this->upload->data());
+
+						foreach($data as $row)
+						{
+						$file_path = './content/'.$row['file_name'];
+						//echo ' filename after >>>'.$file_path.'</br>';
+						$_POST['image_name'] = $file_path;
+						}
+					}
+				}
+
+			}
+			 if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
+			{
+				$this->Admin_model->update_recent_image_uploade($imageupload);
+			}
+			else
+			{
+				$last_inserted = $this->Admin_model->insert_recent_image_uploade($imageupload);
+			}
+			//=====================================end========================================================
+			
+			
+		//redirect('admin/imageUpload');
+		}
+			
+		// Form is not valid ... redisplay!
+		if ($this->input->post('id')) // we're updating, not inserting.
+		{
+			$this->_recent_image_edit();
+		}
+		else
+		{
+			$this->_recent_image_add();
+		}
+		
+
+	}
+
+	public function _recent_image_delete()
+	{
+		// Request params
+		$tipster_id = $this->uri->segment(4);
+
+		if ($this->uri->segment(5) === FALSE)
+		{
+			$data['image_upload'] = array('id' => $tipster_id);
+
+			$data['body'] = $this->load->view('admin/recent_image_upload/delete', $data, true);
+			$this->load->view('templates/wrapper', $data);
+		}
+		else
+		{
+			$this->Admin_model->delete_recent_image($tipster_id);
+			redirect('admin/recent_imageUpload');
+		}
+	}
+	
 
 	public function  first_level_dropdown_call()
 	{
 		//echo 'dropdown_call'; 
-		$feature_id = $this->input->post('feature_id');
-		
-		
-		
-		$this->load->model('Common_model');
-		// This if statement define where it needs to call in feature table
-		if ($feature_id=='2'){
-		 $data['dropdown_services'] = $this->Common_model->fetch_common_dropdown('services');
-	    $this->load->view('templates/first_level_dropdown', $data);
-		}
-		else if ($feature_id=='4'){
-		 $data['dropdown_services'] = $this->Common_model->fetch_common_dropdown('events');
-	    $this->load->view('templates/first_level_dropdown', $data);
-		}
-		else if ($feature_id=='10'){
-		 
-	    $this->load->view('templates/first_level_dropdown_empty');
-		
-		}	
-			//$data['hairdress'] = $this->Common_model->make_feature();
-			//$data['dropdown_hairdress'] = $this->Common_model->fetch_common_dropdown('hairdress');
-			
-		
-	
-	
-	}
-	
-	
-	public function  second_level_dropdown_call()
-	{
-		//echo 'dropdown_call' ; 
 		$service_id = $this->input->post('service_id');
+		
+		
 		
 		$this->load->model('Common_model');
 		$data['dropdown_categories'] = $this->Common_model->fetch_common_dropdown('category', $service_id);
 			
 		
 		$this->load->view('templates/second_level_dropdown', $data);
+		// This if statement define where it needs to call in feature table
+			
+			//$data['hairdress'] = $this->Common_model->make_feature();
+			//$data['dropdown_hairdress'] = $this->Common_model->fetch_common_dropdown('hairdress');
+			
+		
+	
 	
 	}
 	
@@ -458,6 +699,488 @@ public function  second_level_dropdown_call_empty()
 	
 	}
 	
+	
+	// ------------------------------API for Image upload Module---------------------------------------------/
+
+	// user clicks imageupload link with this url localhost:8080/admin/imageUpload
+	// display list of added images without parameter 
+	public function logo_design()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		$permission['data'] = $this->Admin_model->permission_check('12');
+		
+		if($permission['data']['status'] || $permission['data']['initial']){
+		// Request params
+		$action = $this->uri->segment(3); // detail|add|edit|delete
+	
+		switch($action)
+		{
+			case 'add':
+				$this->_logo_add();
+				break;
+			case 'edit':
+				$this->_logo_edit();
+				break;
+			case 'submit':
+				$this->_logo_submit();
+				break;
+			case 'delete':
+				$this->_logo_delete();
+				break;
+			default:
+				$this->_logo_list();
+		}
+		}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+			}
+	}
+
+
+	public function _logo_list()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+
+		// View data
+		$data = array();
+		// getting list imageupload table results as an array
+		$data['imageupload'] = $this->Admin_model->fetch_logo_design();
+
+		$data['body'] = $this->load->view('admin/logo/index', $data, true);
+		$this->load->view('templates/wrapper', $data);
+		
+		
+}
+
+	public function _logo_add()
+	{
+		// load Admin_model
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		// defining data array
+		$data = array();
+		// create form atrribute and assing a key vale pare
+		$data['form'] = array(
+			'mode' => 'insert', //form display with insert mode and not assigining Id
+			'redirect' => 'admin/logo_design/submit'    // to redirect to submit action
+			);
+			
+			// cerate imageupload attribute inside data array and assinging table collumns
+			$data['imageupload'] = $this->Admin_model->make_logo();
+			
+			// cerate body attribute inside data array and assinging from php bypassing data array($data)
+			$data['body'] = $this->load->view('admin/logo/form', $data, true);
+			
+			// calling wraper view with data array include from body
+			$this->load->view('templates/wrapper', $data);
+	}
+
+	public function _logo_edit()
+	{
+		// Request params
+		$image_id = $this->uri->segment(4);
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'update', //from display with update mopde and  assigining Id param
+			'redirect' => 'admin/logo_design/submit'
+			);
+
+			// Allow for form redisplay variation.
+			if ($this->input->post('submit'))
+			{
+				// We're redisplaying form, but ...
+				// We need a Tipster data bean to satisfy compiler, so make an empty one.
+				// We don't really need it as will be using data from $_POST array anyway.
+				$data['imageupload'] = $this->Admin_model->make_logo();
+			}
+			else
+			{
+				// This is an initial GET request for data,
+				// so pull Event data from database.
+				$data['imageupload'] = $this->Admin_model->fetch_logo($image_id);
+			}
+
+			$data['body'] = $this->load->view('admin/logo/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	}
+	
+	
+	public function _logo_submit()
+	{
+		$data = array();
+		 
+		$username = $this->session->userdata('user_name');
+		$member_id = $this->Admin_model->fetch_member_id($username);
+		$client_id = $this->Admin_model->fetch_client_id('odel');
+
+	     $imageupload = $this->Admin_model->make_logo($this->input->post());
+	     	
+	     
+	     $imageupload['member_id'] = $member_id['id'];
+	     $imageupload['client_id'] = $client_id['id'];
+
+		
+	    $last_inserted = $this->input->post('id');
+			
+// =======================image upload======================================
+
+			$lastupdated = date("Y-m-d H:i:s");
+			//echo ' $lastupdated >>>'.$lastupdated;
+			
+			$config['upload_path'] = realpath(APPPATH . '../frontend/img/resource');
+			$config['allowed_types'] = 'gif|jpg|png';
+			/*$config['max_size']	= '100';
+			$config['max_width']  = '1024';
+			$config['max_height']  = '768';
+			*/
+			
+			$this->load->library('upload', $config);
+			foreach($_FILES as $key => $value)
+			{
+
+				if( ! empty($value['name']))
+				{
+					//echo ' name >>>'.$key;
+
+					if ($this->input->post('id')) // we're updating, not inserting.
+					{
+						$filename = 'logo-'.strtotime($lastupdated).'.png';
+
+						$config['file_name']  = $filename;
+						$imageupload['name'] = $config['file_name'];
+
+					}
+					else
+					{
+						$filename = 'logo-'.strtotime($lastupdated).'.png';
+
+						$config['file_name']  = $filename;
+						$imageupload['name'] = $config['file_name'];
+
+					}
+					// Assigning the file name to the file
+					$this->upload->initialize($config);
+					
+					//echo ' filename before >>>'.$filename.'</br>';
+					//echo ' >>>'. $this->upload->do_upload($key);
+					
+					if ( ! $this->upload->do_upload($key))
+					{
+						$error = array('error' => $this->upload->display_errors());
+
+						$data['body'] = $this->load->view('admin/tipsters/upload_unsuccess', $error);
+					}
+					else
+					{
+						$data = array('upload_data' => $this->upload->data());
+
+						foreach($data as $row)
+						{
+						$file_path = '../frontend/img/resource'.$row['file_name'];
+						//echo ' filename after >>>'.$file_path.'</br>';
+						$_POST['image_name'] = $file_path;
+						}
+					}
+				}
+
+			}
+			 if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
+			{
+				$this->Admin_model->update_logo($imageupload);
+			}
+			else
+			{
+				$last_inserted = $this->Admin_model->insert_logo($imageupload);
+			}
+			//=====================================end========================================================
+			
+			
+		//redirect('admin/imageUpload');
+		//print_r($imageupload);
+			
+		// Form is not valid ... redisplay!
+		if ($this->input->post('id')) // we're updating, not inserting.
+		{
+			$this->_logo_edit();
+		}
+		else
+		{
+			$this->_logo_add();
+		}
+		
+
+	}
+
+
+
+	public function _logo_delete()
+	{
+		// Request params
+		$logo_id = $this->uri->segment(4);
+
+		if ($this->uri->segment(5) === FALSE)
+		{
+			$data['logo'] = array('id' => $logo_id);
+
+			$data['body'] = $this->load->view('admin/logo/delete', $data, true);
+			$this->load->view('templates/wrapper', $data);
+		}
+		else
+		{
+			$this->Admin_model->delete_logo($logo_id);
+			redirect('admin/logo_design');
+		}
+	}
+	
+	
+	
+	// ------------------------------API for Image upload Module---------------------------------------------/
+
+	// user clicks imageupload link with this url localhost:8080/admin/imageUpload
+	// display list of added images without parameter 
+	public function banner_design()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		$permission['data'] = $this->Admin_model->permission_check('13');
+		
+		if($permission['data']['status'] || $permission['data']['initial']){
+		// Request params
+		$action = $this->uri->segment(3); // detail|add|edit|delete
+	
+		switch($action)
+		{
+			case 'add':
+				$this->_banner_add();
+				break;
+			case 'edit':
+				$this->_banner_edit();
+				break;
+			case 'submit':
+				$this->_banner_submit();
+				break;
+			case 'delete':
+				$this->_banner_delete();
+				break;
+			default:
+				$this->_banner_list();
+		}
+		}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+			}
+	}
+
+
+	public function _banner_list()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+
+		// View data
+		$data = array();
+		// getting list imageupload table results as an array
+		$data['imageupload'] = $this->Admin_model->fetch_banner_design();
+
+		$data['body'] = $this->load->view('admin/banner/index', $data, true);
+		$this->load->view('templates/wrapper', $data);
+		
+		
+}
+
+	public function _banner_add()
+	{
+		// load Admin_model
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		// defining data array
+		$data = array();
+		// create form atrribute and assing a key vale pare
+		$data['form'] = array(
+			'mode' => 'insert', //form display with insert mode and not assigining Id
+			'redirect' => 'admin/banner_design/submit'    // to redirect to submit action
+			);
+			
+			// cerate imageupload attribute inside data array and assinging table collumns
+			$data['imageupload'] = $this->Admin_model->make_banner();
+			
+			// cerate body attribute inside data array and assinging from php bypassing data array($data)
+			$data['body'] = $this->load->view('admin/banner/form', $data, true);
+			
+			// calling wraper view with data array include from body
+			$this->load->view('templates/wrapper', $data);
+	}
+
+	public function _banner_edit()
+	{
+		// Request params
+		$image_id = $this->uri->segment(4);
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'update', //from display with update mopde and  assigining Id param
+			'redirect' => 'admin/banner_design/submit'
+			);
+
+			// Allow for form redisplay variation.
+			if ($this->input->post('submit'))
+			{
+				// We're redisplaying form, but ...
+				// We need a Tipster data bean to satisfy compiler, so make an empty one.
+				// We don't really need it as will be using data from $_POST array anyway.
+				$data['imageupload'] = $this->Admin_model->make_banner();
+			}
+			else
+			{
+				// This is an initial GET request for data,
+				// so pull Event data from database.
+				$data['imageupload'] = $this->Admin_model->fetch_banner($image_id);
+			}
+
+			$data['body'] = $this->load->view('admin/banner/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	}
+	
+	
+	public function _banner_submit()
+	{
+		$data = array();
+		 
+		$username = $this->session->userdata('user_name');
+		$member_id = $this->Admin_model->fetch_member_id($username);
+		$client_id = $this->Admin_model->fetch_client_id('odel');
+
+	     $imageupload = $this->Admin_model->make_banner($this->input->post());
+	     	
+	     
+	     $imageupload['member_id'] = $member_id['id'];
+	     $imageupload['client_id'] = $client_id['id'];
+
+		
+	    $last_inserted = $this->input->post('id');
+			
+// =======================image upload======================================
+
+			$lastupdated = date("Y-m-d H:i:s");
+			//echo ' $lastupdated >>>'.$lastupdated;
+			
+			$config['upload_path'] = realpath(APPPATH . '../frontend/img/resource');
+			$config['allowed_types'] = 'gif|jpg|png';
+			/*$config['max_size']	= '100';
+			$config['max_width']  = '1024';
+			$config['max_height']  = '768';
+			*/
+			
+			$this->load->library('upload', $config);
+			foreach($_FILES as $key => $value)
+			{
+
+				if( ! empty($value['name']))
+				{
+					//echo ' name >>>'.$key;
+
+					if ($this->input->post('id')) // we're updating, not inserting.
+					{
+						$filename = 'banner-'.strtotime($lastupdated).'.png';
+
+						$config['file_name']  = $filename;
+						$imageupload['name'] = $config['file_name'];
+
+					}
+					else
+					{
+						$filename = 'banner-'.strtotime($lastupdated).'.png';
+
+						$config['file_name']  = $filename;
+						$imageupload['name'] = $config['file_name'];
+
+					}
+					// Assigning the file name to the file
+					$this->upload->initialize($config);
+					
+					//echo ' filename before >>>'.$filename.'</br>';
+					//echo ' >>>'. $this->upload->do_upload($key);
+					
+					if ( ! $this->upload->do_upload($key))
+					{
+						$error = array('error' => $this->upload->display_errors());
+
+						$data['body'] = $this->load->view('admin/tipsters/upload_unsuccess', $error);
+					}
+					else
+					{
+						$data = array('upload_data' => $this->upload->data());
+
+						foreach($data as $row)
+						{
+						$file_path = './content/'.$row['file_name'];
+						//echo ' filename after >>>'.$file_path.'</br>';
+						$_POST['image_name'] = $file_path;
+						}
+					}
+				}
+
+			}
+			 if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
+			{
+				$this->Admin_model->update_banner($imageupload);
+			}
+			else
+			{
+				$last_inserted = $this->Admin_model->insert_banner($imageupload);
+			}
+			//=====================================end========================================================
+			
+			
+		//redirect('admin/imageUpload');
+		//print_r($imageupload);
+			
+		// Form is not valid ... redisplay!
+		if ($this->input->post('id')) // we're updating, not inserting.
+		{
+			$this->_banner_edit();
+		}
+		else
+		{
+			$this->_banner_add();
+		}
+		
+
+	}
+
+
+
+	public function _banner_delete()
+	{
+		// Request params
+		$banner_id = $this->uri->segment(4);
+
+		if ($this->uri->segment(5) === FALSE)
+		{
+			$data['banner'] = array('id' => $banner_id);
+
+			$data['body'] = $this->load->view('admin/banner/delete', $data, true);
+			$this->load->view('templates/wrapper', $data);
+		}
+		else
+		{
+			$this->Admin_model->delete_banner($banner_id);
+			redirect('admin/banner_design');
+		}
+	}
 	
 	// ==================================Start Feature==========================================/
 
@@ -1047,69 +1770,8 @@ public function _comment_list()
 		$data['comments'] = $this->Comment_model->fetch_comments();
 
 
-		$data['body'] = $this->load->view('admin/comment_management/index', $data, true);
+		$data['body'] = $this->load->view('admin/comment_management/admin_index', $data, true);
 		$this->load->view('templates/wrapper', $data);
-	}
-	
-public function _comment_add()
-	{
-		
-		$this->load->model('Comment_model');
-		
-		
-		$data = array();
-		
-		$data['form'] = array(
-			'mode' => 'insert', 
-			'redirect' => 'admin/commentMng/submit'    
-			);
-			
-			// cerate imageupload attribute inside data array and assinging table collumns
-			$data['comments'] = $this->Comment_model->make_comments();
-			
-			// cerate body attribute inside data array and assinging from php bypassing data array($data)
-			$data['body'] = $this->load->view('admin/comment_management/comment_form', $data, true);
-			
-			// calling wraper view with data array include from body
-			$this->load->view('templates/wrapper', $data);
-	}
-	
-public function _comment_submit()
-	{
-		$data = array();
-		$this->form_validation->set_rules('comment', 'comment','trim|required|min_length[2]|max_length[512]|xss_clean');
-		if ($this->form_validation->run())
-		{
-		 
-		$username = $this->session->userdata('user_name');
-		$member_id = $this->Admin_model->fetch_member_id($username);
-			
-	     $comments = $this->Comment_model->make_comments($this->input->post());	
-	     $comments['member_id'] = $member_id['id'];
-		
-	     if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
-			{
-				$this->Comment_model->update_comments($comments);
-			}
-			else
-			{
-				$last_inserted = $this->Comment_model->insert_comments($comments);
-			}
-			
-		redirect('admin/commentMng');
-		}
-			
-		// Form is not valid ... redisplay!
-		//if ($this->input->post('id')) // we're updating, not inserting.
-		//{
-		//	$this->_image_edit();
-		//}
-		//else
-		//{
-		//	$this->_image_add();
-		//}
-		
-
 	}
 	
 public function _comment_edit()
@@ -1133,14 +1795,228 @@ public function _comment_edit()
 			else
 			{
 				
-				$data['comments'] = $this->Comment_model->fetch_editcomments($comment_id);
+				$data['comments'] = $this->Comment_model->fetch_comment($comment_id);
 			}
 
-			$data['body'] = $this->load->view('admin/comment_management/comment_form', $data, true);
+			$data['body'] = $this->load->view('admin/comment_management/admin_comment_form', $data, true);
 			$this->load->view('templates/wrapper', $data);
+	}
+		
+public function _comment_submit()
+	{
+		$data = array();
+		$this->form_validation->set_rules('comment', 'comment','trim|required|min_length[2]|max_length[512]|xss_clean');
+		if ($this->form_validation->run())
+		{
+		 
+		$username = $this->session->userdata('user_name');
+			
+	    $comments = $this->Comment_model->make_comments($this->input->post());	
+	     
+	    //$email_checked = $this->Comment_model->check_customer_email($this->input->post('email'));
+		
+	    $this->Comment_model->update_comments($comments);
+	    
+			
+		redirect('admin/commentMng');
+		}
+			
+		// Form is not valid ... redisplay!
+		//if ($this->input->post('id')) // we're updating, not inserting.
+		//{
+		//	$this->_image_edit();
+		//}
+		//else
+		//{
+		//	$this->_image_add();
+		//}
+		
+
+	}
+	
+
+	public function _comment_delete()
+	{
+		// Request params
+		$service_id = $this->uri->segment(4);
+
+		if ($this->uri->segment(5) === FALSE)
+		{
+			$data['comments'] = array('id' => $service_id);
+
+			$data['body'] = $this->load->view('admin/comment_management/delete', $data, true);
+			$this->load->view('templates/wrapper', $data);
+		}
+		else
+		{
+			$this->Comment_model->delete_comments($service_id);
+			redirect('admin/commentMng');
+		}
 	}
 	
 // ==============================================================================/
+// ------------------------------API for Testimonial Module---------------------------------------------/
+
+public function testimonialMng()
+	{
+		$permission['data'] = $this->Admin_model->permission_check('4');
+		
+		if($permission['data']['status'] || $permission['data']['initial']){
+		$this->load->model('Testimonial_model');
+		// Request params
+		$action = $this->uri->segment(3); 
+	
+		switch($action)
+		{
+			case 'add':
+				$this->_testimonial_add();
+				break;
+			case 'edit':
+				$this->_testimonial_edit();
+				break;
+			case 'submit':
+				$this->_testimonial_submit();
+				break;
+			case 'delete':
+				$this->_testimonial_delete();
+				break;
+			default:
+				$this->_testimonial_list();
+		}
+		}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+			}
+	}
+	
+public function _testimonial_list()
+	{
+		$this->load->model('Testimonial_model');
+
+		// View data
+		$data = array();
+		// getting list imageupload table results as an array
+		$data['testimonial'] = $this->Testimonial_model->fetch_testimonials();
+
+
+		$data['body'] = $this->load->view('admin/testimonial_management/testimonial_index', $data, true);
+		$this->load->view('templates/wrapper', $data);
+	}
+	
+public function _testimonial_add(){
+	
+		// Camel Case
+		$this->load->model('Testimonial_model');
+		
+		$data = array();
+		
+		$data['form'] = array(
+			'mode' => 'insert', 
+			'redirect' => 'admin/testimonialMng/submit'    
+			);
+			
+			// cerate imageupload attribute inside data array and assinging table collumns
+			$data['testimonial'] = $this->Testimonial_model->make_testimonials();
+			
+			// cerate body attribute inside data array and assinging from php bypassing data array($data)
+			$data['body'] = $this->load->view('admin/testimonial_management/testimonial_form', $data, true);
+			
+			// calling wraper view with data array include from body
+			$this->load->view('templates/wrapper', $data);
+	}
+	
+public function _testimonial_edit()
+	{
+		// Request params
+		$testimonial_id = $this->uri->segment(4);
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'update', 
+			'redirect' => 'admin/testimonialMng/submit'
+			);
+
+			if ($this->input->post('submit'))
+			{
+			
+				$data['testimonial'] = $this->Testimonial_model->make_testimonials();
+			}
+			else
+			{
+				
+				$data['testimonial'] = $this->Testimonial_model->fetch_testimonial($testimonial_id);
+			}
+
+			$data['body'] = $this->load->view('admin/comment_management/testimonial_form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	}
+		
+public function _testimonial_submit()
+	{
+		$data = array();
+		$this->form_validation->set_rules('testimonial', 'testimonial','trim|required|min_length[2]|max_length[512]|xss_clean');
+		if ($this->form_validation->run())
+		{
+		 
+		$username = $this->session->userdata('user_name');
+			
+	    $testimonial = $this->Testimonial_model->make_testimonials($this->input->post());	
+	     
+	    //$email_checked = $this->Comment_model->check_customer_email($this->input->post('email'));
+		
+	    
+		if ($this->input->post('id')) // we're updating, not inserting.
+			{
+				$this->Testimonial_model->update_testimonials($testimonial);
+			}
+			else
+			{
+				$this->Testimonial_model->insert_testimonials($testimonial);
+			}
+			
+		redirect('admin/testimonialMng');
+		}
+			
+		// Form is not valid ... redisplay!
+		//if ($this->input->post('id')) // we're updating, not inserting.
+		//{
+		//	$this->_image_edit();
+		//}
+		//else
+		//{
+		//	$this->_image_add();
+		//}
+		
+
+	}
+	
+
+	public function _testimonial_delete()
+	{
+		// Request params
+		$testimonial_id = $this->uri->segment(4);
+
+		if ($this->uri->segment(5) === FALSE)
+		{
+			$data['testimonial'] = array('id' => $testimonial_id);
+
+			$data['body'] = $this->load->view('admin/testimonial_management/delete', $data, true);
+			$this->load->view('templates/wrapper', $data);
+		}
+		else
+		{
+			$this->Testimonial_model->delete_testimonials($testimonial_id);
+			redirect('admin/testimonialMng');
+		}
+	}
+	
+// ==============================================================================/
+	
+	
+	
+	
 	public function agencies()
 	{
 		$this->load->model('Agencies_model');
@@ -1675,7 +2551,8 @@ public function _comment_edit()
 	public function _customer_submit()
 	{
 		// SET VALIDATION RULES
-		$this->form_validation->set_rules('name', 'name','trim|required|min_length[1]|max_length[50]|xss_clean');
+		$this->form_validation->set_rules('first_name', 'first_name','trim|required|min_length[1]|max_length[50]|xss_clean');
+		$this->form_validation->set_rules('last_name', 'last_name','trim|required|min_length[1]|max_length[50]|xss_clean');
 		//$this->form_validation->set_rules('comment', 'comment', 'trim|required|min_length[2]|max_length[1000]|xss_clean');
 		//$this->form_validation->set_error_delimiters('<span>','</span>');
 			
@@ -1689,13 +2566,79 @@ public function _comment_edit()
 			//print_r($this->input->post());
 			$username = $this->session->userdata('user_name');
 			$member_id = $this->Admin_model->fetch_member_id($username);
+			//$client_id = $this->Admin_model->fetch_client_id('odel');
 			
 			$customers = $this->Admin_model->make_customer_details($this->input->post());
 			$customers['member_id'] = $member_id['id'];
+			//$customers['client_id'] = $client_id['id'];
+			
 			
 			//print_r($feature);
 			//$tips['date'] = $date;
+				    $last_inserted = $this->input->post('id');
+			
+// =======================image upload======================================
 
+			$lastupdated = date("Y-m-d H:i:s");
+			echo ' $lastupdated >>>'.$lastupdated;
+			
+			$config['upload_path'] = realpath(APPPATH . '../frontend/img/resource');
+			$config['allowed_types'] = 'gif|jpg|png';
+			/*$config['max_size']	= '100';
+			$config['max_width']  = '1024';
+			$config['max_height']  = '768';
+			*/
+			
+			$this->load->library('upload', $config);
+			foreach($_FILES as $key => $value)
+			{
+
+				if( ! empty($value['name']))
+				{
+					echo ' name >>>'.$key;
+
+					if ($this->input->post('id')) // we're updating, not inserting.
+					{
+						$filename = 'service-'.strtotime($lastupdated).'.png';
+						
+						$config['file_name']  = $filename;
+						$customers['image_name'] = $config['file_name'];
+
+					}
+					else
+					{
+						$filename = 'service-'.strtotime($lastupdated).'.png';
+						
+						$config['file_name']  = $filename;
+						$customers['image_name'] = $config['file_name'];
+
+					}
+					// Assigning the file name to the file
+					$this->upload->initialize($config);
+					
+					//echo ' filename before >>>'.$filename.'</br>';
+					//echo ' >>>'. $this->upload->do_upload($key);
+					
+					if ( ! $this->upload->do_upload($key))
+					{
+						$error = array('error' => $this->upload->display_errors());
+
+						$data['body'] = $this->load->view('admin/tipsters/upload_unsuccess', $error);
+					}
+					else
+					{
+						$data = array('upload_data' => $this->upload->data());
+
+						foreach($data as $row)
+						{
+						$file_path = './content/'.$row['file_name'];
+						//echo ' filename after >>>'.$file_path.'</br>';
+						$_POST['image_name'] = $file_path;
+						}
+					}
+				}
+
+			}
 
 			if ($this->input->post('id')) // we're updating, not inserting.
 			{
@@ -1705,7 +2648,9 @@ public function _comment_edit()
 			{
 				$this->Admin_model->insert_customer_details($customers);
 			}
-
+//=====================================end========================================================
+			
+			
 			redirect('admin/customer_details/'.$customers['id']);
 		}
 			
@@ -1719,7 +2664,7 @@ public function _comment_edit()
 			$this->_customer_add();
 		}
 	}
-
+	
 
 	public function _customer_delete()
 	{
@@ -1741,7 +2686,162 @@ public function _comment_edit()
 	}
 	
 	
+// ==================================Start Booking Customer API==========================================/
 
+
+
+	public function booking_customer_details()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		$permission['data'] = $this->Admin_model->permission_check('9');
+		
+		if($permission['data']['status']){
+		// Request params
+		$action = $this->uri->segment(3); // detail|add|edit|delete
+
+		switch($action)
+		{
+			case 'edit':
+				$this->_booking_customer_edit();
+				break;
+			case 'submit':
+				$this->_booking_customer_submit();
+				break;
+			case 'delete':
+				$this->_booking_customer_delete();
+				break;
+			default:
+				$this->_booking_customer_list();
+		}
+		}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+			}
+	}
+	
+	public function _booking_customer_list()
+	{
+		// View data
+		$data = array();
+		$tipster_id = $this->uri->segment(3);
+
+		$data['customers'] = $this->Admin_model->fetch_booking_customer_details();
+		$data['body'] = $this->load->view('admin/booking_customer_details/index', $data, true);
+		$this->load->view('templates/wrapper', $data);
+	}
+
+
+	public function _booking_customer_edit()
+	{
+		// Request params
+		$customer_id = $this->uri->segment(4);
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'update',
+			'redirect' => 'admin/booking_customer_details/submit'
+			);
+
+			// Allow for form redisplay variation.
+			if ($this->input->post('submit'))
+			{
+				// We're redisplaying form, but ...
+				// We need a Tipster data bean to satisfy compiler, so make an empty one.
+				// We don't really need it as will be using data from $_POST array anyway.
+				$data['customers'] = $this->Admin_model->make_booking_customer_details();
+			}
+			else
+			{
+				// This is an initial GET request for data,
+				// so pull Event data from database.
+				$data['customers'] = $this->Admin_model->fetch_booking_customer_detail($customer_id);
+			}
+			//print_r($data);
+
+			//$this->load->helper('dropdown_helper');
+			//$this->load->model('feature_model');
+			//$data['dropdown'] = $this->feature_model->fetch_tipsters_dropdown();
+
+			$data['body'] = $this->load->view('admin/booking_customer_details/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	}
+
+
+	public function _booking_customer_submit()
+	{
+		// SET VALIDATION RULES
+		$this->form_validation->set_rules('first_name', 'first_name','trim|required|min_length[1]|max_length[50]|xss_clean');
+		$this->form_validation->set_rules('last_name', 'last_name','trim|required|min_length[1]|max_length[50]|xss_clean');
+		//$this->form_validation->set_rules('comment', 'comment', 'trim|required|min_length[2]|max_length[1000]|xss_clean');
+		//$this->form_validation->set_error_delimiters('<span>','</span>');
+			
+		// Form is valid ... process
+		if ($this->form_validation->run())
+		{
+			//$date = $this->input->post("start_year") ."-". $this->input->post("start_month"). "-" .$this->input->post("start_day");
+			//$date = date("Y-m-d H:i:s", strtotime($date));
+
+			//$_POST['date'] = $date;
+			//print_r($this->input->post());
+			$username = $this->session->userdata('user_name');
+			$member_id = $this->Admin_model->fetch_member_id($username);
+			//$client_id = $this->Admin_model->fetch_client_id('odel');
+			
+			$customers = $this->Admin_model->make_booking_customer_details($this->input->post());
+			$customers['member_id'] = $member_id['id'];
+			//$customers['client_id'] = $client_id['id'];
+
+			if ($this->input->post('id')) // we're updating, not inserting.
+			{
+				$this->Admin_model->update_booking_customer_details($customers);
+			}
+			else
+			{
+				$this->Admin_model->insert_booking_customer_details($customers);
+			}
+//=====================================end========================================================
+			
+			
+			redirect('admin/booking_customer_details/'.$customers['id']);
+		}
+			
+		// Form is not valid ... redisplay!
+		if ($this->input->post('id')) // we're updating, not inserting.
+		{
+			$this->_booking_customer_edit();
+		}
+		else
+		{
+			$this->_booking_customer_add();
+		}
+	}
+	
+
+	public function _booking_customer_delete()
+	{
+		// Request params
+		$customer_id = $this->uri->segment(4);
+
+		if ($this->uri->segment(5) === FALSE)
+		{
+			$data['customers'] = array('id' => $customer_id);
+
+			$data['body'] = $this->load->view('admin/booking_customer_details/delete', $data, true);
+			$this->load->view('templates/wrapper', $data);
+		}
+		else
+		{
+			$this->Admin_model->delete_customer_details($customer_id);
+			redirect('admin/booking_customer_details');
+		}
+	}
+	
+	
+	
 	// ==================================Start Employee API==========================================/
 
 
@@ -1986,9 +3086,8 @@ public function _comment_edit()
 			'redirect' => 'admin/event_management/submit'    // to redirect to submit action
 			);
 			
-			$data['feature'] = $this->Common_model->make_feature();
-			$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
-			
+			$data['service'] = $this->Common_model->make_service();
+			$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');			
 			
 			
 			// cerate imageupload attribute inside data array and assinging table collumns
@@ -2020,16 +3119,16 @@ public function _comment_edit()
 				// We're redisplaying form, but ...
 				// We need a Tipster data bean to satisfy compiler, so make an empty one.
 				// We don't really need it as will be using data from $_POST array anyway.
-				$data['feature'] = $this->Admin_model->make_feature();
-				$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
+				$data['service'] = $this->Common_model->make_service();
+				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
 				$data['events'] = $this->Admin_model->make_event();
 			}
 			else
 			{
 				// This is an initial GET request for data,
 				// so pull Event data from database.
-				$data['feature'] = $this->Admin_model->make_feature();
-				$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
+				$data['service'] = $this->Common_model->make_service();
+				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
 				$data['events'] = $this->Admin_model->fetch_event($event_id);
 			}
 
@@ -2165,8 +3264,8 @@ public function _comment_edit()
 			'redirect' => 'admin/content_management/submit'    // to redirect to submit action
 			);
 			
-			$data['feature'] = $this->Common_model->make_feature();
-			$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
+			$data['service'] = $this->Common_model->make_service();
+			$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
 			
 			
 			
@@ -2199,16 +3298,16 @@ public function _comment_edit()
 				// We're redisplaying form, but ...
 				// We need a Tipster data bean to satisfy compiler, so make an empty one.
 				// We don't really need it as will be using data from $_POST array anyway.
-				$data['feature'] = $this->Admin_model->make_feature();
-				$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
+				$data['service'] = $this->Common_model->make_service();
+				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
 				$data['contents'] = $this->Admin_model->make_content();
 			}
 			else
 			{
 				// This is an initial GET request for data,
 				// so pull Event data from database.
-				$data['feature'] = $this->Admin_model->make_feature();
-				$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
+				$data['service'] = $this->Common_model->make_service();
+				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
 				$data['contents'] = $this->Admin_model->fetch_content($content_id);
 			}
 
@@ -2536,11 +3635,11 @@ public function _comment_edit()
 			'redirect' => 'admin/user_time_allocation/submit'    // to redirect to submit action
 			);
 			
-			$data['feature'] = $this->Common_model->make_feature();
-			$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
-			
+			$data['service'] = $this->Common_model->make_service();
+			$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
+						
 			$data['employ'] = $this->Common_model->make_employ();
-			$data['dropdown_members'] = $this->Common_model->fetch_membership_dropdown('employ_name');
+			$data['dropdown_employs'] = $this->Common_model->fetch_membership_dropdown('employ_name');
 			
 			// cerate imageupload attribute inside data array and assinging table collumns
 			$data['time_allocation'] = $this->Admin_model->make_time_allocation();
@@ -2573,11 +3672,11 @@ public function _comment_edit()
 				// We're redisplaying form, but ...
 				// We need a Tipster data bean to satisfy compiler, so make an empty one.
 				// We don't really need it as will be using data from $_POST array anyway.
-				$data['feature'] = $this->Admin_model->make_feature();
-				$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
-				
-				$data['member'] = $this->Common_model->make_member();
-				$data['dropdown_members'] = $this->Common_model->fetch_membership_dropdown('member_name');
+				$data['service'] = $this->Common_model->make_service();
+				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
+						
+				$data['employ'] = $this->Common_model->make_employ();
+				$data['dropdown_employs'] = $this->Common_model->fetch_membership_dropdown('employ_name');
 			
 				$data['time_allocation'] = $this->Admin_model->make_time_allocation();
 			}
@@ -2585,11 +3684,11 @@ public function _comment_edit()
 			{
 				// This is an initial GET request for data,
 				// so pull Event data from database.
-				$data['feature'] = $this->Admin_model->make_feature();
-				$data['dropdown_feature'] = $this->Common_model->fetch_common_dropdown('feature');
-				
-				$data['member'] = $this->Common_model->make_member();
-				$data['dropdown_members'] = $this->Common_model->fetch_membership_dropdown('member_name');
+				$data['service'] = $this->Common_model->make_service();
+				$data['dropdown_service'] = $this->Common_model->fetch_common_dropdown('services');
+							
+				$data['employ'] = $this->Common_model->make_employ();
+				$data['dropdown_employs'] = $this->Common_model->fetch_membership_dropdown('employ_name');
 			
 				$data['time_allocation'] = $this->Admin_model->fetch_time_allocation($roll_id);
 			}
@@ -2670,6 +3769,149 @@ public function _comment_edit()
 	}
 
 	// ==============================================================================/
+
+public function booking_transaction()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		$permission['data'] = $this->Admin_model->permission_check('11');
+		
+		if($permission['data']['status'] || $permission['data']['initial']){
+		// Request params
+		$action = $this->uri->segment(3); // detail|add|edit|delete
+	
+		switch($action)
+		{
+			case 'report':
+				$this->_booking_report();
+			break;
+			case 'edit':
+				$this->_transaction_edit();
+				break;
+			case 'submit':
+				$this->_transaction_submit();
+				break;
+			case 'delete':
+				$this->_transaction_delete();
+				break;
+			default:
+				$this->_transaction_list();
+		}
+		}else{
+			$data['body'] = 'Sorry You Don\'t Have Enough Permission To View This Content';
+			$this->load->view('templates/wrapper', $data);
+		}
+	}
+
+	public function _booking_report()
+	{
+		// View data
+		$data = array();
+		$tipster_id = $this->uri->segment(3);
+
+		$data['transaction'] = $this->Admin_model->fetch_transaction_details();
+		$data['body'] = $this->load->view('admin/booking_report_details/index', $data, true);
+		$this->load->view('templates/wrapper', $data);
+	}
+	
+	public function _transaction_list()
+	{
+		$this->load->model('Admin_model');
+		$this->load->model('Common_model');
+		
+		// View data
+		$data = array();
+		
+		$data['transaction'] = $this->Admin_model->fetch_transaction_details();
+
+		$data['body'] = $this->load->view('admin/booking_transaction/index', $data, true);
+		$this->load->view('templates/wrapper', $data);
+		
+	}
+
+
+	public function _transaction_edit()
+	{
+		
+		// Request params
+		$transaction_id = $this->uri->segment(4);
+
+		// View data
+		$data = array();
+
+		$data['form'] = array(
+			'mode' => 'update', //from display with update mopde and  assigining Id param
+			'redirect' => 'admin/booking_transaction/submit'
+			);
+
+			// Allow for form redisplay variation.
+			if ($this->input->post('submit'))
+			{
+		
+				$data['transaction'] = $this->Admin_model->make_booking_transaction();
+			}
+			else
+			{
+				
+				$data['transaction'] = $this->Admin_model->fetch_transaction_detail($transaction_id);
+			}
+
+			$data['body'] = $this->load->view('admin/booking_transaction/form', $data, true);
+			$this->load->view('templates/wrapper', $data);
+	
+	}
+	
+	
+	public function _transaction_submit()
+	{
+		$data = array();
+		//$this->form_validation->set_rules('roll', 'Roll','trim|required|min_length[2]|max_length[512]|xss_clean');
+		//if ($this->form_validation->run())
+		//{
+		 
+		//$username = $this->session->userdata('user_name');
+		//$member_id = $this->Admin_model->fetch_member_id($username);
+	    
+	     $booking_transaction_data = $this->Admin_model->make_booking_transaction($this->input->post());
+	     //$time_allocation_data['member_id'] = $member_id['id'];
+
+	     //print_r($roll_data);
+		
+	     if ($this->input->post('id')) // we're updating, not inserting. $imageupload['id']
+			{
+				$this->Admin_model->update_booking_transaction($booking_transaction_data);
+				
+			}
+			else
+			{
+				$this->Admin_model->insert_booking_transaction($booking_transaction_data);
+				
+			}
+			redirect('admin/booking_transaction');
+
+	}
+	
+	public function _transaction_delete()
+	{
+		// Request params
+		$transaction_id = $this->uri->segment(4);
+
+		if ($this->uri->segment(5) === FALSE)
+		{
+			$data['transaction'] = array('id' => $transaction_id);
+
+			$data['body'] = $this->load->view('admin/booking_transaction/delete', $data, true);
+			$this->load->view('templates/wrapper', $data);
+		}
+		else
+		{
+			$this->Admin_model->delete_booking_transaction($transaction_id);
+			redirect('admin/booking_transaction');
+		}
+	}
+	
+
 }
 
 

@@ -15,9 +15,16 @@
 	
 		<div id="field-name" class="control-group form-group">
 			<div class="controls">
-				<?php form_label('Name', 'customer-name'); ?>
-				<input class="form-control" type="text" id="customer-name" name="name" placeholder="Enter The Name" value="<?php echo set_value('name', $customers['name']); ?>" />
-				<?php echo form_error('name'); ?>
+				<?php form_label('first_name', 'customer-first-name'); ?>
+				<input class="form-control" type="text" id="customer-first-name" name="first_name" placeholder="Enter The First Name" value="<?php echo set_value('first_name', $customers['first_name']); ?>" />
+				<?php echo form_error('first_name'); ?>
+			</div>
+		</div>
+		<div id="field-name" class="control-group form-group">
+			<div class="controls">
+				<?php form_label('last_name', 'customer-last-name'); ?>
+				<input class="form-control" type="text" id="customer-last-name" name="last_name" placeholder="Enter The Last Name" value="<?php echo set_value('last_name', $customers['last_name']); ?>" />
+				<?php echo form_error('last_name'); ?>
 			</div>
 		</div>
 		<div id="field-name" class="control-group form-group">
@@ -48,6 +55,14 @@
 				<?php echo form_error('mobile_no'); ?>
 			</div>
 		</div>
+		
+		<div id="field-small-image" class="control-group form-group">
+			<div class="controls">
+				<?php form_label('Photo', 'image_name'); ?>
+				<input type="file" id="image_name" name="image_name" placeholder="Small image" />
+				<?php echo form_error('image_name'); ?>
+			</div>
+		
 		<div id="field-name" class="control-group form-group row">
 			<div class="controls row" style="float:none; margin: 0 auto;">
 				<div class="col-md-4">
@@ -65,6 +80,7 @@
 				
 			</div>
 		</div>
+		
 	</fieldset>
 
 	<fieldset class="form-actions">

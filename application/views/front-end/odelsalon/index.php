@@ -4,19 +4,27 @@
     <title>Salon Odel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <?php $path = base_url(). 'frontend/';?>
-    <link href="<?php echo $path; ?>/css/common.css" rel="stylesheet">
-    <link href="<?php echo $path; ?>/css/style.css" rel="stylesheet">
-    <link href="<?php echo $path; ?>/css/katayam_css.css" rel="stylesheet">
+    <?php $path = base_url(). '/frontend/';?>
+    <link href="<?php echo $path; ?>css/common.css" rel="stylesheet">
+    <link href="<?php echo $path; ?>css/style.css" rel="stylesheet">
+    <link href="<?php echo $path; ?>css/katayam_css.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300italic,700|Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic|Noto+Sans:400,400italic,700,700italic|PT+Sans+Caption:400,700' rel='stylesheet' type='text/css'>
-    <link href="<?php echo $path; ?>/css/responsive.css" rel="stylesheet">
-    <script src="<?php echo $path; ?>/js/modernizr.custom.46884.js"></script>
-    <script type='text/javascript' src='<?php echo $path; ?>/js/jquery.min.js'></script> 
-    <script type='text/javascript' src='<?php echo $path; ?>/js/bootstrap.min.js'></script>
-    <script src="<?php echo $path; ?>/js/jquery.roundabout.min.js"></script>
-   <script type="text/javascript" src="<?php echo $path; ?>/js/jquery.tinycarousel.min.js"></script>
-   <script src="<?php echo $path; ?>/js/html5lightbox.js"></script>
-    <script src="<?php echo $path; ?>/js/jquery.slicebox.js"></script>
+    <link href="<?php echo $path; ?>css/responsive.css" rel="stylesheet">
+    <link href="<?php echo $path; ?>css/jquery.datetimepicker.css" rel="stylesheet">
+        <link href="<?php echo base_url(); ?>font-awesome/css/font-awesome.css" rel="stylesheet">
+    <!-- SB Admin CSS - Include with every page -->
+    <link href="<?php echo base_url(); ?>css/sb-admin.css" rel="stylesheet">
+    <link href="<?php echo base_url(); ?>css/style.css" rel="stylesheet">
+    <script src="<?php echo $path; ?>js/modernizr.custom.46884.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <!-- <script type='text/javascript' src='<?php echo $path; ?>/js/jquery.min.js'></script>  -->
+    <script type='text/javascript' src='<?php echo $path; ?>js/bootstrap.min.js'></script>
+    <script src="<?php echo $path; ?>js/jquery.roundabout.min.js"></script>
+   <script type="text/javascript" src="<?php echo $path; ?>js/jquery.tinycarousel.min.js"></script>
+   <script type="text/javascript" src="<?php echo $path; ?>js/html5lightbox.js"></script>
+    <script type="text/javascript" src="<?php echo $path; ?>js/jquery.slicebox.js"></script>
+    <script type="text/javascript" src="<?php echo $path; ?>js/jquery.datetimepicker.js"></script>
+
     <script>
         $(document).ready(function() {
            
@@ -56,11 +64,11 @@
                	$("#logo").load("/frontend/getLogoInfo/1");
 
 
-
         });
 
     </script>
-    <script type="text/javascript" src="<?php echo $path; ?>/js/script.js"></script>
+    <script type="text/javascript" src="<?php echo $path; ?>js/script.js"></script>
+
 
 
 
@@ -78,10 +86,10 @@
 
                 <div id="menu">
                     <ul>
-                        <li><a href="index.html" title="">HOME</a></li>
+                        <li><a href="<?php echo '/frontend/index'; ?>" title="">HOME</a></li>
                         <li><a href="#" title="">About Us</a>
                         <li><a href="#" title="">Services</a>
-                        <li><a href="#" title="">Appoinments</a>
+                        <li><a href="<?php echo '/frontend/index/default_appointment'; ?>" title="">Appoinments</a>
                         <li><a href="#" title="">Blog</a>
                         <li><a href="#" title="">Contact Us</a>
 
@@ -89,7 +97,7 @@
 
                             </div>
                             <select>
-                                <option onClick="window.location = 'index.html'">Index</option>
+                                <option onClick="window.location = 'index.php'">Index</option>
                                 <option onClick="window.location = '#'">About Us</option>
                                 <option onClick="window.location = '#'">Services</option>
                                 <option onClick="window.location = '#'">Appoinments</option>
@@ -99,266 +107,46 @@
                             </div>
                             </header>
 
+<?php if($index_page){?>
+					<!-- Carousal goes here -->
+					  <?php include "elements/carousal.php" ?>
 
-                            <div class="slider-area">
-                                <div class="wrapper">
-                                    <ul id="sb-slider" class="sb-slider">
-                                        <li>
-                                            <a href="#" title=""><img src="<?php echo $path; ?>/img/katayam_slider/slider2.jpg" alt="image1"/></a>
-
-                                        </li>
-                                        <li>
-                                            <a href="#" title=""><img src="<?php echo $path; ?>/img/katayam_slider/katayam_slide1.jpg" alt="image2"/></a>
-
-                                        </li>
-                              
-                                    </ul>
-                                    <div id="nav-arrows" class="nav-arrows">
-                                        <a href="#">Next</a>
-                                        <a href="#">Previous</a>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                          
-                           
-                             
-                                <div class="toggles-style">
-                                    <div class="container">
-                                       
-                                       
-                                       
-                                    </div>
-                                </div>
-                       
-
-                            <section class="boxes">
-                                <div class="container">
-                                    <div class="boxes-left">
-                                        <div class="sidebox-head">
-                                            <h2>Our Services<span>Odel salon services</span></h2>
-                                        </div>
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        <div class="left-side-content span8">
-      <div class="main-title sec">
-     
-         
-      </div>
-					
-      <div class="our-service">
-        <div class="our-service-img">
-          <img alt="" src="<?php echo $path; ?>img/resource/our-service1.jpg">
-		 
-        </div>
-        <h2><i class="theme-icon big eye"></i>Hair Cut 1</h2>
-        <p>designbirds sample description for odel salon designbirds sample description for odel salondesignbirds sample description for odel salon</p>
-      </div>
-                    
-      <div class="our-service">
-        <div class="our-service-img">
-          <img alt="" src="<?php echo $path; ?>img/resource/our-service2.jpg">
-		 
-        </div>
-        <h2><i class="theme-icon big lab"></i>Hair Cut 2</h2>
-        <p>designbirds sample description for odel salondesignbirds sample description for odel salondesignbirds sample description for odel salon</p>
-      </div>
+					   <?php include "elements/section1.php" ?>	
+						<!-- Featured Service Images -->
+					   <?php include "elements/featuredservice.php" ?>		
+                   <?php include "elements/section1_end.php" ?>	
                    
-    </div>
-
-                                    </div>
-                                    <div class="boxes-right">
-                                          
-
-                                      
-
-                                     <div class="sidebox-head">
-                                            <h2>Make An Appointment<span>Ready To Serve You Happily</span></h2>
-                                        </div>
-                                        <div class="sidebox-body">
-                                            <p> Make An AppointmentMake An AppointmentMake An AppointmentMake An AppointmentMake An Appointment</p>
-                                            <form class="appointment-form" action="">
-                                                <input type="text" placeholder="Name Of Customer" class="full">
-                                                <span class="half-fields">
-                                                    <input type="text" placeholder="Phone No" class="half">
-                                                    <input type="text" placeholder="staff Name" class="half">
-                                                </span>
-                                                <input type="email" placeholder="Email" class="full">
-                                                <span class="half-fields">
-                                                    <input type="text" placeholder="Date" class="half">
-                                                    <input type="text" placeholder="Time" class="half">
-                                                </span>
-                                                <input type="text" placeholder="Additional Info" class="full">
-                                                <input type="submit" value="Submit" class="submit">
-                                            </form>
-                                        </div>
-
-                                    </div>      	
-                                </div>
-                            </section>
-
-                            <section id="serve">
-                                <div class="fixed-img section-bg4"></div>
-                                <div class="sidebox-head">
-                                    <h2 style="padding-left: 30px">What we offer at Odel Salon<span>Odel salon services</span></h2>
-                                        </div>
-
-                                <div id="slider1">
-                                    <div class="container"> <span class="carousel-pagination"> <a class="buttons prev" href="#">left</a> <a class="buttons next" href="#">right</a> </span>
-                                        <div class="viewport">
-                                            <ul class="overview">
-                                                <li>
-                                                    <div class="serve-img"> 
-                                                        <img src="<?php echo $path; ?>img/resource/serve1.jpg" alt="" />
-                                                        <div class="serve-hover">
-                                                            <p>Sample Description about odel salon services</p>
-                                                            <a href="#" title="" class="link"></a>
-                                                            <a href="<?php echo $path; ?>img/resource/serve1.jpg" class="html5lightbox" data-group="team"><span class="magnify"></span></a>
-                                                           
-                                                        </div>
-                                                    </div>
-                                                    <div class="figcaption"> 
-                                                        <div class="serve-intro">
-                                                            <h3><i class="theme-icon user"></i>Hair Cuts</h3>
-                                                            <span class="speciality">unisex</span> 
-                                                        </div> 
-                                                        <div class="contact">
-                                                            <h4>Contact us</h4>
-                                                            
-                                                        </div> 
-                                                    </div>
-                                                </li>
-                                                 <li>
-                                                    <div class="serve-img"> 
-                                                        <img src="<?php echo $path; ?>img/resource/serve2.jpg" alt="" />
-                                                        <div class="serve-hover">
-                                                            <p>Sample Description about odel salon services</p>
-                                                            <a href="#" title="" class="link"></a>
-                                                            <a href="<?php echo $path; ?>img/resource/serve1.jpg" class="html5lightbox" data-group="team"><span class="magnify"></span></a>
-                                                           
-                                                        </div>
-                                                    </div>
-                                                    <div class="figcaption"> 
-                                                        <div class="serve-intro">
-                                                            <h3><i class="theme-icon user"></i>Facial</h3>
-                                                            <span class="speciality">unisex</span> 
-                                                        </div> 
-                                                        <div class="contact">
-                                                            <h4>Contact us</h4>
-                                                            
-                                                        </div> 
-                                                    </div>
-                                                </li>
-                                                 <li>
-                                                    <div class="serve-img"> 
-                                                        <img src="<?php echo $path; ?>img/resource/serve3.jpg" alt="" />
-                                                        <div class="serve-hover">
-                                                            <p>Sample Description about odel salon services</p>
-                                                            <a href="#" title="" class="link"></a>
-                                                            <a href="<?php echo $path; ?>img/resource/serve1.jpg" class="html5lightbox" data-group="team"><span class="magnify"></span></a>
-                                                           
-                                                        </div>
-                                                    </div>
-                                                    <div class="figcaption"> 
-                                                        <div class="serve-intro">
-                                                            <h3><i class="theme-icon user"></i>Coloring</h3>
-                                                            <span class="speciality">unisex</span> 
-                                                        </div> 
-                                                        <div class="contact">
-                                                            <h4>Contact us</h4>
-                                                            
-                                                        </div> 
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="serve-img"> 
-                                                        <img src="<?php echo $path; ?>img/resource/serve4.jpg" alt="" />
-                                                        <div class="serve-hover">
-                                                            <p>Sample Description about odel salon services</p>
-                                                            <a href="#" title="" class="link"></a>
-                                                            <a href="<?php echo $path; ?>img/resource/serve1.jpg" class="html5lightbox" data-group="team"><span class="magnify"></span></a>
-                                                           
-                                                        </div>
-                                                    </div>
-                                                    <div class="figcaption"> 
-                                                        <div class="serve-intro">
-                                                            <h3><i class="theme-icon user"></i>Padicure</h3>
-                                                            <span class="speciality">unisex</span> 
-                                                        </div> 
-                                                        <div class="contact">
-                                                            <h4>Contact us</h4>
-                                                            
-                                                        </div> 
-                                                    </div>
-                                                </li>
-                                                 <li>
-                                                    <div class="serve-img"> 
-                                                        <img src="<?php echo $path; ?>img/resource/serve1.jpg" alt="" />
-                                                        <div class="serve-hover">
-                                                            <p>Sample Description about odel salon services</p>
-                                                            <a href="#" title="" class="link"></a>
-                                                            <a href="<?php echo $path; ?>img/resource/serve1.jpg" class="html5lightbox" data-group="team"><span class="magnify"></span></a>
-                                                           
-                                                        </div>
-                                                    </div>
-                                                    <div class="figcaption"> 
-                                                        <div class="serve-intro">
-                                                            <h3><i class="theme-icon user"></i>Hair Cuts</h3>
-                                                            <span class="speciality">unisex</span> 
-                                                        </div> 
-                                                        <div class="contact">
-                                                            <h4>Contact us</h4>
-                                                            
-                                                        </div> 
-                                                    </div>
-                                                </li>
-                                               
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>  
-
-                            </section>
-
-
-                            <section class="boxes">
-                                <div class="container">
-   <div class="two-box column">
-      <h1>Satisfied People With Us</h1>
-      <div class="style span6">
-   <div class="clients">
-                                            <p><i class="theme-icon comma-start"></i>Super service Super serviceSuper serviceSuper serviceSuper serviceSuper service<i class="theme-icon comma-end"></i></p>
-                                            <div class="abt-client">
-                                                <span>3 days Ago</span>
-                                                <p>Kasun</p>
-                                                <i>Web Developer</i>
-                                            </div>
-                                            <img src="<?php echo $path; ?>img/resource/client1.jpg" alt="" />
-                                        </div>
-      </div>
-      <div class="style span6">
-        <div class="clients">
-                                            <p><i class="theme-icon comma-start"></i>Super service Super serviceSuper serviceSuper serviceSuper serviceSuper serviceSuper service Super serviceSuper serviceSuper serviceSuper serviceSuper service<i class="theme-icon comma-end"></i></p>
-                                            <div class="abt-client">
-                                                <span>5 days Ago</span>
-                                                <p>Dilani</p>
-                                                <i>Consultant</i>
-                                            </div>
-                                            <img src="<?php echo $path; ?>img/resource/client1.jpg" alt="" />
-                                        </div>
-      </div>
-    </div>
-
-                                   
-                                </div>
-                            </section>
-
-                            </div>
+ <?php }?>
+ 
+                          <?php if($appointment_page){?> 
+                          	<?php if($register_display){?>
+					  			<?php include "elements/register.php" ?>
+					  				<?php }else{ ?>
+					  		    		<?php if($search_result){?> 
+					  						<?php include "elements/booking_search.php" ?>
+					  		     		<?php } else {?>
+                  		     			<!-- Booking Search body goes here -->
+					  					<?php include "elements/booking.php" ?>
+					  		      	<?php } ?> 
+					       		<?php } ?>  
+					       <?php } ?>  
+					        
+ <?php if($index_page){?>    
+                      	
+ 		<?php include "elements/section2.php" ?>
+                                        
+      	<!-- Service Images -->
+		<?php include "elements/service.php" ?>
+                 
+		<?php include "elements/section3.php" ?>                           
+      
+			<?php include "elements/testimonial.php" ?>
+            <?php include "elements/comment.php" ?>
+                  
+        <?php include "elements/section3_end.php" ?>
+        
+ <?php }?>
+                     
                             <footer>
                                 <div class="container">
                                     <div class="widget">
@@ -399,15 +187,10 @@
                                     </div> <!-- Contact Us Form -->
                                     <div class="widget">
                                         <h3 class="footer-title">Recent <span>Photos</span></h3>
-                                        <div class="flickr-images">
-                                            <a href="#"><img src="<?php echo $path; ?>img/resource/flickr1.jpg" alt="" /></a>
-                                            <a href="#"><img src="<?php echo $path; ?>img/resource/flickr2.jpg" alt="" /></a>
-                                            <a href="#"><img src="<?php echo $path; ?>img/resource/flickr3.jpg" alt="" /></a>
-                                            <a href="#"><img src="<?php echo $path; ?>img/resource/flickr4.jpg" alt="" /></a>
-                                            <a href="#"><img src="<?php echo $path; ?>img/resource/flickr5.jpg" alt="" /></a>
-                                            <a href="#"><img src="<?php echo $path; ?>img/resource/flickr6.jpg" alt="" /></a>
-                                           
-                                        </div>
+                                        
+                                        <!-- Recent Photos Gallery here -->
+					  					<?php include "elements/recent.php" ?>
+                                        
                                     </div>
                                 </div>
                             </footer>
@@ -419,7 +202,166 @@
                              
                             </div>
 
+ <script type="text/javascript">
+        $(document).ready(function () {
+			
+           	$('#service_name').change(function () {
+           // alert('jquary loaded');
+            var selectVal = $('#service_name :selected').val();
+                console.log(selectVal);
+                //alert(selectVal);
+                $.ajax({
+                    url: "/frontend/first_level_dropdown_call",
+                    async: false,
+                    type: "POST",
+                    data: "service_id="+selectVal,
+                    dataType: "html",
 
+                    success: function(data) {
+                        
+						
+						$('#category_name').html(data);
+						//alert('kugdfskjf');
+                        
+                    }
+                	
+
+                
+                })
+
+                	if ($('#service_name').val()=='50'){
+					alert('came here');
+						$.ajax({
+                         // It must be used as absolute path not relative because otherwise cannot use in EDIT. edit uri and add uri is DIFFERENT
+                         url: "/frontend/second_level_dropdown_call_empty",
+                         async: false,
+                         type: "POST",
+                         data: "service_id",
+                         dataType: "html",
+
+                         success: function(data) {
+                             $('#category_name').html(data);
+                         }
+                     })
+									
+					}
+
+
+                
+            });
+
+        	/* $('#service_name').change(function () {
+                // alert('jquary loaded');
+                 var selectVal = $('#service_name :selected').val();
+                     //console.log(selectVal);
+                     //alert(selectVal);
+                     $.ajax({
+                         // It must be used as absolute path not relative because otherwise cannot use in EDIT. edit uri and add uri is DIFFERENT
+                         url: "/admin/second_level_dropdown_call",
+                         async: false,
+                         type: "POST",
+                         data: "service_id="+selectVal,
+                         dataType: "html",
+
+                         success: function(data) {
+                             $('#category_name').html(data);
+                         }
+                     })
+                 });  */
+            
+		
+        	
+        });
+    </script>
+
+    <script type="text/javascript">
+
+  $('#datetimepicker10').datetimepicker({
+		step:5,
+		inline:true
+	});
+	$('#datetimepicker_mask').datetimepicker({
+		mask:'9999/19/39 29:59'
+	});
+	$('#datetimepicker_mask1').datetimepicker({
+		mask:'9999/19/39 29:59'
+	});
+	$('#datetimepicker').datetimepicker();
+	$('#datetimepicker').datetimepicker({value:'2015/04/15 05:03',step:10});
+	$('#datetimepicker1').datetimepicker({
+		datepicker:false,
+		format:'H:i',
+		step:5
+	});
+	$('#datetimepicker2').datetimepicker({
+		yearOffset:222,
+		lang:'ch',
+		timepicker:false,
+		format:'d/m/Y',
+		formatDate:'Y/m/d',
+		minDate:'-1970/01/02', // yesterday is minimum date
+		maxDate:'+1970/01/02' // and tommorow is maximum date calendar
+	});
+	$('#datetimepicker3').datetimepicker({
+		inline:true
+	});
+	$('#datetimepicker4').datetimepicker();
+	$('#open').click(function(){
+		$('#datetimepicker4').datetimepicker('show');
+	});
+	$('#close').click(function(){
+		$('#datetimepicker4').datetimepicker('hide');
+	});
+	$('#reset').click(function(){
+		$('#datetimepicker4').datetimepicker('reset');
+	});
+	$('#datetimepicker5').datetimepicker({
+		datepicker:false,
+		allowTimes:['12:00','13:00','15:00','17:00','17:05','17:20','19:00','20:00']
+	});
+	$('#datetimepicker6').datetimepicker();
+	$('#destroy').click(function(){
+		if( $('#datetimepicker6').data('xdsoft_datetimepicker') ){
+			$('#datetimepicker6').datetimepicker('destroy');
+			this.value = 'create';
+		}else{
+			$('#datetimepicker6').datetimepicker();
+			this.value = 'destroy';
+		}
+	});
+	var logic = function( currentDateTime ){
+		if( currentDateTime.getDay()==6 ){
+			this.setOptions({
+				minTime:'11:00'
+			});
+		}else
+			this.setOptions({
+				minTime:'8:00'
+			});
+	};
+	$('#datetimepicker7').datetimepicker({
+		onChangeDateTime:logic,
+		onShow:logic
+	});
+	$('#datetimepicker8').datetimepicker({
+		onGenerate:function( ct ){
+			$(this).find('.xdsoft_date')
+				.toggleClass('xdsoft_disabled');
+		},
+		minDate:'-1970/01/2',
+		maxDate:'+1970/01/2',
+		timepicker:false
+	});
+	$('#datetimepicker9').datetimepicker({
+		onGenerate:function( ct ){
+			$(this).find('.xdsoft_date.xdsoft_weekend')
+				.addClass('xdsoft_disabled');
+		},
+		weekends:['01.01.2014','02.01.2014','03.01.2014','04.01.2014','05.01.2014','06.01.2014'],
+		timepicker:false
+	});
+	
+</script>
                            
 
                             </body>

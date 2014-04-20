@@ -200,7 +200,7 @@ function make_screen($data = NULL)
 		$table = 'tbl_main_features';
 	
 		} elseif ($name == 'services'){
-		$table = 'tbl_main_services';
+		$table = 'tbl_service_types';
 		if($id){
 				$this->db->where('id', $id);
 		}
@@ -247,7 +247,7 @@ function make_screen($data = NULL)
 	public function fetch_service_name($id=null)
 	{
 	
-		$table = 'tbl_main_services';
+		$table = 'tbl_service_types';
 	
 		$query = $this->db->get_where($table, array('id' => $id));
 

@@ -9,11 +9,37 @@ public function __construct()
 
 	}
 	
-public function fetch_comments(){
-	
-		$table = 'tbl_comment_mgnt';
-			$query = $this->db->get($table);
+///////////////////////////////////////////////////////////////////////////////////////////////	
+	public function check_customer_email($check_email)
+	{
+			$table = 'tbl_customer_details';
+		
+		$query = $this->db->get_where($table, array('email' => $check_email));
 
+		if ($query->num_rows() > 0)
+		{
+
+			return true;
+							
+		}else{
+			
+			return false;
+		}
+	
+	}
+	
+
+	/**
+	 * Returns list of Tipsters, as stored in DB.
+	 *
+	 * @return	array	- Tipster data as array.
+	 */
+	public function fetch_comments()
+	{
+		
+		$table = 'tbl_comment_mgnt';
+		$query = $this->db->get($table);
+		
 		$result = array();
 
 		if ($query->num_rows() == 0)
@@ -23,79 +49,131 @@ public function fetch_comments(){
 
 		foreach ($query->result_array() as $row)
 		{
-			$comments = array();
+			$tbl_customer_details = array();
 
 
-			$comments['id'] 			= (integer)$row['id'];
-			$comments['type'] 			= $row['type'];
-			$comments['comment'] 		= $row['comment'];
-			$comments['category_id'] 		= $row['category_id'];
+			$tbl_customer_details['id'] 						= (integer)$row['id'];
+			$tbl_customer_details['comment'] 					= $row['comment'];
+			$tbl_customer_details['email'] 	        			= $row['email'];
+			$tbl_customer_details['status'] 					= $row['status'];
 
-			
-
-			$result[] = $comments;
+			$result[] = $tbl_customer_details;
 		}
 
 		return $result;
-}
+	}
+	
+	
 
-function make_comments($data = NULL)
+	/**
+	 * Create an array of Tipster data, to back or receive form data.
+	 *
+	 * @param data	- k/v array of data to populate Tipster
+	 * @return array
+	 */
+	function make_comments($data = NULL)
 	{
-		$comments = array(
-				'id' 			=> '',
-				'type' 			=> '',
-				'category_id' 		=> '',
-				'comment' 		=> '',
+		//print_r($data);
+		$tbl_customer_details = array(
+		
+				'id' => 0,
+				'comment' => '',
+				'email' => '',
+				'status' => '',
+				
 		);
 
 		if (empty($data))
 		{
-			return $comments;
+			return $tbl_customer_details;
 		}
 
-		foreach ($comments as $k => $v)
+		foreach ($tbl_customer_details as $k => $v)
 		{
 			if (isset($data[$k]))
 			{
-				$comments[$k] = $data[$k];
+				$tbl_customer_details[$k] = $data[$k];
 			}
 		}
 
-		return $comments;
+		return $tbl_customer_details;
 	}
-	
-function insert_comments($comments)
-	{
-		unset($comments['id']); // sanity
-		$this->db->insert('tbl_comment_mgnt', $comments);
-		return $this->db->insert_id();
-	}
-	
-function update_comments($comments)
-	{
-		$id = $comments['id'];
-		$this->db->where('id', $id);
-		$this->db->update('tbl_comment_mgnt', $comments);
-	}
-	
-public function fetch_editcomments($id)
-	{
-		$query = $this->db->get_where('tbl_comment_mgnt', array('id' => $id));
 
-		$editdata = array();
+
+
+	// ---------------------------------------------------------------------------/
+
+
+	public function fetch_comment($id)
+	{
+		$table = 'tbl_comment_mgnt';
+		
+		$query = $this->db->get_where($table, array('id' => $id));
+
+		$tbl_customer_details = array();
 
 		if ($query->num_rows() > 0)
 		{
 			$row = $query->row_array();
 
-			$editdata['id'] 		= (integer)$row['id'];
-			$editdata['type'] 		= $row['type'];
-			$editdata['comment'] 	= $row['comment'];
-			$editdata['category_id'] 	= $row['category_id'];
+			$tbl_customer_details['id'] 						= (integer)$row['id'];
+			$tbl_customer_details['comment'] 					= $row['comment'];
+			$tbl_customer_details['email'] 	        			= $row['email'];
+			$tbl_customer_details['status'] 					= $row['status'];
 			
+
 		}
 
-		return $editdata;
+		return $tbl_customer_details;
 	}
 
+
+	// ---------------------------------------------------------------------------/
+
+
+	/**
+	 * Insert Tip database record.
+	 *
+	 * @param tip	- k/v array of Tip data to insert into db.
+	 * @return void
+	 */
+	public function insert_comments($comment_details)
+	{
+		$table = 'tbl_comment_mgnt';
+		unset($comment_details['id']); // sanity
+		$this->db->insert($table, $comment_details);
+	}
+
+	/**
+	 * Update Tip database record.
+	 *
+	 * @param tip	- k/v array of Tip data to update db.
+	 * @return void
+	 */
+	function update_comments($comment_details)
+	{
+		$table = 'tbl_comment_mgnt';
+		$id = $comment_details['id'];
+		$this->db->where('id', $id);
+		$this->db->update($table, $comment_details);
+	}
+
+
+	/**
+	 * Delete Tip database record.
+	 *
+	 * @param id	- numeric id of Tip record to delete from db.
+	 * @return void
+	 */
+	public function delete_comments($id)
+	{
+		$table = 'tbl_comment_mgnt';
+		$this->db->where('id', $id);
+		$this->db->delete($table);
+	}
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////	
+	
+	
 }

@@ -16,13 +16,12 @@
 		<div id="field-name" class="control-group">	
 			<div class="controls">
 			<div class="form-group">
-				<input type="hidden" name="hidid" value="<?php echo $feature['id']; ?>">
-				<?php echo form_dropdown('feature_id', $dropdown_feature, set_value('name', $feature['name']),'class="form-control" id="feature_name"'); ?>
+				<input type="hidden" name="hidid" value="<?php echo $service['id']; ?>">
+				<?php echo form_dropdown('service_id', $dropdown_service, set_value('name', $service['name']),'class="form-control" id="service_name"'); ?>
 			</div>
 			</div>
 		</div>
 		<!-- For replaced and displayed -->
-		<div class="form-group" id="service_name"><select class="form-control"><option value=''>Select a service</option></select></div>
 		<div class="form-group" id="category_name"><select class="form-control"><option value=''>Select a category</option></select></div>	
 		
 		 <div id="field-description" class="control-group form-group">

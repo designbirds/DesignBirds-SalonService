@@ -3,7 +3,6 @@
 	<thead>
 		<tr>
 			<th>Name</th>
-			<th>Feature</th>
 			<th>Service</th>
 			<th>Category</th>
 			<th>Description</th>
@@ -16,19 +15,22 @@
 		</tr>
 	</thead>
 	<tbody>
+		<?php $priority = base_url(). 'frontend/img/'; ?>
+		<?php $img_priority_path = "<img src=\""; ?>
+		<?php $img_path2 = "\"";?>
+		
 	<?php foreach($events as $row){ ?>
 		<tr>
 			<td><?php echo anchor('admin/event_management/edit/'.$row['id'], $row['name'], 'title="Edit An Event"'); ?>
 			</td>
-			<td><?php echo $row['feature_name'] ?></td>
 			<td><?php echo $row['service_name'] ?></td>
 			<td><?php echo $row['category_name'] ?></td>
 			<td><?php echo $row['description'] ?></td>
 			<td><?php echo $row['offer_price'] ?></td>
 			<td><?php echo $row['start_time'] ?></td>
 			<td><?php echo $row['end_time'] ?></td>
-			<td><?php echo $row['phone_status'] ?></td>
-			<td><?php echo $row['email_status'] ?></td>
+			<td><?php if($row['phone_status']){echo $img_priority_path.$priority."correct.png".$img_path2;}else{ echo $img_priority_path.$priority."wrong.png".$img_path2; } ?></td>
+			<td><?php if($row['email_status']){echo $img_priority_path.$priority."correct.png".$img_path2;}else{ echo $img_priority_path.$priority."wrong.png".$img_path2; } ?></td>
 			<td><?php echo anchor('admin/event_management/delete/'.$row['id'], 'Delete', 'class="btn btn-danger btn-xs" title="Delete The Event"'); ?>
 			</td>
 		</tr>

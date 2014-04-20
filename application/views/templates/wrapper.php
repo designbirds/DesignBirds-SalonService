@@ -280,7 +280,7 @@
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
                   
                         <ul class="nav nav-second-level">
-                            <li>
+                            <li >
                                 <a href="#">Flot Charts</a>
                             </li>
                             <li>
@@ -290,7 +290,10 @@
                         
                         <!-- /.nav-second-level -->
                     </li>
-                    <li>
+                    <li id="user_roll_assign">
+                        <a href="/admin/booking_transaction/report" ><i class="fa fa-edit fa-fw"></i> Booking Reports<span class="fa arrow"></span></a>
+                    </li>
+                    <li class="">
                         <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
                     </li>
                     <li id="user_roll_assign">
@@ -299,27 +302,46 @@
                     <li id="customer_details">
                         <a href="/admin/customer_details" ><i class="fa fa-edit fa-fw"></i> Customer Details<span class="fa arrow"></span></a>
                     </li>
-                    <li>
-                        <a href="/admin/imageUpload" ><i class="fa fa-edit fa-fw"></i> Image Upload<span class="fa arrow"></span></a>
+                    <li id="booking_customer_details">
+                        <a href="/admin/booking_customer_details" ><i class="fa fa-edit fa-fw"></i> Booking Customer Details<span class="fa arrow"></span></a>
                     </li>
+                    <li class="">
+                        <a href="/admin/imageUpload" ><i class="fa fa-edit fa-fw"></i> Image Upload<span class="fa arrow"></span></a>
+	                   		<ul class="nav nav-second-level">
+	                                     <li>
+	                                        <a href="/admin/logo_design" ><i class="fa fa-edit fa-fw"></i> Logo Design</a>
+	                                    </li>
+	                                    <li>
+	                                        <a href="/admin/banner_design" ><i class="fa fa-edit fa-fw"></i> Banner Design</a>
+	                                    </li>
+	                                    <li>
+	                                        <a href="/admin/imageUpload"><i class="fa fa-edit fa-fw"></i> Service Images</a>
+	                                    </li>
+	                                    <li>
+	                                        <a href="/admin/recent_imageUpload"><i class="fa fa-edit fa-fw"></i> Recent Images</a>
+	                                    </li>
+	                                  
+	                        </ul>
+                    </li>
+                  
                     <li>
                         <a href="/admin/content_management" ><i class="fa fa-edit fa-fw"></i> Content Management<span class="fa arrow"></span></a>
                     </li>
                      <li>
                         <a href="/admin/commentMng" ><i class="fa fa-edit fa-fw"></i> Comment Management<span class="fa arrow"></span></a>
                     </li>
-                    <li>
-                        <a href="/admin/user_time_allocation" ><i class="fa fa-edit fa-fw"></i> Booking Management<span class="fa arrow"></span></a>
+                     <li>
+                        <a href="/admin/testimonialMng" ><i class="fa fa-edit fa-fw"></i> Testimonials <span class="fa arrow"></span></a>
                     </li>
                     <li>
-                        <a href="/admin/features" ><i class="fa fa-edit fa-fw"></i> Features<span class="fa arrow"></span></a>
+                        <a href="/admin/user_time_allocation" ><i class="fa fa-edit fa-fw"></i> Time Allocation<span class="fa arrow"></span></a>
+                    </li>
+                     <li>
+                        <a href="/admin/booking_transaction" ><i class="fa fa-edit fa-fw"></i> Booking Transaction<span class="fa arrow"></span></a>
+                    </li>
+                    <li>
+                        <a href="/admin/features" ><i class="fa fa-edit fa-fw"></i> Services<span class="fa arrow"></span></a>
                     	<ul class="nav nav-second-level">
-                            <li>
-                                <a href="#">Headers</a>
-                            </li>
-                            <li>
-                                <a href="#">Services <span class="fa arrow"></span></a>
-                            	<ul class="nav nav-third-level">
                                      <li>
                                         <a href="/admin/services">Services List</a>
                                     </li>
@@ -329,28 +351,9 @@
                                     <li>
                                         <a href="/admin/service_price">Service Prices</a>
                                     </li>
-                                    
-                                </ul>
-                                <!-- /.nav-third-level -->
-                            </li>
-                            <li>
-                                <a href="/admin/event_management">Events <span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level" >
                                     <li>
-                                        <a href="#">Third Level Item</a>
+                                        <a href="/admin/event_management">Service Events</a>
                                     </li>
-                                    <li>
-                                        <a href="#">Third Level Item</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Third Level Item</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Third Level Item</a>
-                                    </li>
-                                </ul>
-                                <!-- /.nav-third-level -->
-                            </li>
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
@@ -429,26 +432,27 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 	<script src="<?php echo base_url(); ?>js/jquery.datetimepicker.js"></script>
-
+	     
+    
     <script type="text/javascript">
         $(document).ready(function () {
 			
-           	$('#feature_name').change(function () {
+           	$('#service_name').change(function () {
            // alert('jquary loaded');
-            var selectVal = $('#feature_name :selected').val();
+            var selectVal = $('#service_name :selected').val();
                 console.log(selectVal);
-                alert(selectVal);
+                //alert(selectVal);
                 $.ajax({
                     url: "/admin/first_level_dropdown_call",
                     async: false,
                     type: "POST",
-                    data: "feature_id="+selectVal,
+                    data: "service_id="+selectVal,
                     dataType: "html",
 
                     success: function(data) {
                         
 						
-						$('#service_name').html(data);
+						$('#category_name').html(data);
 						//alert('kugdfskjf');
                         
                     }
@@ -457,7 +461,7 @@
                 
                 })
 
-                	if ($('#feature_name').val()=='10'){
+                	if ($('#service_name').val()=='50'){
 					alert('came here');
 						$.ajax({
                          // It must be used as absolute path not relative because otherwise cannot use in EDIT. edit uri and add uri is DIFFERENT
@@ -478,11 +482,11 @@
                 
             });
 
-        	$('#service_name').change(function () {
+        	/* $('#service_name').change(function () {
                 // alert('jquary loaded');
                  var selectVal = $('#service_name :selected').val();
                      //console.log(selectVal);
-                     alert(selectVal);
+                     //alert(selectVal);
                      $.ajax({
                          // It must be used as absolute path not relative because otherwise cannot use in EDIT. edit uri and add uri is DIFFERENT
                          url: "/admin/second_level_dropdown_call",
@@ -495,20 +499,21 @@
                              $('#category_name').html(data);
                          }
                      })
-                 });
+                 });  */
             
 		
         	
         });
     </script>
-    <script type="text/javascript">
-    document.querySelector(".active a")
-	var subheader = document.querySelector(".active a").innerHTML;
-    	
-    	var header = document.querySelector(".panel-heading");
-    	header.innerHTML = subheader;
 
-    </script>
+		   <!--  <script type="text/javascript">
+		    document.querySelector(".active a")
+			var subheader = document.querySelector(".active a").innerHTML;
+		    	
+		    	var header = document.querySelector(".panel-heading");
+		    	header.innerHTML = subheader;
+		
+		    </script>  -->
    
   <script type="text/javascript">
 
